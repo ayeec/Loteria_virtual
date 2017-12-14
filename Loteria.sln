@@ -3,18 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Loteria", "..\..\WebSites\Loteria\", "{D54E6ACA-4633-42A3-9521-039BE61EFA16}"
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Loteria", "Loteria\", "{D54E6ACA-4633-42A3-9521-039BE61EFA16}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.6.1"
 		Debug.AspNetCompiler.VirtualPath = "/localhost_52385"
-		Debug.AspNetCompiler.PhysicalPath = "..\..\WebSites\Loteria\"
+		Debug.AspNetCompiler.PhysicalPath = "Loteria\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52385\"
 		Debug.AspNetCompiler.Updateable = "true"
 		Debug.AspNetCompiler.ForceOverwrite = "true"
 		Debug.AspNetCompiler.FixedNames = "false"
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.VirtualPath = "/localhost_52385"
-		Release.AspNetCompiler.PhysicalPath = "..\..\WebSites\Loteria\"
+		Release.AspNetCompiler.PhysicalPath = "Loteria\"
 		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_52385\"
 		Release.AspNetCompiler.Updateable = "true"
 		Release.AspNetCompiler.ForceOverwrite = "true"
