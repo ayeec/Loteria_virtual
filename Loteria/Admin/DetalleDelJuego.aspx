@@ -7,17 +7,25 @@
             <asp:QueryStringParameter DefaultValue="0" Name="IDJuego" QueryStringField="IDdetalle" Type="Int32" />
         </SelectParameters>
     </asp:SqlDataSource>
-     <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDsCategoriasDeSesion">
+     <asp:GridView ID="GridView1" runat="server" AutoGenerateColumns="False" DataSourceID="SqlDsCategoriasDeSesion" AllowPaging="True" AllowSorting="True">
          <Columns>
+             <asp:CommandField ShowSelectButton="True" />
              <asp:BoundField DataField="INTIDRESULTADOSESION" HeaderText="INTIDRESULTADOSESION" SortExpression="INTIDRESULTADOSESION" />
              <asp:BoundField DataField="INTIDCATEGORIA" HeaderText="INTIDCATEGORIA" SortExpression="INTIDCATEGORIA" />
              <asp:BoundField DataField="INTCVEJUGADOR" HeaderText="INTCVEJUGADOR" SortExpression="INTCVEJUGADOR" />
          </Columns>
     </asp:GridView>
-    <asp:SqlDataSource ID="SqlDsCategoriasDeSesion" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="sp_sesioncategorias_select_per_juego" SelectCommandType="StoredProcedure">
-        <SelectParameters>
-            <asp:QueryStringParameter DefaultValue="0" Name="IDJuego" QueryStringField="IDjuego" Type="Int32" />
-        </SelectParameters>
+    <asp:SqlDataSource ID="SqlDsCategoriasDeSesion" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT * FROM [sesioncategorias]" ConflictDetection="CompareAllValues" DeleteCommand="DELETE FROM [sesioncategorias] WHERE [INTIDRESULTADOSESION] = @original_INTIDRESULTADOSESION AND [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [INTCVEJUGADOR] = @original_INTCVEJUGADOR" InsertCommand="INSERT INTO [sesioncategorias] ([INTIDRESULTADOSESION], [INTIDCATEGORIA], [INTCVEJUGADOR]) VALUES (@INTIDRESULTADOSESION, @INTIDCATEGORIA, @INTCVEJUGADOR)" OldValuesParameterFormatString="original_{0}">
+        <DeleteParameters>
+            <asp:Parameter Name="original_INTIDRESULTADOSESION" Type="Int32" />
+            <asp:Parameter Name="original_INTIDCATEGORIA" Type="Int32" />
+            <asp:Parameter Name="original_INTCVEJUGADOR" Type="Int32" />
+        </DeleteParameters>
+        <InsertParameters>
+            <asp:Parameter Name="INTIDRESULTADOSESION" Type="Int32" />
+            <asp:Parameter Name="INTIDCATEGORIA" Type="Int32" />
+            <asp:Parameter Name="INTCVEJUGADOR" Type="Int32" />
+        </InsertParameters>
     </asp:SqlDataSource>
     <br />
      <asp:GridView ID="gvDetalle" runat="server" DataSourceID="SQLDSDetalle" AutoGenerateColumns="False">

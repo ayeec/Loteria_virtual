@@ -11,4 +11,9 @@ public partial class Admin_Usuarios : System.Web.UI.Page
     {
 
     }
+
+    protected void gvJugadores_RowCommand(object sender, GridViewCommandEventArgs e)
+    {
+        SQLDSUsuarios.Delete();
+    }
 }

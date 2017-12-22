@@ -52,7 +52,7 @@
                     <ul class="nav navbar-nav">
                         <li><a runat="server" href="~/">Inicio</a></li>
 
-                        <li><a runat="server" href="~/">Agregar Jugador</a></li>
+                        <!--<li><a runat="server" href="~/">Agregar Jugador</a></li>
                         <li><a runat="server" href="~/">Ver Jugadores</a></li>
 
                         <li><a runat="server" href="~/">Asignar Categorias a Jugador</a></li>
@@ -62,7 +62,7 @@
                         <li><a runat="server" href="~/">Agregar Carta</a></li>
                         <li><a runat="server" href="~/">Ver Todas las Cartas</a></li>
 
-                        <li><a runat="server" href="~/">Ver Historial de Juegos</a></li>
+                        <li><a runat="server" href="~/">Ver Historial de Juegos</a></li>-->
                         
                         <li><a runat="server" href="~/About">Acerca de</a></li>
                         <li><a runat="server" href="~/Contact">Contacto</a></li>

@@ -3,5 +3,25 @@
   <siteMapNode url="~/" title="Inicio"  description="Página principal del sitio">
     <siteMapNode url="~/" title="Test Menu"  description="" />
     <siteMapNode url="" title=""  description="" />
+      <siteMapNode title="Home" description="Home" url="~/home.aspx" >
+        <siteMapNode title="Products" description="Our products"
+             url="~/Products.aspx">
+          <siteMapNode title="Hardware"
+               description="Hardware we offer"
+               url="~/Hardware.aspx" />
+          <siteMapNode title="Software"
+               description="Software for sale"
+               url="~/Software.aspx" />
+        </siteMapNode>
+        <siteMapNode title="Services" description="Services we offer"
+            url="~/Services.aspx">
+          <siteMapNode title="Training" description="Training"
+              url="~/Training.aspx" />
+          <siteMapNode title="Consulting" description="Consulting"
+              url="~/Consulting.aspx" />
+          <siteMapNode title="Support" description="Support"
+              url="~/Support.aspx" />
+        </siteMapNode>
+      </siteMapNode>
   </siteMapNode>
 </siteMap>
