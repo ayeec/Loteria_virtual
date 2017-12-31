@@ -47,4 +47,26 @@ public partial class Admin_Cartas : System.Web.UI.Page
 
 
 
+
+    protected void UpdateButton_Click(object sender, EventArgs e)
+    {
+        FileUpload fileUpImage = ((FileUpload)lvCartas.EditItem.FindControl("filUpImageInsert"));
+        if (!String.IsNullOrWhiteSpace(fileUpImage.PostedFile.FileName))
+        {
+
+            Stream fs = fileUpImage.PostedFile.InputStream;
+            BinaryReader br = new BinaryReader(fs);
+            byte[] bytes = br.ReadBytes((Int32)fs.Length);
+            //string base64String = Convert.ToBase64String(bytes, 0, bytes.Length);
+            //Image1.ImageUrl = "data:image/png;base64," + base64String;
+            //Panel1.Visible = true;
+
+            //save
+            HttpPostedFile postedFile = fileUpImage.PostedFile;
+            postedFile.SaveAs(Server.MapPath("~/images/") + Path.GetFileName(postedFile.FileName));
+
+            //((TextBox)lvCartas.InsertItem.FindControl("RUTAIMAGENTextBox")).Text = (sender as FileUpload).PostedFile.FileName;
+            ((TextBox)lvCartas.EditItem.FindControl("RUTAIMAGENTextBox")).Text = Path.GetFileName(postedFile.FileName);
+        }
+    }
 }

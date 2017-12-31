@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Ver Detalle del Juego/Sesión" Language="C#"  MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="DetalleDelJuego.aspx.cs" Inherits="Admin_Jugadores" %>
+﻿<%@ Page Title="Ver Detalle del Juego/Sesión" Language="C#"  MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="DetalleDelJuego.aspx.cs" Inherits="Admin_Detalle" %>
 
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">

@@ -5,10 +5,17 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Admin_Template : System.Web.UI.Page
+public partial class Admin_Categorias : System.Web.UI.Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {
 
+    }
+
+    protected void btnAssignCartastoCategoria_Click(object sender, EventArgs e)
+    {
+        
+        int ii = Int32.Parse(lvCategorias.SelectedValue.ToString());
+        Response.Redirect("CartasDeCategoria.aspx?IDcategoria=" );
     }
 }

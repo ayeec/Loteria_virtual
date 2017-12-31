@@ -25,32 +25,12 @@
         </UpdateParameters>
     </asp:SqlDataSource>
     
-    <input id="imgUpload" size="28" name="Uploadimg" runat="server" /> 
      <asp:ListView ID="lvCartas" runat="server" DataKeyNames="INTCVECARTA" DataSourceID="SQLDSCartas" InsertItemPosition="LastItem">
-         <AlternatingItemTemplate>
-             <tr style="background-color:#FFF8DC;">
-                 <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" />
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
-                 </td>
-                 <td>
-                     <asp:Label ID="INTCVECARTALabel" runat="server" Text='<%# Eval("INTCVECARTA") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="VCHNOMBRELabel" runat="server" Text='<%# Eval("VCHNOMBRE") %>' />
-                 </td>
-                 <td>
-                     <asp:Image ID="VCHNOMBREImage" runat="server" ImageUrl='<%# Eval("RUTAIMAGEN","~/images/{0}") %>'  AlternateText='<%# Eval("VCHNOMBRE") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="VCHTEXTOLabel" runat="server" Text='<%# Eval("VCHTEXTO") %>' />
-                 </td>
-             </tr>
-         </AlternatingItemTemplate>
+         
          <EditItemTemplate>
              <tr style="background-color:#008A8C;color: #FFFFFF;">
                  <td>
-                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Actualizar" />
+                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Actualizar" OnClick="UpdateButton_Click" />
                      <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancelar" />
                  </td>
                  <td>
@@ -60,7 +40,9 @@
                      <asp:TextBox ID="VCHNOMBRETextBox" runat="server" Text='<%# Bind("VCHNOMBRE") %>' />
                  </td>
                  <td>
-                     <asp:TextBox ID="RUTAIMAGENTextBox" runat="server" Text='<%# Bind("RUTAIMAGEN") %>' />
+                     <asp:TextBox ID="RUTAIMAGENTextBox" runat="server" Text='<%# Bind("RUTAIMAGEN") %>'  Visible="false"/>
+                     
+                     <asp:FileUpload ID="filUpImageInsert" runat="server" />
                  </td>
                  <td>
                      <asp:TextBox ID="VCHTEXTOTextBox" runat="server" Text='<%# Bind("VCHTEXTO") %>' />
@@ -97,7 +79,7 @@
          <ItemTemplate>
              <tr style="background-color:#DCDCDC;color: #000000;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" />
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
@@ -107,7 +89,7 @@
                      <asp:Label ID="VCHNOMBRELabel" runat="server" Text='<%# Eval("VCHNOMBRE") %>' />
                  </td>
                  <td>
-                     <asp:Image ID="VCHNOMBREImage" runat="server" ImageUrl='<%# Eval("RUTAIMAGEN","~/images/{0}") %>' AlternateText='<%# Eval("VCHNOMBRE") %>' Width="50%"/>
+                     <asp:Image ID="VCHNOMBREImage" runat="server" ImageUrl='<%# Eval("RUTAIMAGEN","~/images/{0}") %>' AlternateText='<%# Eval("VCHNOMBRE") %>' Width="35%"/>
                  </td>
                  <td>
                      <asp:Label ID="VCHTEXTOLabel" runat="server" Text='<%# Eval("VCHTEXTO") %>' />
@@ -145,7 +127,7 @@
          <SelectedItemTemplate>
              <tr style="background-color:#008A8C;font-weight: bold;color: #FFFFFF;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false"  />
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
