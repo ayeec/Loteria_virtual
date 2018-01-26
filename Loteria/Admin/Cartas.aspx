@@ -25,6 +25,8 @@
         </UpdateParameters>
     </asp:SqlDataSource>
     
+     <h1 id="h1Main">Cartas</h1>
+    
      <asp:ListView ID="lvCartas" runat="server" DataKeyNames="INTCVECARTA" DataSourceID="SQLDSCartas" InsertItemPosition="LastItem">
          
          <EditItemTemplate>

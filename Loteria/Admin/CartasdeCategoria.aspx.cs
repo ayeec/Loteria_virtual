@@ -14,6 +14,8 @@ public partial class CartasDeCategoria_Jugadores : System.Web.UI.Page
             string idCategoria = Request.QueryString["IDcategoria"];
             if (!string.IsNullOrEmpty(idCategoria))
             {
+                h1Main.InnerText = "Cartas de la Categoria " + idCategoria;
+                
               /*  DropDownList ddlIDcategorias = (lvCartasDeCategoria.InsertItem.FindControl("ddlIDcategorias") as DropDownList);
                 //ddlIDcategorias.
                 ddlIDcategorias.SelectedValue = Request.QueryString["IDcategoria"];
@@ -21,6 +23,10 @@ public partial class CartasDeCategoria_Jugadores : System.Web.UI.Page
 
                 (lvCartasDeCategoria.InsertItem.FindControl("ddlIDcategorias") as DropDownList).Enabled = false;*/
 
+            }
+            else
+            {
+                h1Main.InnerText = "Cartas Asignadas a Todas las Categorias";
             }
         }
     }

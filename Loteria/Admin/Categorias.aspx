@@ -20,6 +20,7 @@
             <asp:Parameter Name="original_VCHDESCRIPCION" Type="String" />
         </UpdateParameters>
     </asp:SqlDataSource>
+     <h1>Categorias</h1>
      <asp:ListView ID="lvCategorias" runat="server" DataKeyNames="INTIDCATEGORIA" DataSourceID="SQLDSCategorias" InsertItemPosition="LastItem">
          
          <EditItemTemplate>

@@ -24,27 +24,8 @@
             <asp:Parameter Name="original_CHRTIPOUSUARIO" Type="String" />
         </UpdateParameters>
     </asp:SqlDataSource>
+     
      <asp:ListView ID="lvUsuarios" runat="server" DataSourceID="SQLDSUsuarios" InsertItemPosition="LastItem" DataKeyNames="INTCVEUSUARIO">
-         <AlternatingItemTemplate>
-             <tr style="background-color:#FFF8DC;">
-                 <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete" />
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
-                 </td>
-                 <td>
-                     <asp:Label ID="INTCVEUSUARIOLabel" runat="server" Text='<%# Eval("INTCVEUSUARIO") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="VCHUSUARIOLabel" runat="server" Text='<%# Eval("VCHUSUARIO") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="VCHPASSWORDLabel" runat="server" Text='<%# Eval("VCHPASSWORD") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="CHRTIPOUSUARIOLabel" runat="server" Text='<%# Eval("CHRTIPOUSUARIO") %>' />
-                 </td>
-             </tr>
-         </AlternatingItemTemplate>
          <EditItemTemplate>
              <tr style="background-color:#008A8C;color: #FFFFFF;">
                  <td>
@@ -75,28 +56,32 @@
          <InsertItemTemplate>
              <tr style="">
                  <td>
-                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" />
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" />
+                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" OnClick="InsertButton_Click"/>
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" OnClick=/>
                  </td>
                  <td>
                      &nbsp;</td>
                  <td>
-                     <asp:TextBox ID="VCHUSUARIOTextBox" runat="server" Text='<%# Bind("VCHUSUARIO") %>' />
+                     <asp:TextBox ID="VCHUSUARIOTextBox" runat="server" Text='<%# Bind("VCHUSUARIO") %>'  MaxLength="45"/>
                  </td>
                  <td>
-                     <asp:TextBox ID="VCHPASSWORDTextBox" runat="server" Text='<%# Bind("VCHPASSWORD") %>' />
+                     <asp:TextBox ID="VCHPASSWORDTextBox" runat="server" Text='<%# Bind("VCHPASSWORD") %>' MaxLength="45"/>
 
                  </td>
                  <td>
-                     <asp:TextBox ID="CHRTIPOUSUARIOTextBox" runat="server" Text='<%# Bind("CHRTIPOUSUARIO") %>' />
+                     <asp:DropDownList ID="ddlUserType" runat="server">
+                         <asp:ListItem Value="J">Jugador</asp:ListItem>
+                         <asp:ListItem Value="A">Administrador</asp:ListItem>
+                    </asp:DropDownList>
+                     <asp:TextBox ID="CHRTIPOUSUARIOTextBox" runat="server" Text='<%# Bind("CHRTIPOUSUARIO") %>' Visible="false"/>
                  </td>
              </tr>
          </InsertItemTemplate>
          <ItemTemplate>
              <tr style="background-color:#DCDCDC;color: #000000;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete" />
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClick="DeleteButton_Click"/>
+                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
                      <asp:Label ID="INTCVEUSUARIOLabel" runat="server" Text='<%# Eval("INTCVEUSUARIO") %>' />
@@ -105,7 +90,7 @@
                      <asp:Label ID="VCHUSUARIOLabel" runat="server" Text='<%# Eval("VCHUSUARIO") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="VCHPASSWORDLabel" runat="server" Text='<%# Eval("VCHPASSWORD") %>' />
+                     <asp:Label ID="VCHPASSWORDLabel" runat="server" Text="*****" />
                      
                  </td>
                  <td>
@@ -120,10 +105,10 @@
                          <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
                              <tr runat="server" style="background-color:#DCDCDC;color: #000000;">
                                  <th runat="server"></th>
-                                 <th runat="server">INTCVEUSUARIO</th>
-                                 <th runat="server">VCHUSUARIO</th>
-                                 <th runat="server">VCHPASSWORD</th>
-                                 <th runat="server">CHRTIPOUSUARIO</th>
+                                 <th runat="server">ID Usuario</th>
+                                 <th runat="server">Nombre de usuario</th>
+                                 <th runat="server">Clave</th>
+                                 <th runat="server">Tipo de usuario</th>
                              </tr>
                              <tr id="itemPlaceholder" runat="server">
                              </tr>

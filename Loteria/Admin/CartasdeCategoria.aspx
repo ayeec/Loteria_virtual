@@ -15,6 +15,7 @@
             <asp:QueryStringParameter DefaultValue="0" Name="INTIDCATEGORIA" QueryStringField="IDCategoria" Type="Int32" />
         </SelectParameters>
     </asp:SqlDataSource>
+     <h1 id="h1Main" runat="server">Titulo</h1>
      <br />
      <asp:ListView ID="lvCartasDeCategoria" runat="server" DataKeyNames="INTIDCATEGORIA,INTCVECARTA" DataSourceID="SQLDSCartasDeCategoria" InsertItemPosition="LastItem">
 
