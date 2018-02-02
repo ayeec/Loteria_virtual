@@ -28,3 +28,7 @@ textarea {
     }
 }
 
+input.delButton{
+    background-color: darkred;
+    color:white;
+}

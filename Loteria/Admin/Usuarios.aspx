@@ -25,11 +25,13 @@
         </UpdateParameters>
     </asp:SqlDataSource>
      
-     <asp:ListView ID="lvUsuarios" runat="server" DataSourceID="SQLDSUsuarios" InsertItemPosition="LastItem" DataKeyNames="INTCVEUSUARIO">
+     <h1>Usuarios</h1>
+     
+     <asp:ListView ID="lvUsuarios" runat="server" DataSourceID="SQLDSUsuarios" InsertItemPosition="LastItem" DataKeyNames="INTCVEUSUARIO" >
          <EditItemTemplate>
              <tr style="background-color:#008A8C;color: #FFFFFF;">
                  <td>
-                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" />
+                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" OnClick="UpdateButton_Click"/>
                      <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancel" />
                  </td>
                  <td>
@@ -42,7 +44,11 @@
                      <asp:TextBox ID="VCHPASSWORDTextBox" runat="server" Text='<%# Bind("VCHPASSWORD") %>' />
                  </td>
                  <td>
-                     <asp:TextBox ID="CHRTIPOUSUARIOTextBox" runat="server" Text='<%# Bind("CHRTIPOUSUARIO") %>' />
+                        <asp:DropDownList ID="ddlUserType" runat="server">
+                         <asp:ListItem Value="J">Jugador</asp:ListItem>
+                         <asp:ListItem Value="A">Administrador</asp:ListItem>
+                    </asp:DropDownList>
+                     <asp:TextBox ID="CHRTIPOUSUARIOTextBox" runat="server" Text='<%# Bind("CHRTIPOUSUARIO") %>' Visible="false"/>
                  </td>
              </tr>
          </EditItemTemplate>
@@ -57,7 +63,7 @@
              <tr style="">
                  <td>
                      <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" OnClick="InsertButton_Click"/>
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" OnClick=/>
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" />
                  </td>
                  <td>
                      &nbsp;</td>
@@ -80,7 +86,7 @@
          <ItemTemplate>
              <tr style="background-color:#DCDCDC;color: #000000;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClick="DeleteButton_Click"/>
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" CssClass="delButton" OnClick="DeleteButton_Click" OnClientClick="if(!confirm('Desea borrarlo?')) return false"/>
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
@@ -94,7 +100,7 @@
                      
                  </td>
                  <td>
-                     <asp:Label ID="CHRTIPOUSUARIOLabel" runat="server" Text='<%# Eval("CHRTIPOUSUARIO") %>' />
+                     <asp:Label ID="CHRTIPOUSUARIOLabel" runat="server" Text='<%# (Eval("CHRTIPOUSUARIO").Equals("A"))? "Administrador" : "Jugador" %>' />
                  </td>
              </tr>
          </ItemTemplate>
@@ -131,7 +137,7 @@
          <SelectedItemTemplate>
              <tr style="background-color:#008A8C;font-weight: bold;color: #FFFFFF;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete"/>
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
                  </td>
                  <td>

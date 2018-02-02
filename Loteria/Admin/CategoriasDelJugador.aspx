@@ -1,146 +1,163 @@
 ﻿<%@ Page Title="Ver Categorias Del Jugador" Language="C#"  MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeFile="CategoriasDelJugador.aspx.cs" Inherits="Admin_CategoriasDelJugador" %>
 
 
+<%@ Register assembly="AjaxControlToolkit" namespace="AjaxControlToolkit" tagprefix="ajaxToolkit" %>
+
+
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:SqlDataSource ID="SQLDSCategoriasDelJugador" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT * FROM [detallejuego]" ConflictDetection="CompareAllValues" DeleteCommand="DELETE FROM [detallejuego] WHERE [INTIDDETALLE] = @original_INTIDDETALLE AND [INTCVECARTA] = @original_INTCVECARTA AND [INTIDJUEGO] = @original_INTIDJUEGO AND [USASONIDO] = @original_USASONIDO AND [USAIMAGEN] = @original_USAIMAGEN AND [CORRECTO] = @original_CORRECTO" InsertCommand="INSERT INTO [detallejuego] ([INTIDDETALLE], [INTCVECARTA], [INTIDJUEGO], [USASONIDO], [USAIMAGEN], [CORRECTO]) VALUES (@INTIDDETALLE, @INTCVECARTA, @INTIDJUEGO, @USASONIDO, @USAIMAGEN, @CORRECTO)" OldValuesParameterFormatString="original_{0}" UpdateCommand="UPDATE [detallejuego] SET [INTIDJUEGO] = @INTIDJUEGO, [USASONIDO] = @USASONIDO, [USAIMAGEN] = @USAIMAGEN, [CORRECTO] = @CORRECTO WHERE [INTIDDETALLE] = @original_INTIDDETALLE AND [INTCVECARTA] = @original_INTCVECARTA AND [INTIDJUEGO] = @original_INTIDJUEGO AND [USASONIDO] = @original_USASONIDO AND [USAIMAGEN] = @original_USAIMAGEN AND [CORRECTO] = @original_CORRECTO">
+    <h1 id="h1Title" runat="server">h1Title</h1>
+
+     <asp:TextBox ID="INTIDCATEGORIATextBox" runat="server" Text='<%# Bind("INTIDCATEGORIA") %>' Visible="false"/>
+                     <asp:DropDownList ID="ddlCategorias" runat="server" DataSourceID="SQLDSCategorias" DataTextField="nameCategoria" DataValueField="INTIDCATEGORIA">
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SQLDSCategorias" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+                        SelectCommand="SELECT CONCAT([INTIDCATEGORIA], '-', [VCHNOMBRE]) as nameCategoria, [INTIDCATEGORIA] FROM [categoria] 
+                        WHERE [INTIDCATEGORIA] NOT IN (SELECT INTIDCATEGORIA FROM categoriasDeJugador WHERE ([INTCVEJUGADOR] =  CASE WHEN  @INTCVEJUGADOR > 0 THEN @INTCVEJUGADOR ELSE [INTCVEJUGADOR] END ))">
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="hidIDJugador" DefaultValue="0" Name="INTCVEJUGADOR" PropertyName="Value"/>
+                        </SelectParameters>
+                    </asp:SqlDataSource>
+                      <asp:HiddenField ID="hidIDJugador" runat="server" />
+    
+
+    
+    
+    <asp:SqlDataSource ID="SQLDSCategoriasDelJugador" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+        SelectCommand="SELECT CONCAT(c.INTIDCATEGORIA,'-',c.VCHNOMBRE) as nombreCategoria, 
+        c.INTIDCATEGORIA, CONCAT(j.INTCVEJUGADOR,'-',j.VCHNOMBRE) as nombreJugador, 
+        j.INTCVEJUGADOR, cdj.INTIDPESO, cdj.BOOLACTIVO
+        FROM [categoriasdejugador] as cdj
+        JOIN [jugador] as j
+        ON j.INTCVEJUGADOR = cdj.INTCVEJUGADOR
+        JOIN categoria as c
+        ON c.INTIDCATEGORIA = cdj.INTIDCATEGORIA 
+        WHERE (cdj.[INTCVEJUGADOR] =  CASE WHEN  @INTCVEJUGADOR > 0 THEN @INTCVEJUGADOR ELSE cdj.[INTCVEJUGADOR] END )"  
+        DeleteCommand="DELETE FROM [categoriasdejugador] WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [INTCVEJUGADOR] = @original_INTCVEJUGADOR"
+        InsertCommand="INSERT INTO [categoriasdejugador] ([INTIDCATEGORIA], [INTCVEJUGADOR], [INTIDPESO], [BOOLACTIVO]) VALUES (@INTIDCATEGORIA, @INTCVEJUGADOR, @INTIDPESO, @BOOLACTIVO)" 
+        OldValuesParameterFormatString="original_{0}" 
+        UpdateCommand="UPDATE [categoriasdejugador] SET [INTIDPESO] = @INTIDPESO, [BOOLACTIVO] = @BOOLACTIVO WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [INTCVEJUGADOR] = @original_INTCVEJUGADOR">
         <DeleteParameters>
-            <asp:Parameter Name="original_INTIDDETALLE" Type="Int32" />
-            <asp:Parameter Name="original_INTCVECARTA" Type="Int32" />
-            <asp:Parameter Name="original_INTIDJUEGO" Type="Int32" />
-            <asp:Parameter Name="original_USASONIDO" Type="Int16" />
-            <asp:Parameter Name="original_USAIMAGEN" Type="Int16" />
-            <asp:Parameter Name="original_CORRECTO" Type="Int16" />
+            <asp:Parameter Name="original_INTIDCATEGORIA" Type="Int32" />
+            <asp:Parameter Name="original_INTCVEJUGADOR" Type="Int32" />
+            <asp:Parameter Name="original_INTIDPESO" Type="Int32" />
+            <asp:Parameter Name="original_BOOLACTIVO" Type="Int16" />
         </DeleteParameters>
         <InsertParameters>
-            <asp:Parameter Name="INTIDDETALLE" Type="Int32" />
-            <asp:Parameter Name="INTCVECARTA" Type="Int32" />
-            <asp:Parameter Name="INTIDJUEGO" Type="Int32" />
-            <asp:Parameter Name="USASONIDO" Type="Int16" />
-            <asp:Parameter Name="USAIMAGEN" Type="Int16" />
-            <asp:Parameter Name="CORRECTO" Type="Int16" />
+            <asp:Parameter Name="INTIDCATEGORIA" Type="Int32" />
+            <asp:Parameter Name="INTCVEJUGADOR" Type="Int32" />
+            <asp:Parameter Name="INTIDPESO" Type="Int32" />
+            <asp:Parameter Name="BOOLACTIVO" Type="Int16" />
         </InsertParameters>
+        <SelectParameters>
+            <asp:QueryStringParameter DefaultValue="0" Name="INTCVEJUGADOR" QueryStringField="idJugador" Type="Int32" />
+        </SelectParameters>
         <UpdateParameters>
-            <asp:Parameter Name="INTIDJUEGO" Type="Int32" />
-            <asp:Parameter Name="USASONIDO" Type="Int16" />
-            <asp:Parameter Name="USAIMAGEN" Type="Int16" />
-            <asp:Parameter Name="CORRECTO" Type="Int16" />
-            <asp:Parameter Name="original_INTIDDETALLE" Type="Int32" />
-            <asp:Parameter Name="original_INTCVECARTA" Type="Int32" />
-            <asp:Parameter Name="original_INTIDJUEGO" Type="Int32" />
-            <asp:Parameter Name="original_USASONIDO" Type="Int16" />
-            <asp:Parameter Name="original_USAIMAGEN" Type="Int16" />
-            <asp:Parameter Name="original_CORRECTO" Type="Int16" />
+            <asp:Parameter Name="INTIDPESO" Type="Int32" />
+            <asp:Parameter Name="BOOLACTIVO" Type="Int16" />
+            <asp:Parameter Name="original_INTIDCATEGORIA" Type="Int32" />
+            <asp:Parameter Name="original_INTCVEJUGADOR" Type="Int32" />
+            <asp:Parameter Name="original_INTIDPESO" Type="Int32" />
+            <asp:Parameter Name="original_BOOLACTIVO" Type="Int16" />
         </UpdateParameters>
     </asp:SqlDataSource>
-     <asp:ListView ID="ListView1" runat="server" DataKeyNames="INTIDDETALLE,INTCVECARTA" DataSourceID="SQLDSCategoriasDelJugador" InsertItemPosition="LastItem">
-         <AlternatingItemTemplate>
-             <tr style="background-color:#FFF8DC;">
-                 <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete" />
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
-                 </td>
-                 <td>
-                     <asp:Label ID="INTIDDETALLELabel" runat="server" Text='<%# Eval("INTIDDETALLE") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="INTCVECARTALabel" runat="server" Text='<%# Eval("INTCVECARTA") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="INTIDJUEGOLabel" runat="server" Text='<%# Eval("INTIDJUEGO") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="USASONIDOLabel" runat="server" Text='<%# Eval("USASONIDO") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="USAIMAGENLabel" runat="server" Text='<%# Eval("USAIMAGEN") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="CORRECTOLabel" runat="server" Text='<%# Eval("CORRECTO") %>' />
-                 </td>
-             </tr>
-         </AlternatingItemTemplate>
+     <asp:ListView ID="lvCategoriasDelJugador" runat="server" DataKeyNames="INTIDCATEGORIA,INTCVEJUGADOR" DataSourceID="SQLDSCategoriasDelJugador" InsertItemPosition="LastItem">
          <EditItemTemplate>
              <tr style="background-color:#008A8C;color: #FFFFFF;">
                  <td>
-                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" />
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancel" />
+                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Actualizar" OnClick="UpdateButton_Click" />
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancelar" />
+                 </td>
+                 
+                 <td>
+                     <asp:Label ID="INTCVEJUGADORLabel1" runat="server" Text='<%# Eval("nombreJugador") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="INTIDDETALLELabel1" runat="server" Text='<%# Eval("INTIDDETALLE") %>' />
+                     <asp:Label ID="INTIDCATEGORIALabel1" runat="server" Text='<%# Eval("nombreCategoria") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="INTCVECARTALabel1" runat="server" Text='<%# Eval("INTCVECARTA") %>' />
+                     <asp:TextBox ID="txtSlider" runat="server" Enabled="false" Width="15pt"></asp:TextBox>
+                    <asp:TextBox ID="INTIDPESOTextBox" runat="server" Text='<%# Bind("INTIDPESO") %>' />
+                    <ajaxToolkit:SliderExtender ID="INTIDPESOTextBox_SliderExtender" runat="server" BehaviorID="INTIDPESOTextBox_SliderExtender" 
+                        Maximum="10" Minimum="1" TargetControlID="INTIDPESOTextBox" BoundControlID="txtSlider" Steps="10" />
                  </td>
                  <td>
-                     <asp:TextBox ID="INTIDJUEGOTextBox" runat="server" Text='<%# Bind("INTIDJUEGO") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="USASONIDOTextBox" runat="server" Text='<%# Bind("USASONIDO") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="USAIMAGENTextBox" runat="server" Text='<%# Bind("USAIMAGEN") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="CORRECTOTextBox" runat="server" Text='<%# Bind("CORRECTO") %>' />
+                     
+                     <asp:CheckBox ID="ckbActivo" runat="server" Text="¿Activo?" Checked='<%# Eval("BOOLACTIVO").ToString().Equals("1")? true:false %>' />
+                    <ajaxToolkit:BalloonPopupExtender ID="ckbActivo_BalloonPopupExtender" runat="server" BehaviorID="ckbActivo_BalloonPopupExtender" CustomCssUrl="" DynamicServicePath="" ExtenderControlID="" TargetControlID="ckbActivo" BalloonPopupControlID="lblMessagetoPopUp" DisplayOnMouseOver="true">
+                    </ajaxToolkit:BalloonPopupExtender>
+                    <asp:Label ID="lblMessagetoPopUp" runat="server" Text="Si esta activo aparece como opcion para la sesion para el jugador"></asp:Label>
+                     <asp:TextBox ID="BOOLACTIVOTextBox" runat="server" Text='<%# Bind("BOOLACTIVO") %>' Visible="false"/>
                  </td>
              </tr>
          </EditItemTemplate>
          <EmptyDataTemplate>
              <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
                  <tr>
-                     <td>No data was returned.</td>
+                     <td>No datos a mostrar.</td>
                  </tr>
              </table>
          </EmptyDataTemplate>
          <InsertItemTemplate>
              <tr style="">
                  <td>
-                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" />
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" />
+                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" OnClick="InsertButton_Click"/>
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" />
+                 </td>
+                
+                 <td>
+                     <asp:TextBox ID="INTCVEJUGADORTextBox" runat="server" Text='<%# Bind("INTCVEJUGADOR") %>' Visible="false"/>
+                     <asp:DropDownList ID="ddlJugadores" runat="server" DataSourceID="SQLDSJugadores" DataTextField="nameJugador" DataValueField="INTCVEJUGADOR" OnDataBound="ddlJugadores_DataBound" OnSelectedIndexChanged="ddlJugadores_SelectedIndexChanged" AutoPostBack="true">
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SQLDSJugadores" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT CONCAT([INTCVEJUGADOR],'-', [VCHNOMBRE]) as nameJugador, [INTCVEJUGADOR] FROM [jugador]"></asp:SqlDataSource>
+                 </td>
+                  <td>
+                      
+                      <asp:TextBox ID="INTIDCATEGORIATextBox" runat="server" Text='<%# Bind("INTIDCATEGORIA") %>' Visible="false"/>
+                     <asp:DropDownList ID="ddlCategorias" runat="server" DataSourceID="SQLDSCategorias" DataTextField="nameCategoria" DataValueField="INTIDCATEGORIA">
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="SQLDSCategorias" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+                        SelectCommand="SELECT CONCAT([INTIDCATEGORIA], '-', [VCHNOMBRE]) as nameCategoria, [INTIDCATEGORIA] FROM [categoria] 
+                        WHERE [INTIDCATEGORIA] NOT IN (SELECT INTIDCATEGORIA FROM categoriasDeJugador WHERE ([INTCVEJUGADOR] =  CASE WHEN  @INTCVEJUGADOR > 0 THEN @INTCVEJUGADOR ELSE [INTCVEJUGADOR] END ))">
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="hidIDJugador" DefaultValue="0" Name="INTCVEJUGADOR" PropertyName="Value"/>
+                        </SelectParameters>
+                    </asp:SqlDataSource>
+                      <asp:HiddenField ID="hidIDJugador" runat="server" />
+                 </td>
+
+                 <td>
+                     <asp:TextBox ID="txtSlider" runat="server" Enabled="false" Width="15pt"></asp:TextBox>
+                    <asp:TextBox ID="INTIDPESOTextBox" runat="server" Text='<%# Bind("INTIDPESO") %>' />
+                    <ajaxToolkit:SliderExtender ID="INTIDPESOTextBox_SliderExtender" runat="server" BehaviorID="INTIDPESOTextBox_SliderExtender" 
+                        Maximum="10" Minimum="1" TargetControlID="INTIDPESOTextBox" BoundControlID="txtSlider" Steps="10" />
                  </td>
                  <td>
-                     <asp:TextBox ID="INTIDDETALLETextBox" runat="server" Text='<%# Bind("INTIDDETALLE") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="INTCVECARTATextBox" runat="server" Text='<%# Bind("INTCVECARTA") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="INTIDJUEGOTextBox" runat="server" Text='<%# Bind("INTIDJUEGO") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="USASONIDOTextBox" runat="server" Text='<%# Bind("USASONIDO") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="USAIMAGENTextBox" runat="server" Text='<%# Bind("USAIMAGEN") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="CORRECTOTextBox" runat="server" Text='<%# Bind("CORRECTO") %>' />
+                     <asp:TextBox ID="BOOLACTIVOTextBox" runat="server" Text='<%# Bind("BOOLACTIVO") %>' Visible="false"/>
+                     <asp:CheckBox ID="ckbActivo" runat="server" Text="¿Activo?" Checked="True" />
+                    <ajaxToolkit:BalloonPopupExtender ID="ckbActivo_BalloonPopupExtender" runat="server" BehaviorID="ckbActivo_BalloonPopupExtender" CustomCssUrl="" DynamicServicePath="" ExtenderControlID="" TargetControlID="ckbActivo" BalloonPopupControlID="lblMessagetoPopUp" DisplayOnMouseOver="true">
+                    </ajaxToolkit:BalloonPopupExtender>
+                    <asp:Label ID="lblMessagetoPopUp" runat="server" Text="Si esta activo aparece como opcion para la sesion para el jugador"></asp:Label>
                  </td>
              </tr>
          </InsertItemTemplate>
          <ItemTemplate>
              <tr style="background-color:#DCDCDC;color: #000000;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete" />
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false"/>
+                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
-                     <asp:Label ID="INTIDDETALLELabel" runat="server" Text='<%# Eval("INTIDDETALLE") %>' />
+                     <asp:Label ID="INTCVEJUGADORLabel" runat="server" Text='<%# Eval("nombreJugador") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="INTCVECARTALabel" runat="server" Text='<%# Eval("INTCVECARTA") %>' />
+                     <asp:Label ID="INTIDCATEGORIALabel" runat="server" Text='<%# Eval("nombreCategoria") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="INTIDJUEGOLabel" runat="server" Text='<%# Eval("INTIDJUEGO") %>' />
+                     <asp:Label ID="INTIDPESOLabel" runat="server" Text='<%# Eval("INTIDPESO") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="USASONIDOLabel" runat="server" Text='<%# Eval("USASONIDO") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="USAIMAGENLabel" runat="server" Text='<%# Eval("USAIMAGEN") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="CORRECTOLabel" runat="server" Text='<%# Eval("CORRECTO") %>' />
+                     <!--<asp:Label ID="BOOLACTIVOLabel" runat="server" Text='<%# Eval("BOOLACTIVO").ToString().Equals("1")? "true":"false" %>' />-->
+                     <asp:CheckBox ID="ckbActivo" runat="server" Enabled="false" Text="" Checked='<%# Eval("BOOLACTIVO").ToString().Equals("1")? true:false %>' />
                  </td>
              </tr>
          </ItemTemplate>
@@ -151,12 +168,10 @@
                          <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
                              <tr runat="server" style="background-color:#DCDCDC;color: #000000;">
                                  <th runat="server"></th>
-                                 <th runat="server">INTIDDETALLE</th>
-                                 <th runat="server">INTCVECARTA</th>
-                                 <th runat="server">INTIDJUEGO</th>
-                                 <th runat="server">USASONIDO</th>
-                                 <th runat="server">USAIMAGEN</th>
-                                 <th runat="server">CORRECTO</th>
+                                 <th runat="server">Jugador</th>
+                                 <th runat="server">Categoria</th>
+                                 <th runat="server">Peso/Probabilidad</th>
+                                 <th runat="server">¿Activo?</th>
                              </tr>
                              <tr id="itemPlaceholder" runat="server">
                              </tr>
@@ -167,9 +182,7 @@
                      <td runat="server" style="text-align: center;background-color: #CCCCCC;font-family: Verdana, Arial, Helvetica, sans-serif;color: #000000;">
                          <asp:DataPager ID="DataPager1" runat="server">
                              <Fields>
-                                 <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
-                                 <asp:NumericPagerField />
-                                 <asp:NextPreviousPagerField ButtonType="Button" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
+                                 <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowLastPageButton="True" />
                              </Fields>
                          </asp:DataPager>
                      </td>
@@ -179,26 +192,20 @@
          <SelectedItemTemplate>
              <tr style="background-color:#008A8C;font-weight: bold;color: #FFFFFF;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete" />
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" />
+                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
-                     <asp:Label ID="INTIDDETALLELabel" runat="server" Text='<%# Eval("INTIDDETALLE") %>' />
+                     <asp:Label ID="INTCVEJUGADORLabel" runat="server" Text='<%# Eval("INTCVEJUGADOR") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="INTCVECARTALabel" runat="server" Text='<%# Eval("INTCVECARTA") %>' />
+                     <asp:Label ID="INTIDCATEGORIALabel" runat="server" Text='<%# Eval("INTIDCATEGORIA") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="INTIDJUEGOLabel" runat="server" Text='<%# Eval("INTIDJUEGO") %>' />
+                     <asp:Label ID="INTIDPESOLabel" runat="server" Text='<%# Eval("INTIDPESO") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="USASONIDOLabel" runat="server" Text='<%# Eval("USASONIDO") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="USAIMAGENLabel" runat="server" Text='<%# Eval("USAIMAGEN") %>' />
-                 </td>
-                 <td>
-                     <asp:Label ID="CORRECTOLabel" runat="server" Text='<%# Eval("CORRECTO") %>' />
+                     <asp:Label ID="BOOLACTIVOLabel" runat="server" Text='<%# Eval("BOOLACTIVO") %>' />
                  </td>
              </tr>
          </SelectedItemTemplate>

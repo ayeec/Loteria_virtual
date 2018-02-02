@@ -5,7 +5,14 @@
 
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:SqlDataSource ID="SQLDSJugadores" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT * FROM [jugador]" ConflictDetection="CompareAllValues" DeleteCommand="DELETE FROM [jugador] WHERE [INTCVEJUGADOR] = @original_INTCVEJUGADOR AND [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([GENERO] = @original_GENERO) OR ([GENERO] IS NULL AND @original_GENERO IS NULL)) AND (([GRADO] = @original_GRADO) OR ([GRADO] IS NULL AND @original_GRADO IS NULL)) AND [FECHANACIMIENTO] = @original_FECHANACIMIENTO AND [FECHAINSCRIPCION] = @original_FECHAINSCRIPCION" InsertCommand="INSERT INTO [jugador] ([INTCVEUSUARIO], [VCHNOMBRE], [GENERO], [GRADO], [FECHANACIMIENTO], [FECHAINSCRIPCION]) VALUES (@INTCVEUSUARIO, @VCHNOMBRE, @GENERO, @GRADO, @FECHANACIMIENTO, @FECHAINSCRIPCION)" OldValuesParameterFormatString="original_{0}" UpdateCommand="UPDATE [jugador] SET [INTCVEUSUARIO] = @INTCVEUSUARIO, [VCHNOMBRE] = @VCHNOMBRE, [GENERO] = @GENERO, [GRADO] = @GRADO, [FECHANACIMIENTO] = @FECHANACIMIENTO, [FECHAINSCRIPCION] = @FECHAINSCRIPCION WHERE [INTCVEJUGADOR] = @original_INTCVEJUGADOR AND [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([GENERO] = @original_GENERO) OR ([GENERO] IS NULL AND @original_GENERO IS NULL)) AND (([GRADO] = @original_GRADO) OR ([GRADO] IS NULL AND @original_GRADO IS NULL)) AND [FECHANACIMIENTO] = @original_FECHANACIMIENTO AND [FECHAINSCRIPCION] = @original_FECHAINSCRIPCION">
+    <asp:SqlDataSource ID="SQLDSJugadores" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+        SelectCommand="SELECT CONCAT(u.INTCVEUSUARIO,'-', u.VCHUSUARIO) as nombreUsuario , CONCAT(j.INTCVEJUGADOR, '-', j.VCHNOMBRE) as nombreJugador, j.INTCVEJUGADOR, j.INTCVEUSUARIO, j.VCHNOMBRE, j.GENERO, j.GRADO, j.FECHANACIMIENTO, j.FECHAINSCRIPCION
+        FROM [jugador] as j
+        JOIN USUARIO as u
+        ON u.INTCVEUSUARIO = j.INTCVEUSUARIO" 
+        DeleteCommand="DELETE FROM [jugador] WHERE [INTCVEJUGADOR] = @original_INTCVEJUGADOR AND [INTCVEUSUARIO] = @original_INTCVEUSUARIO" 
+        InsertCommand="INSERT INTO [jugador] ([INTCVEUSUARIO], [VCHNOMBRE], [GENERO], [GRADO], [FECHANACIMIENTO], [FECHAINSCRIPCION]) VALUES (@INTCVEUSUARIO, @VCHNOMBRE, @GENERO, @GRADO, @FECHANACIMIENTO, @FECHAINSCRIPCION)"     
+        UpdateCommand="UPDATE [jugador] SET [INTCVEUSUARIO] = @INTCVEUSUARIO, [VCHNOMBRE] = @VCHNOMBRE, [GENERO] = @GENERO, [GRADO] = @GRADO, [FECHANACIMIENTO] = @FECHANACIMIENTO, [FECHAINSCRIPCION] = @FECHAINSCRIPCION WHERE [INTCVEJUGADOR] = @original_INTCVEJUGADOR AND [INTCVEUSUARIO] = @original_INTCVEUSUARIO ">
         <DeleteParameters>
             <asp:Parameter Name="original_INTCVEJUGADOR" Type="Int32" />
             <asp:Parameter Name="original_INTCVEUSUARIO" Type="Int32" />
@@ -50,57 +57,41 @@
     
    
     
+    <h1 id="h1Main">Jugadores</h1>
+     
+    
+    
+   
+    
+    
+     
+    
+    
+   
+    
     <br />
      <asp:ListView ID="lvJugadores" runat="server" DataKeyNames="INTCVEJUGADOR" DataSourceID="SQLDSJugadores" InsertItemPosition="LastItem">
          <EditItemTemplate>
              <tr style="background-color:#008A8C;color: #FFFFFF;">
                  <td>
-                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" />
+                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" OnClick="UpdateButton_Click"/>
                      <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancel" />
                  </td>
                  <td>
-                     <asp:Label ID="INTCVEJUGADORLabel1" runat="server" Text='<%# Eval("INTCVEJUGADOR") %>' />
+                     <asp:Label ID="INTCVEJUGADORLabel1" runat="server" Text='<%# Eval("nombreJugador") %>' />
                  </td>
                  <td>
-                     <asp:TextBox ID="INTCVEUSUARIOTextBox" runat="server" Text='<%# Bind("INTCVEUSUARIO") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="VCHNOMBRETextBox" runat="server" Text='<%# Bind("VCHNOMBRE") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="GENEROTextBox" runat="server" Text='<%# Bind("GENERO") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="GRADOTextBox" runat="server" Text='<%# Bind("GRADO") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="FECHANACIMIENTOTextBox" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>' />
-                 </td>
-                 <td>
-                     <asp:TextBox ID="FECHAINSCRIPCIONTextBox" runat="server" Text='<%# Bind("FECHAINSCRIPCION") %>' />
-                 </td>
-             </tr>
-         </EditItemTemplate>
-         <EmptyDataTemplate>
-             <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
-                 <tr>
-                     <td>Sin datos a mostrar.</td>
-                 </tr>
-             </table>
-         </EmptyDataTemplate>
-         <InsertItemTemplate>
-             <tr style="">
-                 <td>
-                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" OnClick="InsertButton_Click" />
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" />
-                 </td>
-                 <td>&nbsp;</td>
-                 <td>
-                     <asp:TextBox ID="INTCVEUSUARIOTextBox" runat="server" Text='<%# Bind("INTCVEUSUARIO") %>' Visible="false"/>
+                      <asp:TextBox ID="INTCVEUSUARIOTextBox" runat="server" Text='<%# Bind("INTCVEUSUARIO") %>' Visible="false"/>
                       <asp:DropDownList ID="ddlUsuariosDisponibles" runat="server" DataSourceID="sqlUsuariosDisponibles" DataTextField="usuario_detail" DataValueField="INTCVEUSUARIO">
                     </asp:DropDownList>
-                    <asp:SqlDataSource ID="sqlUsuariosDisponibles" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT CONCAT(INTCVEUSUARIO,'-',VCHUSUARIO) usuario_detail,  INTCVEUSUARIO FROM usuario
-                    WHERE INTCVEUSUARIO not in (SELECT INTCVEUSUARIO from jugador)"></asp:SqlDataSource>
+                    <asp:SqlDataSource ID="sqlUsuariosDisponibles" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+                        SelectCommand="SELECT CONCAT(INTCVEUSUARIO,'-',VCHUSUARIO) usuario_detail,  INTCVEUSUARIO FROM usuario
+                    WHERE (INTCVEUSUARIO not in (SELECT INTCVEUSUARIO from jugador ) OR INTCVEUSUARIO = @idUsuario) AND UPPER(CHRTIPOUSUARIO) = 'J'">
+                        <SelectParameters>
+                            <asp:ControlParameter ControlID="INTCVEUSUARIOTextBox" Name="idUsuario" PropertyName="Text" />
+                        </SelectParameters>
+
+                    </asp:SqlDataSource>
      
                  </td>
                  <td>
@@ -123,28 +114,81 @@
                  </td>
                  <td>
                      <!--<asp:TextBox ID="FECHANACIMIENTOTextBox" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>' />-->
-                     <asp:TextBox ID="txtBirthdayPicker" runat="server"></asp:TextBox>
-                    <ajaxToolkit:CalendarExtender ID="txtBirthdayPicker_CalendarExtender" runat="server" TargetControlID="txtBirthdayPicker" Format="yyyy-MM-dd" DefaultView="Years" SelectedDate='<%# Bind("FECHANACIMIENTO") %>'/>
+                     <asp:TextBox ID="txtBirthdayPicker" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>'></asp:TextBox>
+                    <ajaxToolkit:CalendarExtender ID="txtBirthdayPicker_CalendarExtender" runat="server" TargetControlID="txtBirthdayPicker" Format="yyyy-MM-dd" DefaultView="Years" />
    
                  </td>
                  <td>
-                     <asp:TextBox ID="txtSuscriptionDate" runat="server" Enabled="false" OnPreRender="txtSuscriptionDate_PreRender"></asp:TextBox>
-                     <ajaxToolkit:CalendarExtender ID="txtSuscriptionDate_CalendarExtender" runat="server" TargetControlID="txtSuscriptionDate" Format="yyyy-MM-dd" DefaultView="Years" SelectedDate='<%# Bind("FECHAINSCRIPCION") %>'/>
-                     <!--<asp:TextBox ID="FECHAINSCRIPCIONTextBox" runat="server" Text='<%# Bind("FECHAINSCRIPCION") %>' />-->
+                     <asp:TextBox ID="txtSuscriptionDate" runat="server" Enabled="false" OnPreRender="txtSuscriptionDate_PreRender" Text='<%# Bind("FECHAINSCRIPCION") %>' ></asp:TextBox>
+                     <ajaxToolkit:CalendarExtender ID="txtSuscriptionDate_CalendarExtender" runat="server" TargetControlID="txtSuscriptionDate" Format="yyyy-MM-dd" DefaultView="Years"/>
+                 </td>
+             </tr>
+         </EditItemTemplate>
+         <EmptyDataTemplate>
+             <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
+                 <tr>
+                     <td>Sin datos a mostrar.</td>
+                 </tr>
+             </table>
+         </EmptyDataTemplate>
+         <InsertItemTemplate>
+             <tr style="">
+                 <td>
+                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" OnClick="InsertButton_Click" />
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" />
+                 </td>
+                 <td>&nbsp;</td>
+                 <td>
+                     <asp:TextBox ID="INTCVEUSUARIOTextBox" runat="server" Text='<%# Bind("INTCVEUSUARIO") %>' Visible="false"/>
+                      <asp:DropDownList ID="ddlUsuariosDisponibles" runat="server" DataSourceID="sqlUsuariosDisponibles" DataTextField="usuario_detail" DataValueField="INTCVEUSUARIO">
+                    </asp:DropDownList>
+                    <asp:SqlDataSource ID="sqlUsuariosDisponibles" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+                        SelectCommand="SELECT CONCAT(INTCVEUSUARIO,'-',VCHUSUARIO) usuario_detail,  INTCVEUSUARIO FROM usuario
+                    WHERE INTCVEUSUARIO not in (SELECT INTCVEUSUARIO from jugador) AND UPPER(CHRTIPOUSUARIO) = 'J'"></asp:SqlDataSource>
+     
+                 </td>
+                 <td>
+                     <asp:TextBox ID="VCHNOMBRETextBox" runat="server" Text='<%# Bind("VCHNOMBRE") %>' />
+                 </td>
+                 <td>
+                     <asp:TextBox ID="GENEROTextBox" runat="server" Text='<%# Bind("GENERO") %>' Visible="false" />
+                     <asp:RadioButtonList ID="rblGenero" runat="server" >
+                         <asp:ListItem Value="M" Selected="True">Masculino</asp:ListItem>
+                         <asp:ListItem Value="F">Femenino</asp:ListItem>
+                    </asp:RadioButtonList>
+                 </td>
+                 <td>
+                     <!--<asp:TextBox ID="GRADOTextBox" runat="server" Text= /> 
+                     (entre 1 y 5)<input id="inpGrado" max="5" min="1" name="quantity"  value='<%# Bind("GRADO") %>' runat="server"/>-->
+    
+                    <asp:TextBox ID="txtSlider" runat="server" Width="15pt" Enabled="false"></asp:TextBox>    
+                    <asp:TextBox ID="txtGrade" runat="server" Text='<%# Bind("GRADO") %>' ></asp:TextBox>
+                    <ajaxToolkit:SliderExtender ID="txtGrade_SliderExtender" runat="server" TargetControlID="txtGrade" BoundControlID="txtSlider"  Steps="5" Minimum="1" Maximum="5" />
+                 </td>
+                 <td>
+                     <!--<asp:TextBox ID="FECHANACIMIENTOTextBox" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>' />-->
+                     <asp:TextBox ID="txtBirthdayPicker" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>'></asp:TextBox>
+                    <ajaxToolkit:CalendarExtender ID="txtBirthdayPicker_CalendarExtender" runat="server" TargetControlID="txtBirthdayPicker" Format="yyyy-MM-dd" DefaultView="Years"/>
+   
+                 </td>
+                 <td>
+                     <asp:TextBox ID="txtSuscriptionDate" runat="server" Enabled="false" OnPreRender="txtSuscriptionDate_PreRender" Text='<%# Bind("FECHAINSCRIPCION") %>'></asp:TextBox>
+                     
                  </td>
              </tr>
          </InsertItemTemplate>
          <ItemTemplate>
              <tr style="background-color:#DCDCDC;color: #000000;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" />
+                     <asp:HyperLink ID="lnkJugadorID" runat="server" Text="Ver categorias asignadas" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "INTCVEJUGADOR","CategoriasDelJugador.aspx?idJugador={0}") %>'></asp:HyperLink>
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false"/>
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
-                     <asp:Label ID="INTCVEJUGADORLabel" runat="server" Text='<%# Eval("INTCVEJUGADOR") %>' />
+                     <asp:Label ID="INTCVEJUGADORLabel" runat="server" Text='<%# Eval("nombreJugador") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="INTCVEUSUARIOLabel" runat="server" Text='<%# Eval("INTCVEUSUARIO") %>' />
+                     <asp:Label ID="INTCVEUSUARIOLabel" runat="server" Text='<%# Eval("nombreUsuario") %>' />
                  </td>
                  <td>
                      <asp:Label ID="VCHNOMBRELabel" runat="server" Text='<%# Eval("VCHNOMBRE") %>' />

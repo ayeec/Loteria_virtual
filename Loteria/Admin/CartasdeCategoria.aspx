@@ -66,7 +66,7 @@
          <ItemTemplate>
              <tr style="background-color: #FFFBD6;color: #333333;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="delButton"/>
                  </td>
                  <td>
                      <asp:Label ID="INTIDCATEGORIALabel" runat="server" Text='<%# Eval("INTIDCATEGORIA") %>' />

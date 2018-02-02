@@ -36,4 +36,11 @@ public partial class Admin_Usuarios : System.Web.UI.Page
     {
         //fill_textboxes(lvUsuarios.selec);
     }
+
+
+
+    protected void UpdateButton_Click(object sender, EventArgs e)
+    {
+        fill_textboxes(lvUsuarios.EditItem);
+    }
 }

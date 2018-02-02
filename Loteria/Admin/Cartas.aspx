@@ -71,7 +71,7 @@
                  <td>
                      <asp:TextBox ID="RUTAIMAGENTextBox" runat="server" Text='<%# Bind("RUTAIMAGEN") %>'  Visible="false"/>
                      
-                     <asp:FileUpload ID="filUpImageInsert" runat="server" />
+                     <asp:FileUpload ID="filUpImageInsert" runat="server"/>
                  </td>
                  <td>
                      <asp:TextBox ID="VCHTEXTOTextBox" runat="server" Text='<%# Bind("VCHTEXTO") %>' />
@@ -81,7 +81,7 @@
          <ItemTemplate>
              <tr style="background-color:#DCDCDC;color: #000000;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false"  CssClass="delButton"/>
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
