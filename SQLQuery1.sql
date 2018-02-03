@@ -1,0 +1,3 @@
+﻿SELECT CONCAT(INTCVEUSUARIO,'-',VCHUSUARIO) usuario_detail,  INTCVEUSUARIO FROM usuario
+                    WHERE INTCVEUSUARIO not in 
+					(SELECT INTCVEUSUARIO from jugador ) AND UPPER(CHRTIPOUSUARIO) = 'J'

@@ -143,7 +143,7 @@
          <ItemTemplate>
              <tr style="background-color:#DCDCDC;color: #000000;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false"/>
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="delButton"/>
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>

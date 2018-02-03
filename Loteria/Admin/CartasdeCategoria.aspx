@@ -2,7 +2,19 @@
 
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:SqlDataSource ID="SQLDSCartasDeCategoria" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT * FROM [cartascategoria] WHERE [INTIDCATEGORIA] = CASE WHEN  @INTIDCATEGORIA > 0 THEN @INTIDCATEGORIA  ELSE [INTIDCATEGORIA] END " ConflictDetection="CompareAllValues" DeleteCommand="DELETE FROM [cartascategoria] WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [INTCVECARTA] = @original_INTCVECARTA" InsertCommand="INSERT INTO [cartascategoria] ([INTIDCATEGORIA], [INTCVECARTA]) VALUES (@INTIDCATEGORIA, @INTCVECARTA)" OldValuesParameterFormatString="original_{0}">
+    <asp:SqlDataSource ID="SQLDSCartasDeCategoria" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+        SelectCommand="SELECT CONCAT(cat.INTIDCATEGORIA,'-',cat.VCHNOMBRE) as nombreCategoria, cc.INTIDCATEGORIA,
+	        CONCAT(c.INTCVECARTA,'-',c.VCHNOMBRE) as nombreCarta, cc.INTCVECARTA 
+        FROM [cartascategoria] as cc
+        JOIN cartas as c
+        ON c.INTCVECARTA = cc.INTCVECARTA
+        JOIN categoria as cat
+        ON cat.INTIDCATEGORIA = cc.INTIDCATEGORIA
+        WHERE cc.[INTIDCATEGORIA] = CASE WHEN  @INTIDCATEGORIA > 0 THEN @INTIDCATEGORIA  ELSE cc.[INTIDCATEGORIA] END " 
+        ConflictDetection="CompareAllValues" 
+        DeleteCommand="DELETE FROM [cartascategoria] WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [INTCVECARTA] = @original_INTCVECARTA" 
+        InsertCommand="INSERT INTO [cartascategoria] ([INTIDCATEGORIA], [INTCVECARTA]) VALUES (@INTIDCATEGORIA, @INTCVECARTA)" 
+        OldValuesParameterFormatString="original_{0}">
         <DeleteParameters>
             <asp:Parameter Name="original_INTIDCATEGORIA" Type="Int32" />
             <asp:Parameter Name="original_INTCVECARTA" Type="Int32" />
@@ -69,10 +81,10 @@
                      <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="delButton"/>
                  </td>
                  <td>
-                     <asp:Label ID="INTIDCATEGORIALabel" runat="server" Text='<%# Eval("INTIDCATEGORIA") %>' />
+                     <asp:Label ID="INTIDCATEGORIALabel" runat="server" Text='<%# Eval("nombreCategoria") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="INTCVECARTALabel" runat="server" Text='<%# Eval("INTCVECARTA") %>' />
+                     <asp:Label ID="INTCVECARTALabel" runat="server" Text='<%# Eval("nombreCarta") %>' />
                  </td>
              </tr>
          </ItemTemplate>

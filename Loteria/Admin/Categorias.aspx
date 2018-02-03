@@ -66,7 +66,7 @@
              <tr style="background-color: #FFFBD6;color: #333333;">
                  <td>
                      <asp:HyperLink ID="lnkCategoriaID" runat="server" Text="Asignar cartas" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "INTIDCATEGORIA","CartasdeCategoria.aspx?IDcategoria={0}") %>'></asp:HyperLink>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="delButton"/>
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
