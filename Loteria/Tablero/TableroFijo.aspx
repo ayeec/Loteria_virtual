@@ -5,7 +5,8 @@
         <script src="../Scripts/Audio.js"></script>
         <asp:ImageButton ID="imgBtnRefresh" runat="server" ImageUrl="~/images/fijo/refresh.png" OnClick="imgBtnRefresh_Click" Width="100px"/>
         
-        ¿Cambiar el tablero</h2>
+        <asp:Label ID="lblSortQuestion" runat="server" Text="¿Cambiar el tablero?"></asp:Label>
+    </h2>
     <h1>
         <asp:Label ID="lblGameFinished" runat="server" ForeColor="Red" Text="Fin del juego, gracias por jugar" Visible="False"></asp:Label>
     </h1>
@@ -21,9 +22,9 @@
                 </asp:Table>    
             </td>
             <td style="width: 185px">
-                <asp:Image ID="imgCardAtHand" runat="server" />
+                <asp:Image ID="imgCardAtHand" runat="server" Visible="False" Width="50%" />
                 <h2><asp:Label ID="lblCardAtHand" runat="server" Text="CartaEnMano" ></asp:Label>
-                    <asp:ImageButton ID="imgBtnShowImage" runat="server" ImageUrl="~/images/fijo/flip.png" Width="100%" />
+                    <asp:ImageButton ID="imgBtnShowImage" runat="server" ImageUrl="~/images/fijo/flip.png" Width="100%" OnClick="imgBtnShowImage_Click" />
                 </h2>
                 <br />
                 <asp:ImageButton ID="imgBtnMakeNoise" runat="server" ImageUrl="~/images/fijo/speaker.jpg" Width="100%" OnClientClick="javascript:makeNoise(); return false;" CausesValidation="False" />
