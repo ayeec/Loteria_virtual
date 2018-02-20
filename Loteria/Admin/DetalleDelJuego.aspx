@@ -80,9 +80,10 @@
         SelectCommand="SELECT hr.*, CONCAT(j.INTCVEJUGADOR,'-',j.VCHNOMBRE) as nombreJugador
         FROM [historialresultados] as hr
         JOIN jugador as j
-        ON j.INTCVEJUGADOR = hr.INTCVEJUGADOR">
+        ON j.INTCVEJUGADOR = hr.INTCVEJUGADOR
+WHERE hr.INTIDJUEGO = @idJuego">
         <SelectParameters>
-            <asp:QueryStringParameter DefaultValue="0" Name="INTIDJUEGO" QueryStringField="idJuego" Type="Int32" />
+            <asp:QueryStringParameter DefaultValue="0" Name="idJuego" QueryStringField="idJuego" />
         </SelectParameters>
     </asp:SqlDataSource>
 
@@ -102,7 +103,7 @@ WHERE dj.INTIDJUEGO = @idJuego">
         <EmptyDataTemplate>
             <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
                 <tr>
-                    <td>Sin datos a mostrar</td>
+                    <td>Sin detalle a mostrar</td>
                 </tr>
             </table>
         </EmptyDataTemplate>

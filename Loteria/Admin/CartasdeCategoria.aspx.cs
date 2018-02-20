@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class CartasDeCategoria_Jugadores : System.Web.UI.Page
+public partial class CartasDeCategoria_Jugadores : PageBaseUsuarioAuthentication
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        checkAdminPrivileges();
         if (!IsPostBack)
         {
             string idCategoria = Request.QueryString["IDcategoria"];

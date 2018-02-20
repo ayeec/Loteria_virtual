@@ -5,11 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Admin_Usuarios : System.Web.UI.Page
+public partial class Admin_Usuarios : PageBaseUsuarioAuthentication
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        checkAdminPrivileges();
     }
 
     protected void gvJugadores_RowCommand(object sender, GridViewCommandEventArgs e)

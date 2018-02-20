@@ -5,10 +5,10 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Tablero_Recompensa : System.Web.UI.Page
+public partial class Tablero_Recompensa : PageBaseJugadorAuthentication
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        isJugadorLoggedIn();
     }
 }

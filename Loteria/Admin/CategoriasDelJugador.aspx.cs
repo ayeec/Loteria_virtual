@@ -5,10 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Admin_CategoriasDelJugador : System.Web.UI.Page
+public partial class Admin_CategoriasDelJugador : PageBaseUsuarioAuthentication
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        checkAdminPrivileges();
         if (String.IsNullOrEmpty(Request.QueryString["idJugador"]))
         {
             h1Title.InnerText = "Categorias Asignadas a los Jugadores";

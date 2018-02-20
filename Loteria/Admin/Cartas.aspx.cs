@@ -7,10 +7,11 @@ using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
-public partial class Admin_Cartas : System.Web.UI.Page
+public partial class Admin_Cartas : PageBaseUsuarioAuthentication
 {
     protected void Page_Load(object sender, EventArgs e)
     {
+        checkAdminPrivileges();
         if (!IsPostBack)
         {
             Session["Image"] = null;

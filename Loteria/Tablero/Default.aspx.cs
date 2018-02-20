@@ -14,6 +14,6 @@ public partial class Tablero_Default : System.Web.UI.Page
 
     protected void btnStartGame_Click(object sender, EventArgs e)
     {
-        Response.Redirect(String.Format("TableroFijo.aspx?size={0}&hard={1}",txtSize.Text,chkHard.Checked));
+        Response.Redirect(String.Format("Tablero.aspx?size={0}&hard={1}",txtSize.Text,chkHard.Checked));
     }
 }

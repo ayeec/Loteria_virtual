@@ -5,11 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Admin_Jugadores : System.Web.UI.Page
+public partial class Admin_Jugadores : PageBaseUsuarioAuthentication
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        
+        checkAdminPrivileges();
     }
 
     protected void InsertButton_Click(object sender, EventArgs e)

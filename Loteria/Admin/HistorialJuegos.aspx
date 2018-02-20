@@ -7,13 +7,18 @@
         FROM [historialresultados] as hr
         JOIN jugador as j
         ON j.INTCVEJUGADOR = hr.INTCVEJUGADOR" 
-        ConflictDetection="CompareAllValues" 
-        DeleteCommand="sp_historialresultados_delete" 
+        DeleteCommand="  DELETE 
+      FROM detallejuego
+      WHERE detallejuego.INTIDJUEGO = @INTIDJUEGO
+
+      DELETE 
+      FROM historialresultados
+      WHERE historialresultados.INTIDJUEGO = @INTIDJUEGO "
         InsertCommand="INSERT INTO [historialresultados] ([INTCVEJUGADOR], [DATEFECHA], [INTACIERTOS], [INTERRORES], [INTCALIFICACION], [INTTOTALCARTAS], [BOOLDIFICIL], [INTSONIDO]) VALUES (@INTCVEJUGADOR, @DATEFECHA, @INTACIERTOS, @INTERRORES, @INTCALIFICACION, @INTTOTALCARTAS, @BOOLDIFICIL, @INTSONIDO)" 
-        OldValuesParameterFormatString="original_{0}" 
-        UpdateCommand="UPDATE [historialresultados] SET [INTCVEJUGADOR] = @INTCVEJUGADOR, [DATEFECHA] = @DATEFECHA, [INTACIERTOS] = @INTACIERTOS, [INTERRORES] = @INTERRORES, [INTCALIFICACION] = @INTCALIFICACION, [INTTOTALCARTAS] = @INTTOTALCARTAS, [BOOLDIFICIL] = @BOOLDIFICIL, [INTSONIDO] = @INTSONIDO WHERE [INTIDJUEGO] = @original_INTIDJUEGO AND [INTCVEJUGADOR] = @original_INTCVEJUGADOR AND [DATEFECHA] = @original_DATEFECHA AND [INTACIERTOS] = @original_INTACIERTOS AND [INTERRORES] = @original_INTERRORES AND [INTCALIFICACION] = @original_INTCALIFICACION AND [INTTOTALCARTAS] = @original_INTTOTALCARTAS AND [BOOLDIFICIL] = @original_BOOLDIFICIL AND (([INTSONIDO] = @original_INTSONIDO) OR ([INTSONIDO] IS NULL AND @original_INTSONIDO IS NULL))" DeleteCommandType="StoredProcedure">
+        UpdateCommand="UPDATE [historialresultados] SET [INTCVEJUGADOR] = @INTCVEJUGADOR, [DATEFECHA] = @DATEFECHA, [INTACIERTOS] = @INTACIERTOS, [INTERRORES] = @INTERRORES, [INTCALIFICACION] = @INTCALIFICACION, [INTTOTALCARTAS] = @INTTOTALCARTAS, [BOOLDIFICIL] = @BOOLDIFICIL, [INTSONIDO] = @INTSONIDO WHERE [INTIDJUEGO] = @original_INTIDJUEGO AND [INTCVEJUGADOR] = @original_INTCVEJUGADOR AND [DATEFECHA] = @original_DATEFECHA AND [INTACIERTOS] = @original_INTACIERTOS AND [INTERRORES] = @original_INTERRORES AND [INTCALIFICACION] = @original_INTCALIFICACION AND [INTTOTALCARTAS] = @original_INTTOTALCARTAS AND [BOOLDIFICIL] = @original_BOOLDIFICIL AND (([INTSONIDO] = @original_INTSONIDO) OR ([INTSONIDO] IS NULL AND @original_INTSONIDO IS NULL))" 
+        >
         <DeleteParameters>
-            <asp:Parameter Name="IDJuego" Type="Int32" />
+            <asp:Parameter Name="INTIDJUEGO" Type="Int32" />
         </DeleteParameters>
         <InsertParameters>
             <asp:Parameter Name="INTCVEJUGADOR" Type="Int32" />

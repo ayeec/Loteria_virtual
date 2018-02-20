@@ -9,8 +9,6 @@ public partial class Account_Login : Page
 {
         protected void Page_Load(object sender, EventArgs e)
         {
-            RegisterHyperLink.NavigateUrl = "Register";
-            OpenAuthLogin.ReturnUrl = Request.QueryString["ReturnUrl"];
             var returnUrl = HttpUtility.UrlEncode(Request.QueryString["ReturnUrl"]);
             if (!String.IsNullOrEmpty(returnUrl))
             {
@@ -23,18 +21,22 @@ public partial class Account_Login : Page
             if (IsValid)
             {
                 // Validate the user password
-                var manager = new UserManager();
-                ApplicationUser user = manager.Find(UserName.Text, Password.Text);
-                if (user != null)
+                Usuario_Jugador userInfo = new LoteriaDAO().isValidUser(UserName.Text, Password.Text);
+                if(userInfo != null)
                 {
-                    IdentityHelper.SignIn(manager, user, RememberMe.Checked);
+                    Session["usarioID"] = userInfo.IDusuario;
+                    Session["role"] = userInfo.Role;
+                    Session["usuarioName"] = userInfo.NameUsuario;
+                    Session["jugadorName"] = userInfo.NameJugador;
+                    Session["jugadorID"] = userInfo.IDJugador;
                     IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
                 }
                 else
                 {
-                    FailureText.Text = "Invalid username or password.";
+                    FailureText.Text = "Clave o usuario inválido";
                     ErrorMessage.Visible = true;
                 }
+           
             }
         }
 }
