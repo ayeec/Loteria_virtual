@@ -4,7 +4,7 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" Runat="Server">
     <h1>
-        Bienvenido <%= Session["jugadorID"] %>
+        Bienvenido <%= JugadorName %>
     </h1>
     <p>Introduzca los parametros para empezar:</p>
     <p>
@@ -14,7 +14,7 @@
         <ajaxToolkit:SliderExtender ID="txtSize_SliderExtender" runat="server" BehaviorID="txtSize_SliderExtender" Maximum="5" Minimum="2" TargetControlID="txtSize" BoundControlID="txtSlider" Steps="4"/>
         <asp:CheckBox ID="chkHard" runat="server" Text="¿Jugar modo dificil?" />
         <br/>
-        <asp:Button ID="btnStartGame" runat="server" Text="Iniciar Juego" OnClick="btnStartGame_Click" />
+        <asp:Button ID="btnStartGame" runat="server" CssClass="btn btn-primary btn-lg" Text="Iniciar Juego" OnClick="btnStartGame_Click" />
 
     </p>
 </asp:Content>

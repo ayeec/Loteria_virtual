@@ -78,7 +78,7 @@
                      <asp:TextBox ID="txtSlider" runat="server" Enabled="false" Width="15pt"></asp:TextBox>
                     <asp:TextBox ID="INTIDPESOTextBox" runat="server" Text='<%# Bind("INTIDPESO") %>' />
                     <ajaxToolkit:SliderExtender ID="INTIDPESOTextBox_SliderExtender" runat="server" BehaviorID="INTIDPESOTextBox_SliderExtender" 
-                        Maximum="10" Minimum="1" TargetControlID="INTIDPESOTextBox" BoundControlID="txtSlider" Steps="10" />
+                        Maximum="9" Minimum="1" TargetControlID="INTIDPESOTextBox" BoundControlID="txtSlider" Steps="9" />
                  </td>
                  <td>
                      
@@ -129,7 +129,7 @@
                      <asp:TextBox ID="txtSlider" runat="server" Enabled="false" Width="15pt"></asp:TextBox>
                     <asp:TextBox ID="INTIDPESOTextBox" runat="server" Text='<%# Bind("INTIDPESO") %>' />
                     <ajaxToolkit:SliderExtender ID="INTIDPESOTextBox_SliderExtender" runat="server" BehaviorID="INTIDPESOTextBox_SliderExtender" 
-                        Maximum="10" Minimum="1" TargetControlID="INTIDPESOTextBox" BoundControlID="txtSlider" Steps="10" />
+                        Maximum="9" Minimum="1" TargetControlID="INTIDPESOTextBox" BoundControlID="txtSlider" Steps="9" />
                  </td>
                  <td>
                      <asp:TextBox ID="BOOLACTIVOTextBox" runat="server" Text='<%# Bind("BOOLACTIVO") %>' Visible="false"/>

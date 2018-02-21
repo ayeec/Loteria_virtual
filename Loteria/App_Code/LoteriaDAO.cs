@@ -104,7 +104,7 @@ public class LoteriaDAO : DAO<CartasDTO>
         reader = executeQuery("SELECT u.INTCVEUSUARIO, u.VCHUSUARIO, u.CHRTIPOUSUARIO, j.INTCVEJUGADOR, j.VCHNOMBRE " +
             "FROM usuario u LEFT OUTER JOIN jugador j " +
             "ON u.INTCVEUSUARIO = j.INTCVEUSUARIO " +
-            "WHERE u.VCHUSUARIO = '" + user + "' AND u.VCHPASSWORD = '"+ password+"'");
+            "WHERE UPPER(u.VCHUSUARIO) = '" + user.ToUpper() + "' AND u.VCHPASSWORD = '"+ password+"'");
 
         if (reader.HasRows)
         {

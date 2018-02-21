@@ -67,7 +67,16 @@ public partial class SiteMaster : MasterPage
 
     protected void Page_Load(object sender, EventArgs e)
     {
-
+        if (Session["role"] == null )
+        {
+            lnkLogin.Visible = true;
+            lnkCerrarSesion.Visible = false;
+        }
+        else
+        {
+            lnkLogin.Visible = false;
+            lnkCerrarSesion.Visible = true;
+        }
     }
 
     protected void Unnamed_LoggingOut(object sender, LoginCancelEventArgs e)

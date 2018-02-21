@@ -52,28 +52,31 @@
                 </div>
                 <div class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a runat="server" href="~/">Inicio</a></li>
+                        <% if ( Session["role"] != null && Session["role"].ToString().Equals("A")) { %>
+                            <li><a runat="server" href="~/Admin/Usuarios.aspx">Usuarios</a></li>
+                            <li><a runat="server" href="~/Admin/Usuarios.aspx">Jugadores</a></li>
 
-                        <!--<li><a runat="server" href="~/">Agregar Jugador</a></li>
-                        <li><a runat="server" href="~/">Ver Jugadores</a></li>
+                            <li><a runat="server" href="~/Admin/Cartas.aspx">Cartas</a></li>
+                            <li><a runat="server" href="~/Admin/Categorias.aspx">Categorias</a></li>
+                            <li><a runat="server" href="~/Admin/CartasDeCategoria.aspx">Cartas+Categorias</a></li>
+                            <li><a runat="server" href="~/Admin/CategoriasDelJugador.aspx">Jugador+Categorias</a></li>
 
-                        <li><a runat="server" href="~/">Asignar Categorias a Jugador</a></li>
-                        <li><a runat="server" href="~/">Agregar Categoria</a></li>
-                        <li><a runat="server" href="~/">Ver Categorias</a></li>
-
-                        <li><a runat="server" href="~/">Agregar Carta</a></li>
-                        <li><a runat="server" href="~/">Ver Todas las Cartas</a></li>
-
-                        <li><a runat="server" href="~/">Ver Historial de Juegos</a></li>-->
+                            <li><a runat="server" href="~/Admin/Cartas.aspx">Historial juegos</a></li>
                         
-                        <li><a runat="server" href="~/About">Acerca de</a></li>
-                        <li><a runat="server" href="~/Contact">Contacto</a></li>
+
+                        <% } %>
+
+                        <% if ( Session["role"] != null && Session["role"].ToString().Equals("J")) { %>
+                            <li><a runat="server" href="~/Tablero/Default.aspx">Iniciar juego</a></li>    
+                        <% } %>
                     </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                                <li><asp:HyperLink ID="lnkLogin" runat="server" NavigateUrl="~/Account/Login">Iniciar Sesión</asp:HyperLink></li>
+                                <li><asp:HyperLink ID="lnkCerrarSesion" runat="server" NavigateUrl="~/Account/Logout">Cerrar Sesión</asp:HyperLink></li>
+                            </ul>
                     <asp:LoginView runat="server" ViewStateMode="Disabled">
                         <AnonymousTemplate>
-                            <ul class="nav navbar-nav navbar-right">
-                                <!--<li><a runat="server" id="lnkLogin" href="~/Account/Login">Iniciar Sesión</a></li>-->
-                            </ul>
+                            
                         </AnonymousTemplate>
                         <LoggedInTemplate>
                             <ul class="nav navbar-nav navbar-right">

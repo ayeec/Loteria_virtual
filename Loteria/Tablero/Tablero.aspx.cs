@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Tablero_TableroFijo : PageBaseJugadorAuthentication
+public partial class Tablero : PageBaseJugadorAuthentication
 {
     ArrayList arrCardsAvailable = new ArrayList();
     int sizeTablero=2;
@@ -16,8 +16,9 @@ public partial class Tablero_TableroFijo : PageBaseJugadorAuthentication
     CartasDTO cardAtHand;
     //used by the Tablero to know what cards not use
     List<int> usedCards = new List<int>();
-    //CartaId, Carta Object
+    //CartaId, Carta Object. To be stored into the database as game detail
     List<CartasDTO> cardStatics = new List<CartasDTO>();
+    //holds the cards that are used in the tablero
     ArrayList arrCardsTablero = new ArrayList();
     //Dictionary<int, CartasDTO> cardStatics = new Dictionary<int, CartasDTO>();
     Random ran = new Random();
@@ -130,6 +131,7 @@ public partial class Tablero_TableroFijo : PageBaseJugadorAuthentication
             ViewState["ctrTotalIncorrect"] = ctrTotalIncorrect;
         }
         usedCards.Add(Int32.Parse(ib.ID));
+        ViewState["usedCards"] = usedCards;
         ctrTotalCardsPlayer++;
         ViewState["ctrTotalCardsPlayer"] = ctrTotalCardsPlayer;
 
@@ -157,9 +159,9 @@ public partial class Tablero_TableroFijo : PageBaseJugadorAuthentication
             randomNum = ran.Next(sizeTablero * sizeTablero);
             //            if (usedCards.IndexOf(randomNum) == -1)
             int returnVal = usedCards.IndexOf((arrCardsTablero[randomNum] as CartasDTO).ID);
-            if (returnVal == -1 || !isGameFinished)//card not existing or isGameFinished is false
+            if (returnVal == -1 && !isGameFinished)//card not existing or isGameFinished is false
             {
-                //int randomNum = ran.Next(((int)ViewState["ctrCardsRemaining"]) - 1);
+                //set a new random card                
                 cardAtHand = (arrCardsTablero[randomNum] as CartasDTO);
                 if (isHard)
                 {
@@ -194,13 +196,13 @@ public partial class Tablero_TableroFijo : PageBaseJugadorAuthentication
 
                     int gameID = loteria.insertGameInfo(JugadorID,
                         DateTime.Now, ctrTotalCorrect, ctrTotalIncorrect,
-                        ((double)ctrTotalCorrect) / ctrTotalCardsPlayer * 10, //grade
+                        ((double)ctrTotalCorrect) / ((double)ctrTotalCardsPlayer) * 10.0, //grade
                         ctrTotalCardsPlayer, isHard, ctrSoundTotal);
                     if(gameID >= 1)
                     {
                         foreach(CartasDTO carta in cardStatics)
                         {
-                            loteria.insertGameDetails(gameID, 1, true, false, true);
+                            loteria.insertGameDetails(gameID, carta.ID, true, false, true);
                         }
 
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup",
@@ -278,7 +280,7 @@ public partial class Tablero_TableroFijo : PageBaseJugadorAuthentication
         int ctrWhile = 0;
         do
         {
-            index = ran.Next(9);
+            index = ran.Next(arrCardsAvailable.ToArray().Length-1);
 
             if ((arrCardsAvailable[index] as CartasDTO).Weight
                 >= ran.Next(sizeTablero * sizeTablero))//Check weight and random position number

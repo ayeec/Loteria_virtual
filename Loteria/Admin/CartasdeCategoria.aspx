@@ -11,7 +11,6 @@
         JOIN categoria as cat
         ON cat.INTIDCATEGORIA = cc.INTIDCATEGORIA
         WHERE cc.[INTIDCATEGORIA] = CASE WHEN  @INTIDCATEGORIA > 0 THEN @INTIDCATEGORIA  ELSE cc.[INTIDCATEGORIA] END " 
-        ConflictDetection="CompareAllValues" 
         DeleteCommand="DELETE FROM [cartascategoria] WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [INTCVECARTA] = @original_INTCVECARTA" 
         InsertCommand="INSERT INTO [cartascategoria] ([INTIDCATEGORIA], [INTCVECARTA]) VALUES (@INTIDCATEGORIA, @INTCVECARTA)" 
         OldValuesParameterFormatString="original_{0}">
@@ -95,8 +94,8 @@
                          <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
                              <tr runat="server" style="background-color: #FFFBD6;color: #333333;">
                                  <th runat="server"></th>
-                                 <th runat="server">INTIDCATEGORIA</th>
-                                 <th runat="server">INTCVECARTA</th>
+                                 <th runat="server">Categoria</th>
+                                 <th runat="server">Carta</th>
                              </tr>
                              <tr id="itemPlaceholder" runat="server">
                              </tr>

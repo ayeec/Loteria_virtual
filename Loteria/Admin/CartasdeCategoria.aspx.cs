@@ -59,7 +59,7 @@ public partial class CartasDeCategoria_Jugadores : PageBaseUsuarioAuthentication
 
 
         }
-        (sender as DropDownList).Items.Insert(0, new ListItem("Seleccione una Carta", "0"));
+        (sender as DropDownList).Items.Insert(0, new ListItem("Seleccione una Categoria", "0"));
     }
 
     protected void ddlCartasByIDcategoria_DataBound(object sender, EventArgs e)
