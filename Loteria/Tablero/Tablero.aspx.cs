@@ -62,6 +62,15 @@ public partial class Tablero : PageBaseJugadorAuthentication
             /*Load cards data*/
             arrCardsAvailable = loteria.getCartasByJugador( JugadorID );
 
+            if(arrCardsAvailable.ToArray().Length <(sizeTablero * sizeTablero))
+            {
+                ScriptManager.RegisterStartupScript(Page, Page.GetType(), "showalert",
+                            "alert('El Jugador no cuenta con las suficientes cartas para jugar, " +
+                            "intente con un tablero mas pequeño'); window.close();", true);
+
+                return;
+            }
+
             /*Set the available cards to be used in the board*/
             setCardsTablero();
 
@@ -280,7 +289,7 @@ public partial class Tablero : PageBaseJugadorAuthentication
         int ctrWhile = 0;
         do
         {
-            index = ran.Next(arrCardsAvailable.ToArray().Length-1);
+            index = ran.Next(arrCardsAvailable.ToArray().Length);
 
             if ((arrCardsAvailable[index] as CartasDTO).Weight
                 >= ran.Next(sizeTablero * sizeTablero))//Check weight and random position number

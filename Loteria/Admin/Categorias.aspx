@@ -2,7 +2,11 @@
 
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:SqlDataSource ID="SQLDSCategorias" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT * FROM [categoria]" ConflictDetection="CompareAllValues" DeleteCommand="DELETE FROM [categoria] WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([VCHDESCRIPCION] = @original_VCHDESCRIPCION) OR ([VCHDESCRIPCION] IS NULL AND @original_VCHDESCRIPCION IS NULL))" InsertCommand="INSERT INTO [categoria] ([VCHNOMBRE], [VCHDESCRIPCION]) VALUES (@VCHNOMBRE, @VCHDESCRIPCION)" OldValuesParameterFormatString="original_{0}" UpdateCommand="UPDATE [categoria] SET [VCHNOMBRE] = @VCHNOMBRE, [VCHDESCRIPCION] = @VCHDESCRIPCION WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([VCHDESCRIPCION] = @original_VCHDESCRIPCION) OR ([VCHDESCRIPCION] IS NULL AND @original_VCHDESCRIPCION IS NULL))">
+    <asp:SqlDataSource ID="SQLDSCategorias" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+        SelectCommand="SELECT * FROM [categoria]" 
+        DeleteCommand="DELETE FROM [categoria] WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([VCHDESCRIPCION] = @original_VCHDESCRIPCION) OR ([VCHDESCRIPCION] IS NULL AND @original_VCHDESCRIPCION IS NULL))" 
+        InsertCommand="INSERT INTO [categoria] ([VCHNOMBRE], [VCHDESCRIPCION]) VALUES (@VCHNOMBRE, @VCHDESCRIPCION)"
+        UpdateCommand="UPDATE [categoria] SET [VCHNOMBRE] = @VCHNOMBRE, [VCHDESCRIPCION] = @VCHDESCRIPCION WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([VCHDESCRIPCION] = @original_VCHDESCRIPCION) OR ([VCHDESCRIPCION] IS NULL AND @original_VCHDESCRIPCION IS NULL))">
         <DeleteParameters>
             <asp:Parameter Name="original_INTIDCATEGORIA" Type="Int32" />
             <asp:Parameter Name="original_VCHNOMBRE" Type="String" />

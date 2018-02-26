@@ -54,7 +54,7 @@
                     <ul class="nav navbar-nav">
                         <% if ( Session["role"] != null && Session["role"].ToString().Equals("A")) { %>
                             <li><a runat="server" href="~/Admin/Usuarios.aspx">Usuarios</a></li>
-                            <li><a runat="server" href="~/Admin/Usuarios.aspx">Jugadores</a></li>
+                            <li><a runat="server" href="~/Admin/Jugadores.aspx">Jugadores</a></li>
 
                             <li><a runat="server" href="~/Admin/Cartas.aspx">Cartas</a></li>
                             <li><a runat="server" href="~/Admin/Categorias.aspx">Categorias</a></li>
