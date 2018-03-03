@@ -6,7 +6,7 @@
         SelectCommand="SELECT * FROM [categoria]" 
         DeleteCommand="DELETE FROM [categoria] WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([VCHDESCRIPCION] = @original_VCHDESCRIPCION) OR ([VCHDESCRIPCION] IS NULL AND @original_VCHDESCRIPCION IS NULL))" 
         InsertCommand="INSERT INTO [categoria] ([VCHNOMBRE], [VCHDESCRIPCION]) VALUES (@VCHNOMBRE, @VCHDESCRIPCION)"
-        UpdateCommand="UPDATE [categoria] SET [VCHNOMBRE] = @VCHNOMBRE, [VCHDESCRIPCION] = @VCHDESCRIPCION WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([VCHDESCRIPCION] = @original_VCHDESCRIPCION) OR ([VCHDESCRIPCION] IS NULL AND @original_VCHDESCRIPCION IS NULL))">
+        UpdateCommand="UPDATE [categoria] SET [VCHNOMBRE] = @VCHNOMBRE, [VCHDESCRIPCION] = @VCHDESCRIPCION WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([VCHDESCRIPCION] = @original_VCHDESCRIPCION) OR ([VCHDESCRIPCION] IS NULL AND @original_VCHDESCRIPCION IS NULL))" OnDeleted="SQLDSCategorias_Deleted">
         <DeleteParameters>
             <asp:Parameter Name="original_INTIDCATEGORIA" Type="Int32" />
             <asp:Parameter Name="original_VCHNOMBRE" Type="String" />
@@ -62,7 +62,7 @@
                      <asp:TextBox ID="VCHNOMBRETextBox" runat="server" Text='<%# Bind("VCHNOMBRE") %>' MaxLength="45" />
                  </td>
                  <td>
-                     <asp:TextBox ID="VCHDESCRIPCIONTextBox" runat="server" Text='<%# Bind("VCHDESCRIPCION") %>' />
+                     <asp:TextBox ID="VCHDESCRIPCIONTextBox" runat="server" Text='<%# Bind("VCHDESCRIPCION") %>'  MaxLength="45" />
                  </td>
              </tr>
          </InsertItemTemplate>

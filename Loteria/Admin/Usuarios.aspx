@@ -2,7 +2,7 @@
 
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:SqlDataSource ID="SQLDSUsuarios" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT * FROM [usuario]" ConflictDetection="CompareAllValues" DeleteCommand="DELETE FROM [usuario] WHERE [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHUSUARIO] = @original_VCHUSUARIO AND [VCHPASSWORD] = @original_VCHPASSWORD AND [CHRTIPOUSUARIO] = @original_CHRTIPOUSUARIO" InsertCommand="INSERT INTO [usuario] ([VCHUSUARIO], [VCHPASSWORD], [CHRTIPOUSUARIO]) VALUES (@VCHUSUARIO, @VCHPASSWORD, @CHRTIPOUSUARIO)" OldValuesParameterFormatString="original_{0}" UpdateCommand="UPDATE [usuario] SET [VCHUSUARIO] = @VCHUSUARIO, [VCHPASSWORD] = @VCHPASSWORD, [CHRTIPOUSUARIO] = @CHRTIPOUSUARIO WHERE [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHUSUARIO] = @original_VCHUSUARIO AND [VCHPASSWORD] = @original_VCHPASSWORD AND [CHRTIPOUSUARIO] = @original_CHRTIPOUSUARIO">
+    <asp:SqlDataSource ID="SQLDSUsuarios" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT * FROM [usuario]" ConflictDetection="CompareAllValues" DeleteCommand="DELETE FROM [usuario] WHERE [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHUSUARIO] = @original_VCHUSUARIO AND [VCHPASSWORD] = @original_VCHPASSWORD AND [CHRTIPOUSUARIO] = @original_CHRTIPOUSUARIO" InsertCommand="INSERT INTO [usuario] ([VCHUSUARIO], [VCHPASSWORD], [CHRTIPOUSUARIO]) VALUES (@VCHUSUARIO, @VCHPASSWORD, @CHRTIPOUSUARIO)" OldValuesParameterFormatString="original_{0}" UpdateCommand="UPDATE [usuario] SET [VCHUSUARIO] = @VCHUSUARIO, [VCHPASSWORD] = @VCHPASSWORD, [CHRTIPOUSUARIO] = @CHRTIPOUSUARIO WHERE [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHUSUARIO] = @original_VCHUSUARIO AND [VCHPASSWORD] = @original_VCHPASSWORD AND [CHRTIPOUSUARIO] = @original_CHRTIPOUSUARIO" OnDeleted="SQLDSUsuarios_Deleted">
         <DeleteParameters>
             <asp:Parameter Name="original_INTCVEUSUARIO" Type="Int32" />
             <asp:Parameter Name="original_VCHUSUARIO" Type="String" />
@@ -38,10 +38,10 @@
                      <asp:Label ID="INTCVEUSUARIOLabel1" runat="server" Text='<%# Eval("INTCVEUSUARIO") %>' />
                  </td>
                  <td>
-                     <asp:TextBox ID="VCHUSUARIOTextBox" runat="server" Text='<%# Bind("VCHUSUARIO") %>' />
+                     <asp:TextBox ID="VCHUSUARIOTextBox" runat="server" Text='<%# Bind("VCHUSUARIO") %>'  MaxLength="45"/>
                  </td>
                  <td>
-                     <asp:TextBox ID="VCHPASSWORDTextBox" runat="server" Text='<%# Bind("VCHPASSWORD") %>' />
+                     <asp:TextBox ID="VCHPASSWORDTextBox" runat="server" Text='<%# Bind("VCHPASSWORD") %>'  MaxLength="45"/>
                  </td>
                  <td>
                         <asp:DropDownList ID="ddlUserType" runat="server">

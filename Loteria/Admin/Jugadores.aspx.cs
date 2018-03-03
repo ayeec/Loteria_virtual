@@ -38,4 +38,15 @@ public partial class Admin_Jugadores : PageBaseUsuarioAuthentication
     {
         fill_textboxes(lvJugadores.EditItem);
     }
+
+    protected void SQLDSJugadores_Deleted(object sender, SqlDataSourceStatusEventArgs e)
+    {
+        if (e.Exception != null || e.AffectedRows <= 0)
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertCat",
+                            "alert('El jugador tiene juegos y/o categorias asignadas.\\n" +
+                            "Es recomendable que sea desactivado manualmente su cuenta de usuario\\n');", true);
+            e.ExceptionHandled = true;
+        }
+    }
 }

@@ -70,4 +70,15 @@ public partial class Admin_Cartas : PageBaseUsuarioAuthentication
             ((TextBox)lvCartas.EditItem.FindControl("RUTAIMAGENTextBox")).Text = Path.GetFileName(postedFile.FileName);
         }
     }
+
+    protected void SQLDSCartas_Deleted(object sender, SqlDataSourceStatusEventArgs e)
+    {
+        if (e.Exception!=null || e.AffectedRows <= 0)
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "showalert",
+                            "alert('La carta esta asignada a una o más categorias.\\n" +
+                            "Intente removerla de una categoria,\\nluego intente borrar la carta');", true);
+            e.ExceptionHandled = true;
+        }
+    }
 }

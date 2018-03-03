@@ -12,7 +12,7 @@
         ON u.INTCVEUSUARIO = j.INTCVEUSUARIO" 
         DeleteCommand="DELETE FROM [jugador] WHERE [INTCVEJUGADOR] = @original_INTCVEJUGADOR AND [INTCVEUSUARIO] = @original_INTCVEUSUARIO" 
         InsertCommand="INSERT INTO [jugador] ([INTCVEUSUARIO], [VCHNOMBRE], [GENERO], [GRADO], [FECHANACIMIENTO], [FECHAINSCRIPCION]) VALUES (@INTCVEUSUARIO, @VCHNOMBRE, @GENERO, @GRADO, @FECHANACIMIENTO, @FECHAINSCRIPCION)"     
-        UpdateCommand="UPDATE [jugador] SET [INTCVEUSUARIO] = @INTCVEUSUARIO, [VCHNOMBRE] = @VCHNOMBRE, [GENERO] = @GENERO, [GRADO] = @GRADO, [FECHANACIMIENTO] = @FECHANACIMIENTO, [FECHAINSCRIPCION] = @FECHAINSCRIPCION WHERE [INTCVEJUGADOR] = @original_INTCVEJUGADOR AND [INTCVEUSUARIO] = @original_INTCVEUSUARIO ">
+        UpdateCommand="UPDATE [jugador] SET [INTCVEUSUARIO] = @INTCVEUSUARIO, [VCHNOMBRE] = @VCHNOMBRE, [GENERO] = @GENERO, [GRADO] = @GRADO, [FECHANACIMIENTO] = @FECHANACIMIENTO, [FECHAINSCRIPCION] = @FECHAINSCRIPCION WHERE [INTCVEJUGADOR] = @original_INTCVEJUGADOR AND [INTCVEUSUARIO] = @original_INTCVEUSUARIO " OnDeleted="SQLDSJugadores_Deleted">
         <DeleteParameters>
             <asp:Parameter Name="original_INTCVEJUGADOR" Type="Int32" />
             <asp:Parameter Name="original_INTCVEUSUARIO" Type="Int32" />
@@ -95,7 +95,7 @@
      
                  </td>
                  <td>
-                     <asp:TextBox ID="VCHNOMBRETextBox" runat="server" Text='<%# Bind("VCHNOMBRE") %>' />
+                     <asp:TextBox ID="VCHNOMBRETextBox" runat="server" Text='<%# Bind("VCHNOMBRE") %>'  MaxLength="45"/>
                  </td>
                  <td>
                      <asp:TextBox ID="GENEROTextBox" runat="server" Text='<%# Bind("GENERO") %>' Visible="false" />
@@ -148,7 +148,7 @@
      
                  </td>
                  <td>
-                     <asp:TextBox ID="VCHNOMBRETextBox" runat="server" Text='<%# Bind("VCHNOMBRE") %>' />
+                     <asp:TextBox ID="VCHNOMBRETextBox" runat="server" Text='<%# Bind("VCHNOMBRE") %>'  MaxLength="45"/>
                  </td>
                  <td>
                      <asp:TextBox ID="GENEROTextBox" runat="server" Text='<%# Bind("GENERO") %>' Visible="false" />

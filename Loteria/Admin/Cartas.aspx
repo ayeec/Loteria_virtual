@@ -6,7 +6,7 @@
         SelectCommand="SELECT * FROM [cartas]" 
         DeleteCommand="DELETE FROM [cartas] WHERE [INTCVECARTA] = @original_INTCVECARTA " 
         InsertCommand="INSERT INTO [cartas] ([VCHNOMBRE], [RUTAIMAGEN], [VCHTEXTO]) VALUES (@VCHNOMBRE, @RUTAIMAGEN, @VCHTEXTO)" OldValuesParameterFormatString="original_{0}" 
-        UpdateCommand="UPDATE [cartas] SET [VCHNOMBRE] = @VCHNOMBRE, [RUTAIMAGEN] = @RUTAIMAGEN, [VCHTEXTO] = @VCHTEXTO WHERE [INTCVECARTA] = @original_INTCVECARTA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([RUTAIMAGEN] = @original_RUTAIMAGEN) OR ([RUTAIMAGEN] IS NULL AND @original_RUTAIMAGEN IS NULL)) AND (([VCHTEXTO] = @original_VCHTEXTO) OR ([VCHTEXTO] IS NULL AND @original_VCHTEXTO IS NULL))">
+        UpdateCommand="UPDATE [cartas] SET [VCHNOMBRE] = @VCHNOMBRE, [RUTAIMAGEN] = @RUTAIMAGEN, [VCHTEXTO] = @VCHTEXTO WHERE [INTCVECARTA] = @original_INTCVECARTA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([RUTAIMAGEN] = @original_RUTAIMAGEN) OR ([RUTAIMAGEN] IS NULL AND @original_RUTAIMAGEN IS NULL)) AND (([VCHTEXTO] = @original_VCHTEXTO) OR ([VCHTEXTO] IS NULL AND @original_VCHTEXTO IS NULL))" OnDeleted="SQLDSCartas_Deleted">
         <DeleteParameters>
             <asp:Parameter Name="original_INTCVECARTA" Type="Int32" />
             <asp:Parameter Name="original_VCHNOMBRE" Type="String" />

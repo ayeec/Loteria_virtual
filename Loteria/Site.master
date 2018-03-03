@@ -61,7 +61,7 @@
                             <li><a runat="server" href="~/Admin/CartasDeCategoria.aspx">Cartas+Categorias</a></li>
                             <li><a runat="server" href="~/Admin/CategoriasDelJugador.aspx">Jugador+Categorias</a></li>
 
-                            <li><a runat="server" href="~/Admin/Cartas.aspx">Historial juegos</a></li>
+                            <li><a runat="server" href="~/Admin/HistorialJuegos.aspx">Historial juegos</a></li>
                         
 
                         <% } %>

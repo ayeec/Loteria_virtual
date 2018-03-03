@@ -18,4 +18,16 @@ public partial class Admin_Categorias : PageBaseUsuarioAuthentication
         int ii = Int32.Parse(lvCategorias.SelectedValue.ToString());
         Response.Redirect("CartasDeCategoria.aspx?IDcategoria=" );
     }
+
+    protected void SQLDSCategorias_Deleted(object sender, SqlDataSourceStatusEventArgs e)
+    {
+        if (e.Exception != null || e.AffectedRows <=0)
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertCat",
+                            "alert('La categoria tiene una o más cartas asignadas.\\n" +
+                            "Por la seguridad de los dats, desvincule las cartas a esta categoria\\n" +
+                            "y luego borre la categoria');", true);
+            e.ExceptionHandled = true;
+        }
+    }
 }

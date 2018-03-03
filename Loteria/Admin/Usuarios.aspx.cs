@@ -43,4 +43,15 @@ public partial class Admin_Usuarios : PageBaseUsuarioAuthentication
     {
         fill_textboxes(lvUsuarios.EditItem);
     }
+
+    protected void SQLDSUsuarios_Deleted(object sender, SqlDataSourceStatusEventArgs e)
+    {
+        if (e.Exception != null || e.AffectedRows <= 0)
+        {
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "alertCat",
+                            "alert('El usuario tiene relacionado un jugador.\\n" +
+                            "Es recomendable que sea desactivado manualmente\\n');", true);
+            e.ExceptionHandled = true;
+        }
+    }
 }
