@@ -58,7 +58,7 @@
                      <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" />
                  </td>
                  <td>
-                      <asp:DropDownList ID="ddlIDcategorias" runat="server"  DataSourceID="dsIDCategoria" DataTextField="detail" DataValueField="INTIDCATEGORIA" OnDataBound="ddlIDcategorias_DataBound" >
+                      <asp:DropDownList ID="ddlIDcategorias" runat="server"  DataSourceID="dsIDCategoria" DataTextField="detail" DataValueField="INTIDCATEGORIA" OnDataBound="ddlIDcategorias_DataBound" OnSelectedIndexChanged="ddlIDcategorias_SelectedIndexChanged" AutoPostBack="true">
                           <asp:ListItem Value="0">Seleccione una Categoria</asp:ListItem>
     </asp:DropDownList>
                      <asp:TextBox ID="INTIDCATEGORIATextBox" runat="server" Text='<%# Bind("INTIDCATEGORIA") %>' Visible="false" />
@@ -130,6 +130,8 @@
          </SelectedItemTemplate>
     </asp:ListView>
     
+    <asp:HiddenField ID="hidIDCategoriaSelected" runat="server" Value="0" />
+    
     <br />
    
     <asp:SqlDataSource ID="dsIDCategoria" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT CONCAT ([INTIDCATEGORIA],' - ', VCHNOMBRE) AS detail, INTIDCATEGORIA FROM [categoria]">
@@ -137,7 +139,7 @@
     
     <asp:SqlDataSource ID="dsCartas" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT * FROM cartas where intcvecarta NOT IN (select intcvecarta FROM cartascategoria WHERE [INTIDCATEGORIA] = CASE WHEN  @INTIDCATEGORIA > 0 THEN @INTIDCATEGORIA  ELSE [INTIDCATEGORIA] END )">
         <SelectParameters>
-            <asp:QueryStringParameter DefaultValue="0" Name="INTIDCATEGORIA" QueryStringField="IDcategoria" />
+            <asp:ControlParameter ControlID="hidIDCategoriaSelected" DefaultValue="0" Name="INTIDCATEGORIA" PropertyName="Value" />
         </SelectParameters>
     </asp:SqlDataSource>
     <br />

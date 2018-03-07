@@ -71,11 +71,13 @@ public partial class Admin_CategoriasDelJugador : PageBaseUsuarioAuthentication
     {
 
         //HiddenField hidIDJugador = (lvi.FindControl("hidIDJugador") as HiddenField);
-        hidIDJugador.Value = (lvi.FindControl("ddlCategorias") as DropDownList).SelectedValue;
+        hidIDJugador.Value = (lvi.FindControl("ddlJugadores") as DropDownList).SelectedValue;
         SQLDSCategorias.DataBind();
-        
+        ddlCategorias.DataBind();
         (lvi.FindControl("ddlCategorias") as DropDownList).Items.Clear();
         (lvi.FindControl("ddlCategorias") as DropDownList).Items.AddRange(ddlCategorias.Items.OfType<ListItem>().ToArray());
+
+
         //(lvi.FindControl("ddlCategorias") as DropDownList).Items.Add( );
     }
 }

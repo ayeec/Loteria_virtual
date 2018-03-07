@@ -8,7 +8,7 @@
     <h1 id="h1Title" runat="server">h1Title</h1>
 
      <asp:TextBox ID="INTIDCATEGORIATextBox" runat="server" Text='<%# Bind("INTIDCATEGORIA") %>' Visible="false"/>
-                     <asp:DropDownList ID="ddlCategorias" runat="server" DataSourceID="SQLDSCategorias" DataTextField="nameCategoria" DataValueField="INTIDCATEGORIA">
+                     <asp:DropDownList ID="ddlCategorias" runat="server" DataSourceID="SQLDSCategorias" DataTextField="nameCategoria" DataValueField="INTIDCATEGORIA" Visible="false">
                     </asp:DropDownList>
                     <asp:SqlDataSource ID="SQLDSCategorias" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
                         SelectCommand="SELECT CONCAT([INTIDCATEGORIA], '-', [VCHNOMBRE]) as nameCategoria, [INTIDCATEGORIA] FROM [categoria] 
@@ -17,7 +17,7 @@
                             <asp:ControlParameter ControlID="hidIDJugador" DefaultValue="0" Name="INTCVEJUGADOR" PropertyName="Value"/>
                         </SelectParameters>
                     </asp:SqlDataSource>
-                      <asp:HiddenField ID="hidIDJugador" runat="server" />
+                      <asp:HiddenField ID="hidIDJugador" runat="server" ViewStateMode="Enabled"/>
     
 
     

@@ -50,6 +50,9 @@
             <asp:Parameter Name="original_INTSONIDO" Type="Int32" />
         </UpdateParameters>
     </asp:SqlDataSource>
+     <h1>
+         <asp:Label ID="lblTitle" runat="server" Text="Historial de Juegos"></asp:Label>
+    </h1>
      <br />
     <asp:ListView ID="lvHIstorialJuegos" runat="server" DataKeyNames="INTIDJUEGO" DataSourceID="SQLDSHistorial">
         <EditItemTemplate>
