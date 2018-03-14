@@ -28,11 +28,14 @@
             z-index: 1; 
             left: 50px; 
             top: 20px; 
-            width:100px; 
+            width:300px; 
             height:20px;
         }
         .auto-style3 {
             color: #FFFFFF;
+        }
+        .image {
+            max-width:100%;
         }
     </style>
     
@@ -54,8 +57,8 @@
             <h3>
                 <span class="auto-style3">Calificación <%= String.Format("{0:0.0}", Double.Parse(Request.QueryString["correct"])/Double.Parse(Request.QueryString["total"])*10) %></span>
             </h3>
+            <asp:Image ID="imgReward" CssClass="image" runat="server" />
         </div>
-    </form>
     <script language="JavaScript">
         /*Confetti code from https://codepen.io/usrfrndly/pen/xtyEc adapted to this application*/
         var cnv = document.getElementById("cnv");
@@ -138,5 +141,6 @@
 
 main();
 </script>
-</body>
+    </form>
+    </body>
 </html>
