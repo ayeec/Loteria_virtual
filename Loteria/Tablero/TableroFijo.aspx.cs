@@ -192,9 +192,7 @@ public partial class Tablero_TableroFijo : System.Web.UI.Page
                     imgBtnShowImage.Enabled = false;
                     imgBtnMakeNoise.Enabled = false;
                     lblGameFinished.Visible = true;
-                    //todo: store ctrSound into database
-                    //todo: save into database
-                    //todo: change url to Virtual Reward with parameters
+                   
                     ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup",
                         "window.open('" + "Recompensa.aspx?total="+(sizeTablero*sizeTablero)+"&correct="+ ctrTotalCorrect + "','_blank', " +
                         "'width=250,height=350,toolbar=no,location = no,status = no," +

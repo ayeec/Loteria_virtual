@@ -14,12 +14,18 @@ public partial class Tablero : PageBaseJugadorAuthentication
     int ctrCardsRemaining;
     readonly int ctrRefresh = 2;
     CartasDTO cardAtHand;
+    int fraseAtHandID;
     //used by the Tablero to know what cards not use
     List<int> usedCards = new List<int>();
+    //Frase used, runs paralel to usedCards List
+    Dictionary<string, int> usedFrases = new Dictionary<string, int>();
+
     //CartaId, Carta Object. To be stored into the database as game detail
     List<CartasDTO> cardStatics = new List<CartasDTO>();
     //holds the cards that are used in the tablero
     ArrayList arrCardsTablero = new ArrayList();
+    Dictionary<string, int> arrFrasesTablero = new Dictionary<string, int>();//todo add to viewstate
+
     //Dictionary<int, CartasDTO> cardStatics = new Dictionary<int, CartasDTO>();
     Random ran = new Random();
 
@@ -70,6 +76,13 @@ public partial class Tablero : PageBaseJugadorAuthentication
 
                 return;
             }
+            else
+            {
+                foreach (var card in arrCardsAvailable)
+                {
+                    (card as CartasDTO).Frases = loteria.getFrasesPerCard((card as CartasDTO).ID);
+                }
+            }
 
             /*Set the available cards to be used in the board*/
             setCardsTablero();
@@ -80,6 +93,8 @@ public partial class Tablero : PageBaseJugadorAuthentication
             ViewState["arrTablero"] = arrCardsAvailable;
 
             ViewState["usedCards"] = usedCards;
+            ViewState["usedFrases"] = usedFrases;
+
             ViewState["cardStatics"] = cardStatics;
             ViewState["ctrSoundTotal"] = ctrSoundTotal;
             ViewState["arrCardsTablero"] = arrCardsTablero;
@@ -92,7 +107,13 @@ public partial class Tablero : PageBaseJugadorAuthentication
         {
             arrCardsAvailable = ViewState["arrTablero"] as ArrayList;
             cardAtHand = ViewState["cardAtHand"] as CartasDTO;
+            fraseAtHandID = Int32.Parse(ViewState["fraseAtHandID"].ToString());
+
             usedCards = ViewState["usedCards"] as List<int>;
+            usedFrases = ViewState["usedFrases"] as Dictionary<string,int>;
+
+            arrFrasesTablero = ViewState["arrFrasesTablero"] as Dictionary<string, int>;
+
             cardStatics = ViewState["cardStatics"] as List<CartasDTO>;
             ctrImage = Int32.Parse(ViewState["ctrImage"].ToString());
             ctrSoundTotal = Int32.Parse(ViewState["ctrSoundTotal"].ToString());
@@ -134,20 +155,27 @@ public partial class Tablero : PageBaseJugadorAuthentication
         }
         else
         {
-            (sender as ImageButton).ImageUrl = "~/images/fijo/incorrect.png";
+            ib.ImageUrl = "~/images/fijo/incorrect.png";
             cardStatics[cardStatics.ToArray().Length - 1].GuessedCorrectly = false;
             ctrTotalIncorrect++;
             ViewState["ctrTotalIncorrect"] = ctrTotalIncorrect;
         }
+        /*todo: move to above else statements because they are causing issues with
+         * selecting a card incorrectly counting the card not selected (the one at hand) to be saved to the 
+         * used arrays
+        */
         usedCards.Add(Int32.Parse(ib.ID));
+        usedFrases.Add( ib.AlternateText, arrFrasesTablero[ib.AlternateText]);
+
         ViewState["usedCards"] = usedCards;
+        ViewState["usedFrases"] = usedFrases;
         ctrTotalCardsPlayer++;
         ViewState["ctrTotalCardsPlayer"] = ctrTotalCardsPlayer;
 
         //used sound, store it
         cardStatics[cardStatics.ToArray().Length - 1].UsedSound = Int32.Parse(hdnUsedSound.Value) >= 1 ? true : false;
         
-        //todo: create Page variable to hold the ctrSound total of times Sound was used (it is Int, not boolean)
+        //Page variable to hold the ctrSound total of times Sound was used (it is Int, not boolean)
         ViewState["ctrSoundTotal"] = ctrSoundTotal +Int32.Parse(hdnUsedSound.Value);
         /*Get new random card to show*/
         setNewRandomCard();
@@ -172,16 +200,29 @@ public partial class Tablero : PageBaseJugadorAuthentication
             {
                 //set a new random card                
                 cardAtHand = (arrCardsTablero[randomNum] as CartasDTO);
-                if (isHard)
+                //if (isHard && cardAtHand.Frases.ToArray().Length >= 1)
+                if (isHard && arrFrasesTablero.ElementAt(randomNum).Value >= 1)
                 {
-                    lblCardAtHand.Text = cardAtHand.Statement;
+                        //if cards help disabled (hard mode), then use frases
+                        //AND there is at least one Frase for the card
+
+                        /*todo: move this code to the setCardsTablero function to add in parallel to the
+                         available cards at random the Frase instead here because this causes problems with the saving in the other todo*/
+                        /*int tmpRandNum = ran.Next(cardAtHand.Frases.ToArray().Length);
+                        lblCardAtHand.Text = cardAtHand.Frases.ToArray().ElementAt(tmpRandNum).Key;
+                        fraseAtHandID = cardAtHand.Frases.ToArray().ElementAt(tmpRandNum).Value;*/
+                        lblCardAtHand.Text = arrFrasesTablero.ElementAt(randomNum).Key;
+                        fraseAtHandID = arrFrasesTablero.ElementAt(randomNum).Value;
                 }
                 else
                 {
+                    //help is enabled AND/OR there are no more than 1 Frases for the card
                     lblCardAtHand.Text = cardAtHand.Name;
+                    fraseAtHandID = 0;
                 }
                 imgCardAtHand.ImageUrl = cardAtHand.Path;
                 imgCardAtHand.Visible = false;
+                ViewState["fraseAtHandID"] = fraseAtHandID;
                 ViewState["cardAtHand"] = cardAtHand;
                 ViewState["ctrImage"] = ctrImage;
 
@@ -190,6 +231,7 @@ public partial class Tablero : PageBaseJugadorAuthentication
                 if (!isHard)
                 {
                     imgBtnShowImage.Enabled = true;
+                    imgBtnShowImage.Visible = true;
                 }
                 hdnUsedSound.Value = "0";
                 break;
@@ -209,9 +251,12 @@ public partial class Tablero : PageBaseJugadorAuthentication
                         ctrTotalCardsPlayer, isHard, ctrSoundTotal);
                     if(gameID >= 1)
                     {
-                        foreach(CartasDTO carta in cardStatics)
+                        for(int i = 0; i< cardStatics.ToArray().Length; i++)
+                        //foreach(CartasDTO carta in cardStatics)
                         {
-                            loteria.insertGameDetails(gameID, carta.ID, true, false, true);
+                            CartasDTO carta = cardStatics.ToArray().ElementAt(i);
+                            loteria.insertGameDetails(gameID, usedCards[i], carta.UsedSound, carta.UsedImage, 
+                                carta.GuessedCorrectly, usedFrases.ElementAt(i).Value);
                         }
 
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup",
@@ -247,6 +292,7 @@ public partial class Tablero : PageBaseJugadorAuthentication
 
         lblSortQuestion.Text = "¿Reborujar por última vez?";
         arrCardsTablero.Clear();
+        arrFrasesTablero.Clear();
         tbTablero.Rows.Clear();
         setCardsTablero();
         setNewRandomCard();
@@ -274,6 +320,7 @@ public partial class Tablero : PageBaseJugadorAuthentication
         imgCardAtHand.Visible = true;
         ViewState["ctrImage"] = ++ctrImage;
         (sender as ImageButton).Enabled = false;
+        (sender as ImageButton).Visible = false;
     }
 
     /// <summary>
@@ -299,9 +346,20 @@ public partial class Tablero : PageBaseJugadorAuthentication
                 {
                     arrCardsTablero.Add(arrCardsAvailable[index]);
                     ctrWhile++;
+                    if ((arrCardsAvailable[index] as CartasDTO).Frases.ToArray().Length >= 1)
+                    {
+                        int tmpFrase = ran.Next((arrCardsAvailable[index] as CartasDTO).Frases.ToArray().Length);
+                        arrFrasesTablero.Add((arrCardsAvailable[index] as CartasDTO).Frases.ToArray().ElementAt(tmpFrase).Key,
+                            (arrCardsAvailable[index] as CartasDTO).Frases.ToArray().ElementAt(tmpFrase).Value);
+                    }
+                    else
+                    {
+                        arrFrasesTablero.Add((arrCardsAvailable[index] as CartasDTO).Name, 0);
+                    }
                 }
             }
         } while (ctrWhile< (sizeTablero * sizeTablero));
+        ViewState["arrFrasesTablero"] = arrFrasesTablero;
     }
 
     /// <summary>
@@ -327,7 +385,9 @@ public partial class Tablero : PageBaseJugadorAuthentication
                 ImageButton imgbt = new ImageButton();
                 CartasDTO cdto = (arrCardsTablero[(row * sizeTablero) + col] as CartasDTO);
                 imgbt.ImageUrl = cdto.Path;
-                imgbt.AlternateText = cdto.ID.ToString();
+                imgbt.AlternateText = arrFrasesTablero.ElementAt((row * sizeTablero) + col).Key;
+                //    imgbt.AlternateText = cdto.ID.ToString();
+                
                 imgbt.Click += new ImageClickEventHandler(imgbtn1_Click);
                 imgbt.ID = cdto.ID.ToString();
                 tc.Controls.Add(imgbt);

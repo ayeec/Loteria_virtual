@@ -57,6 +57,7 @@
                             <li><a runat="server" href="~/Admin/Jugadores.aspx">Jugadores</a></li>
 
                             <li><a runat="server" href="~/Admin/Cartas.aspx">Cartas</a></li>
+                            <li><a runat="server" href="~/Admin/Frases.aspx">Frases</a></li>
                             <li><a runat="server" href="~/Admin/Categorias.aspx">Categorias</a></li>
                             <li><a runat="server" href="~/Admin/CartasDeCategoria.aspx">Cartas+Categorias</a></li>
                             <li><a runat="server" href="~/Admin/CategoriasDelJugador.aspx">Jugador+Categorias</a></li>

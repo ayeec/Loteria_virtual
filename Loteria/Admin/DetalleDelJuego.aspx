@@ -9,7 +9,7 @@
             <span>Sin datos a mostrar.</span>
         </EmptyDataTemplate>
         <ItemTemplate>
-            <span style="">ID Juego:
+            <span>ID Juego:
             <asp:Label ID="INTIDJUEGOLabel" runat="server" Text='<%# Eval("INTIDJUEGO") %>' />
             <br />
             Jugador:
@@ -17,6 +17,9 @@
             <br />
             Fecha del juego:
             <asp:Label ID="DATEFECHALabel" runat="server" Text='<%# Eval("DATEFECHA") %>' />
+            <br />
+            Tamaño del tablero:
+            <asp:Label ID="INTTOTALCARTASLabel" runat="server" Text='<%# Eval("INTTOTALCARTAS") %>' />
             <br />
             Total aciertos:
             <asp:Label ID="INTACIERTOSLabel" runat="server" Text='<%# Eval("INTACIERTOS") %>' />
@@ -27,11 +30,8 @@
             Calificación (aciertos/total_cartas*10):
             <asp:Label ID="INTCALIFICACIONLabel" runat="server" Text='<%# Eval("INTCALIFICACION") %>' />
             <br />
-            Total de cartas / Tamaño del tablero:
-            <asp:Label ID="INTTOTALCARTASLabel" runat="server" Text='<%# Eval("INTTOTALCARTAS") %>' />
-            <br />
-            ¿Jugó en modo dificil?:
-            <asp:Label ID="BOOLDIFICILLabel" runat="server" Text='<%# Eval("BOOLDIFICIL") %>' />
+            ¿Jugó con ayuda desactivada?:
+            <asp:Label ID="BOOLDIFICILLabel" runat="server" Text='<%# Eval("BOOLDIFICIL").ToString().Equals("1")? "Verdadero":"Falso" %>' />
             <br />
             ¿Cuantas veces hizo uso del sonido?:
             <asp:Label ID="INTSONIDOLabel" runat="server" Text='<%# Eval("INTSONIDO") %>' />
@@ -89,10 +89,12 @@ WHERE hr.INTIDJUEGO = @idJuego">
 
     <asp:SqlDataSource ID="SQLDSDetalle" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
         SelectCommand="
-        SELECT dj.*, CONCAT(c.INTCVECARTA,'-',c.VCHNOMBRE) as nombreCarta
+        SELECT dj.*, CONCAT(c.INTCVECARTA,'-',c.VCHNOMBRE) as nombreCarta, f.VCHARFRASE, c.VCHNOMBRE
         FROM [detallejuego] as dj
         JOIN cartas as c
-        ON c.INTCVECARTA = dj.INTCVECARTA
+		ON c.INTCVECARTA = dj.INTCVECARTA
+		LEFT JOIN frases as f
+		ON f.INTIDFRASE = dj.INTIDFRASE
 WHERE dj.INTIDJUEGO = @idJuego">
         <SelectParameters>
             <asp:QueryStringParameter DefaultValue="0" Name="idJuego" QueryStringField="idJuego" />
@@ -101,22 +103,19 @@ WHERE dj.INTIDJUEGO = @idJuego">
 
     <asp:ListView ID="lvDetalleDelJuego" runat="server" DataKeyNames="INTIDDETALLE,INTCVECARTA" DataSourceID="SQLDSDetalle">
         <EmptyDataTemplate>
-            <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
+            <table runat="server" class="table table-bordered table-striped table-responsive">
                 <tr>
-                    <td>Sin detalle a mostrar</td>
+                    <td><p><strong>Sin detalle a mostrar</strong></p></td>
                 </tr>
             </table>
         </EmptyDataTemplate>
         <ItemTemplate>
-            <tr style="background-color:#DCDCDC;color: #000000;">
+            <tr>
                 <td>
                     <asp:Label ID="INTIDDETALLELabel" runat="server" Text='<%# Eval("INTIDDETALLE") %>' />
                 </td>
                 <td>
                     <asp:Label ID="INTCVECARTALabel" runat="server" Text='<%# Eval("nombreCarta") %>' />
-                </td>
-                <td>
-                    <asp:Label ID="INTIDJUEGOLabel" runat="server" Text='<%# Eval("INTIDJUEGO") %>' />
                 </td>
                 <td>
                     <asp:CheckBox ID="ckbActivo" runat="server" Enabled="false" Text="" Checked='<%# Eval("USASONIDO").ToString().Equals("1")? true:false %>' />
@@ -127,20 +126,23 @@ WHERE dj.INTIDJUEGO = @idJuego">
                 <td>
                     <asp:CheckBox ID="CheckBox2" runat="server" Enabled="false" Text="" Checked='<%# Eval("CORRECTO").ToString().Equals("1")? true:false %>' />
                 </td>
+                <td>
+                    <asp:Label ID="VCHARFRASELabel" runat="server" Text='<%# String.IsNullOrEmpty(Eval("VCHARFRASE").ToString())?Eval("VCHNOMBRE"):Eval("VCHARFRASE") %>' />
+                </td>
             </tr>
         </ItemTemplate>
         <LayoutTemplate>
             <table runat="server">
                 <tr runat="server">
                     <td runat="server">
-                        <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
-                            <tr runat="server" style="background-color:#DCDCDC;color: #000000;">
+                        <table id="itemPlaceholderContainer" runat="server" class="table table-bordered table-striped table-responsive">
+                            <tr runat="server">
                                 <th runat="server">ID detalle</th>
                                 <th runat="server">Carta</th>
-                                <th runat="server">ID Juego</th>
                                 <th runat="server">¿Usó sonido?</th>
                                 <th runat="server">¿Usó imagen?</th>
                                 <th runat="server">¿Acertó?</th>
+                                <th runat="server">Frase usada</th>
                             </tr>
                             <tr id="itemPlaceholder" runat="server">
                             </tr>
@@ -171,6 +173,9 @@ WHERE dj.INTIDJUEGO = @idJuego">
                 </td>
                 <td>
                     <asp:Label ID="CORRECTOLabel" runat="server" Text='<%# Eval("CORRECTO") %>' />
+                </td>
+                <td>
+                    <asp:Label ID="VCHARFRASELabel" runat="server" Text='<%# Eval("VCHARFRASE") %>' />
                 </td>
             </tr>
         </SelectedItemTemplate>

@@ -56,7 +56,7 @@
      <br />
     <asp:ListView ID="lvHIstorialJuegos" runat="server" DataKeyNames="INTIDJUEGO" DataSourceID="SQLDSHistorial">
         <EditItemTemplate>
-            <tr style="background-color:#008A8C;color: #FFFFFF;">
+            <tr class="itemRowAlt">
                 <td>
                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Actualizar" />
                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancelar" />
@@ -91,17 +91,17 @@
             </tr>
         </EditItemTemplate>
         <EmptyDataTemplate>
-            <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
+            <table runat="server" class="table table-bordered table-striped table-responsive">
                 <tr>
                     <td>Sin datos a mostrar.</td>
                 </tr>
             </table>
         </EmptyDataTemplate>
         <InsertItemTemplate>
-            <tr style="">
+            <tr>
                 <td>
-                    <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" />
-                    <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" />
+                    <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" CssClass="btn btn-success"/>
+                    <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" CssClass="btn btn-outline-warning"/>
                 </td>
                 <td>&nbsp;</td>
                 <td>
@@ -131,10 +131,10 @@
             </tr>
         </InsertItemTemplate>
         <ItemTemplate>
-            <tr style="background-color:#DCDCDC;color: #000000;">
+            <tr>
                 <td>
-                    <asp:HyperLink ID="lnkJuegoID" runat="server" Text="Ver detalle" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "INTIDJUEGO","DetalleDelJuego.aspx?idJuego={0}") %>'></asp:HyperLink>
-                    <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" CssClass="delButton" OnClientClick="if(!confirm('Desea borrarlo?')) return false" />
+                    <asp:HyperLink ID="lnkJuegoID" runat="server" Text="Ver detalle" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "INTIDJUEGO","DetalleDelJuego.aspx?idJuego={0}") %>' CssClass="btn btn-info"></asp:HyperLink>
+                    <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="btn btn-danger"/>
                 </td>
                 <td>
                     <asp:Label ID="INTIDJUEGOLabel" runat="server" Text='<%# Eval("INTIDJUEGO") %>' />
@@ -158,7 +158,7 @@
                     <asp:Label ID="INTTOTALCARTASLabel" runat="server" Text='<%# Eval("INTTOTALCARTAS") %>' />
                 </td>
                 <td>
-                    <asp:Label ID="BOOLDIFICILLabel" runat="server" Text='<%# Eval("BOOLDIFICIL") %>' />
+                    <asp:CheckBox ID="BOOLDIFICILLabel" runat="server" Enabled="false" Text="" Checked='<%# Eval("BOOLDIFICIL").ToString().Equals("1")? true:false %>' />
                 </td>
                 <td>
                     <asp:Label ID="INTSONIDOLabel" runat="server" Text='<%# Eval("INTSONIDO") %>' />
@@ -169,8 +169,8 @@
             <table runat="server">
                 <tr runat="server">
                     <td runat="server">
-                        <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
-                            <tr runat="server" style="background-color:#DCDCDC;color: #000000;">
+                        <table id="itemPlaceholderContainer" runat="server" class="table table-bordered table-striped table-responsive">
+                            <tr runat="server">
                                 <th runat="server"></th>
                                 <th runat="server">ID juego</th>
                                 <th runat="server">Jugador</th>
@@ -179,7 +179,7 @@
                                 <th runat="server">Total Errores</th>
                                 <th runat="server">Calificación</th>
                                 <th runat="server">Tamaño del tablero</th>
-                                <th runat="server">¿Modo dificil?</th>
+                                <th runat="server">¿Ayuda desactivada?</th>
                                 <th runat="server">Sonido usado X veces</th>
                             </tr>
                             <tr id="itemPlaceholder" runat="server">
@@ -188,7 +188,7 @@
                     </td>
                 </tr>
                 <tr runat="server">
-                    <td runat="server" style="text-align: center;background-color: #CCCCCC;font-family: Verdana, Arial, Helvetica, sans-serif;color: #000000;">
+                    <td runat="server" class="bottomPager">
                         <asp:DataPager ID="DataPager1" runat="server">
                             <Fields>
                                 <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowLastPageButton="True" />

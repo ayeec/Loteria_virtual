@@ -4,13 +4,12 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <asp:SqlDataSource ID="SQLDSCategorias" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
         SelectCommand="SELECT * FROM [categoria]" 
-        DeleteCommand="DELETE FROM [categoria] WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([VCHDESCRIPCION] = @original_VCHDESCRIPCION) OR ([VCHDESCRIPCION] IS NULL AND @original_VCHDESCRIPCION IS NULL))" 
+        DeleteCommand="DELETE FROM [categoria] WHERE [INTIDCATEGORIA] = @INTIDCATEGORIA" 
         InsertCommand="INSERT INTO [categoria] ([VCHNOMBRE], [VCHDESCRIPCION]) VALUES (@VCHNOMBRE, @VCHDESCRIPCION)"
-        UpdateCommand="UPDATE [categoria] SET [VCHNOMBRE] = @VCHNOMBRE, [VCHDESCRIPCION] = @VCHDESCRIPCION WHERE [INTIDCATEGORIA] = @original_INTIDCATEGORIA AND [VCHNOMBRE] = @original_VCHNOMBRE AND (([VCHDESCRIPCION] = @original_VCHDESCRIPCION) OR ([VCHDESCRIPCION] IS NULL AND @original_VCHDESCRIPCION IS NULL))" OnDeleted="SQLDSCategorias_Deleted">
+        UpdateCommand="UPDATE [categoria] SET [VCHNOMBRE] = @VCHNOMBRE, [VCHDESCRIPCION] = @VCHDESCRIPCION WHERE [INTIDCATEGORIA] = @INTIDCATEGORIA " 
+        OnDeleted="SQLDSCategorias_Deleted">
         <DeleteParameters>
-            <asp:Parameter Name="original_INTIDCATEGORIA" Type="Int32" />
-            <asp:Parameter Name="original_VCHNOMBRE" Type="String" />
-            <asp:Parameter Name="original_VCHDESCRIPCION" Type="String" />
+            <asp:Parameter Name="INTIDCATEGORIA" Type="Int32" />
         </DeleteParameters>
         <InsertParameters>
             <asp:Parameter Name="VCHNOMBRE" Type="String" />
@@ -19,7 +18,7 @@
         <UpdateParameters>
             <asp:Parameter Name="VCHNOMBRE" Type="String" />
             <asp:Parameter Name="VCHDESCRIPCION" Type="String" />
-            <asp:Parameter Name="original_INTIDCATEGORIA" Type="Int32" />
+            <asp:Parameter Name="INTIDCATEGORIA" Type="Int32" />
             <asp:Parameter Name="original_VCHNOMBRE" Type="String" />
             <asp:Parameter Name="original_VCHDESCRIPCION" Type="String" />
         </UpdateParameters>
@@ -28,10 +27,10 @@
      <asp:ListView ID="lvCategorias" runat="server" DataKeyNames="INTIDCATEGORIA" DataSourceID="SQLDSCategorias" InsertItemPosition="LastItem">
          
          <EditItemTemplate>
-             <tr style="background-color: #FFCC66;color: #000080;">
+             <tr class="itemRowAlt">
                  <td>
-                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Actualizar" />
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancelar" />
+                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Actualizar" CssClass="btn btn-success" />
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancelar" CssClass="btn btn-outline-danger" />
                  </td>
                  <td>
                      <asp:Label ID="INTIDCATEGORIALabel1" runat="server" Text='<%# Eval("INTIDCATEGORIA") %>' />
@@ -45,17 +44,17 @@
              </tr>
          </EditItemTemplate>
          <EmptyDataTemplate>
-             <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
+             <table runat="server" class="table table-bordered table-striped table-responsive" >
                  <tr>
                      <td>Sin categorias registradas</td>
                  </tr>
              </table>
          </EmptyDataTemplate>
          <InsertItemTemplate>
-             <tr style="">
+             <tr class="itemRowAlt">
                  <td>
-                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" />
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" />
+                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" CssClass="btn btn-success"/>
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" CssClass="btn btn-outline-warning"/>
                  </td>
                  <td>&nbsp;</td>
                  <td>
@@ -67,11 +66,11 @@
              </tr>
          </InsertItemTemplate>
          <ItemTemplate>
-             <tr style="background-color: #FFFBD6;color: #333333;">
+             <tr>
                  <td>
-                     <asp:HyperLink ID="lnkCategoriaID" runat="server" Text="Asignar cartas" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "INTIDCATEGORIA","CartasdeCategoria.aspx?IDcategoria={0}") %>'></asp:HyperLink>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="delButton"/>
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
+                     <asp:HyperLink ID="lnkCategoriaID" runat="server" Text="Asignar cartas" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "INTIDCATEGORIA","CartasdeCategoria.aspx?IDcategoria={0}") %>' CssClass="btn btn-link"></asp:HyperLink>
+                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" CssClass="btn btn-primary"/>
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="btn btn-danger"/>
                  </td>
                  <td>
                      <asp:Label ID="INTIDCATEGORIALabel" runat="server" Text='<%# Eval("INTIDCATEGORIA") %>' />
@@ -88,8 +87,8 @@
              <table runat="server">
                  <tr runat="server">
                      <td runat="server">
-                         <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
-                             <tr runat="server" style="background-color: #FFFBD6;color: #333333;">
+                         <table id="itemPlaceholderContainer" runat="server" class="table table-bordered table-striped table-responsive" >
+                             <tr>
                                  <th runat="server"></th>
                                  <th runat="server">ID Categoria</th>
                                  <th runat="server">Nombre</th>
@@ -101,7 +100,7 @@
                      </td>
                  </tr>
                  <tr runat="server">
-                     <td runat="server" style="text-align: center;background-color: #FFCC66;font-family: Verdana, Arial, Helvetica, sans-serif;color: #333333;">
+                     <td runat="server" class="bottomPager">
                          <asp:DataPager ID="DataPager1" runat="server">
                              <Fields>
                                  <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
@@ -114,10 +113,10 @@
              </table>
          </LayoutTemplate>
          <SelectedItemTemplate>
-             <tr style="background-color: #FFCC66;font-weight: bold;color: #000080;">
+             <tr>
                  <td>
                      <asp:Button ID="btnAssignCartastoCategoria" runat="server" CommandName="Select" Text="Asignar Categorias" />
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="btn btn-danger"/>
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>

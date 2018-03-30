@@ -72,10 +72,10 @@
     <br />
      <asp:ListView ID="lvJugadores" runat="server" DataKeyNames="INTCVEJUGADOR" DataSourceID="SQLDSJugadores" InsertItemPosition="LastItem">
          <EditItemTemplate>
-             <tr style="background-color:#008A8C;color: #FFFFFF;">
+             <tr class="itemRowAlt">
                  <td>
-                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" OnClick="UpdateButton_Click"/>
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancel" />
+                     <asp:Button ID="UpdateButton" runat="server" CommandName="Actualizar" Text="Update" OnClick="UpdateButton_Click" CssClass="btn btn-success"/>
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancelar" CssClass="btn btn-outline-danger"/>
                  </td>
                  <td>
                      <asp:Label ID="INTCVEJUGADORLabel1" runat="server" Text='<%# Eval("nombreJugador") %>' />
@@ -114,7 +114,7 @@
                  </td>
                  <td>
                      <!--<asp:TextBox ID="FECHANACIMIENTOTextBox" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>' />-->
-                     <asp:TextBox ID="txtBirthdayPicker" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>'></asp:TextBox>
+                     <asp:TextBox ID="txtBirthdayPicker" runat="server" Text='<%# Eval("FECHANACIMIENTO", "{0:yyyy-MM-dd}") %>' ></asp:TextBox>
                     <ajaxToolkit:CalendarExtender ID="txtBirthdayPicker_CalendarExtender" runat="server" TargetControlID="txtBirthdayPicker" Format="yyyy-MM-dd" DefaultView="Years" />
    
                  </td>
@@ -125,17 +125,17 @@
              </tr>
          </EditItemTemplate>
          <EmptyDataTemplate>
-             <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
+             <table runat="server" class="table table-bordered table-striped table-responsive">
                  <tr>
                      <td>Sin datos a mostrar.</td>
                  </tr>
              </table>
          </EmptyDataTemplate>
          <InsertItemTemplate>
-             <tr style="">
+             <tr>
                  <td>
-                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" OnClick="InsertButton_Click" />
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" />
+                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" OnClick="InsertButton_Click" CssClass="btn btn-success"/>
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" CssClass="btn btn-outline-warning"/>
                  </td>
                  <td>&nbsp;</td>
                  <td>
@@ -167,7 +167,7 @@
                  </td>
                  <td>
                      <!--<asp:TextBox ID="FECHANACIMIENTOTextBox" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>' />-->
-                     <asp:TextBox ID="txtBirthdayPicker" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>'></asp:TextBox>
+                     <asp:TextBox ID="txtBirthdayPicker" runat="server" Text='<%# Bind("FECHANACIMIENTO") %>' Width="60pt"></asp:TextBox>
                     <ajaxToolkit:CalendarExtender ID="txtBirthdayPicker_CalendarExtender" runat="server" TargetControlID="txtBirthdayPicker" Format="yyyy-MM-dd" DefaultView="Years"/>
    
                  </td>
@@ -178,11 +178,11 @@
              </tr>
          </InsertItemTemplate>
          <ItemTemplate>
-             <tr style="background-color:#DCDCDC;color: #000000;">
+             <tr>
                  <td>
-                     <asp:HyperLink ID="lnkJugadorID" runat="server" Text="Ver categorias asignadas" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "INTCVEJUGADOR","CategoriasDelJugador.aspx?idJugador={0}") %>'></asp:HyperLink>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="delButton"/>
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
+                     <asp:HyperLink ID="lnkJugadorID" runat="server" Text="Ver categorias asignadas" Target="_blank" NavigateUrl='<%# DataBinder.Eval(Container.DataItem, "INTCVEJUGADOR","CategoriasDelJugador.aspx?idJugador={0}") %>' CssClass="btn btn-link"></asp:HyperLink>
+                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" CssClass="btn btn-primary"/>
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="btn btn-danger"/>
                  </td>
                  <td>
                      <asp:Label ID="INTCVEJUGADORLabel" runat="server" Text='<%# Eval("nombreJugador") %>' />
@@ -211,8 +211,8 @@
              <table runat="server">
                  <tr runat="server">
                      <td runat="server">
-                         <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
-                             <tr runat="server" style="background-color:#DCDCDC;color: #000000;">
+                         <table id="itemPlaceholderContainer" runat="server" class="table table-bordered table-striped table-responsive" >
+                             <tr runat="server" >
                                  <th runat="server"></th>
                                  <th runat="server">ID Jugador</th>
                                  <th runat="server">ID Usuario</th>
@@ -228,7 +228,7 @@
                      </td>
                  </tr>
                  <tr runat="server">
-                     <td runat="server" style="text-align: center;background-color: #CCCCCC;font-family: Verdana, Arial, Helvetica, sans-serif;color: #000000;">
+                     <td runat="server" class="bottomPager">
                          <asp:DataPager ID="DataPager1" runat="server">
                              <Fields>
                                  <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
@@ -241,7 +241,7 @@
              </table>
          </LayoutTemplate>
          <SelectedItemTemplate>
-             <tr style="background-color:#008A8C;font-weight: bold;color: #FFFFFF;">
+             <tr>
                  <td>
                      <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" />
                      <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />

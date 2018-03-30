@@ -12,9 +12,9 @@
         <asp:TextBox ID="txtSlider" MaxLength="1" runat="server" Width="15pt" Enabled="false"></asp:TextBox>
         <asp:TextBox ID="txtSize" runat="server" ></asp:TextBox>
         <ajaxToolkit:SliderExtender ID="txtSize_SliderExtender" runat="server" BehaviorID="txtSize_SliderExtender" Maximum="5" Minimum="2" TargetControlID="txtSize" BoundControlID="txtSlider" Steps="4"/>
-        <asp:CheckBox ID="chkHard" runat="server" Text="¿Jugar modo dificil?" />
+        <asp:CheckBox ID="chkHard" runat="server" Text="¿Desactivar ayuda?" />
         <br/>
-        <asp:Button ID="btnStartGame" runat="server" CssClass="btn btn-primary btn-lg" Text="Iniciar Juego" OnClick="btnStartGame_Click" />
+        <asp:Button ID="btnStartGame" runat="server" CssClass="btn btn-success btn-block" Text="Iniciar Juego" OnClick="btnStartGame_Click" />
 
     </p>
 </asp:Content>

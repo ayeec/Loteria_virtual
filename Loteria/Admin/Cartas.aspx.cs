@@ -81,4 +81,9 @@ public partial class Admin_Cartas : PageBaseUsuarioAuthentication
             e.ExceptionHandled = true;
         }
     }
+
+    protected void lvCartas_ItemInserted(object sender, ListViewInsertedEventArgs e)
+    {
+        
+    }
 }

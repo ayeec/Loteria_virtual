@@ -12,14 +12,13 @@ public class CartasDTO
     int idCarta;
     String name;
     String imagePath;
-    String statement;
+    
 
-    public CartasDTO(int idCarta, String nombre, String imagePath, String statement, int weight)
+    public CartasDTO(int idCarta, String nombre, String imagePath, int weight)
     {
         this.idCarta = idCarta;
         this.name = nombre;
         this.imagePath = imagePath;
-        this.statement = statement;
         this.Weight = weight;
     }
 
@@ -37,11 +36,6 @@ public class CartasDTO
     public String Path
     {
         get { return imagePath; }
-    }
-
-    public String Statement
-    {
-        get { return statement; }
     }
 
     public bool GuessedCorrectly
@@ -63,6 +57,11 @@ public class CartasDTO
     public int Weight
     {
         get;
+    }
+
+    public Dictionary<string, int> Frases
+    {
+        get;set;
     }
 
 }

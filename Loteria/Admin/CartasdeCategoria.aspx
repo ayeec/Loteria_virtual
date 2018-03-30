@@ -31,7 +31,7 @@
      <asp:ListView ID="lvCartasDeCategoria" runat="server" DataKeyNames="INTIDCATEGORIA,INTCVECARTA" DataSourceID="SQLDSCartasDeCategoria" InsertItemPosition="LastItem">
 
          <EditItemTemplate>
-             <tr style="background-color: #FFCC66;color: #000080;">
+             <tr>
                  <td>
                      <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" />
                      <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancel" />
@@ -45,17 +45,17 @@
              </tr>
          </EditItemTemplate>
          <EmptyDataTemplate>
-             <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
+             <table runat="server" class="table table-bordered table-striped table-responsive">
                  <tr>
                      <td>Sin datos a mostrar.</td>
                  </tr>
              </table>
          </EmptyDataTemplate>
          <InsertItemTemplate>
-             <tr style="">
+             <tr>
                  <td>
-                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" OnClick="InsertButton_Click" />
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" />
+                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" OnClick="InsertButton_Click" CssClass="btn btn-success"/>
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" CssClass="btn btn-outline-warning"/>
                  </td>
                  <td>
                       <asp:DropDownList ID="ddlIDcategorias" runat="server"  DataSourceID="dsIDCategoria" DataTextField="detail" DataValueField="INTIDCATEGORIA" OnDataBound="ddlIDcategorias_DataBound" OnSelectedIndexChanged="ddlIDcategorias_SelectedIndexChanged" AutoPostBack="true">
@@ -75,9 +75,9 @@
              </tr>
          </InsertItemTemplate>
          <ItemTemplate>
-             <tr style="background-color: #FFFBD6;color: #333333;">
+             <tr>
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="delButton"/>
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="btn btn-danger"/>
                  </td>
                  <td>
                      <asp:Label ID="INTIDCATEGORIALabel" runat="server" Text='<%# Eval("nombreCategoria") %>' />
@@ -91,8 +91,8 @@
              <table runat="server">
                  <tr runat="server">
                      <td runat="server">
-                         <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
-                             <tr runat="server" style="background-color: #FFFBD6;color: #333333;">
+                         <table id="itemPlaceholderContainer" runat="server" class="table table-bordered table-striped table-responsive">
+                             <tr runat="server">
                                  <th runat="server"></th>
                                  <th runat="server">Categoria</th>
                                  <th runat="server">Carta</th>
@@ -103,7 +103,7 @@
                      </td>
                  </tr>
                  <tr runat="server">
-                     <td runat="server" style="text-align: center;background-color: #FFCC66;font-family: Verdana, Arial, Helvetica, sans-serif;color: #333333;">
+                     <td runat="server" class="bottomPager">
                          <asp:DataPager ID="DataPager1" runat="server">
                              <Fields>
                                  <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />

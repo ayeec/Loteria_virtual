@@ -29,10 +29,10 @@
      
      <asp:ListView ID="lvUsuarios" runat="server" DataSourceID="SQLDSUsuarios" InsertItemPosition="LastItem" DataKeyNames="INTCVEUSUARIO" >
          <EditItemTemplate>
-             <tr style="background-color:#008A8C;color: #FFFFFF;">
+             <tr class="itemRowAlt">
                  <td>
-                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" OnClick="UpdateButton_Click"/>
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancel" />
+                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Actualizar" OnClick="UpdateButton_Click" CssClass="btn btn-success"/>
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancelar" CssClass="btn btn-outline-danger"/>
                  </td>
                  <td>
                      <asp:Label ID="INTCVEUSUARIOLabel1" runat="server" Text='<%# Eval("INTCVEUSUARIO") %>' />
@@ -53,17 +53,17 @@
              </tr>
          </EditItemTemplate>
          <EmptyDataTemplate>
-             <table runat="server" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;">
+             <table runat="server">
                  <tr>
-                     <td>No data was returned.</td>
+                     <td>No datos fueron regresado.</td>
                  </tr>
              </table>
          </EmptyDataTemplate>
          <InsertItemTemplate>
-             <tr style="">
+             <tr class="itemRowAlt">
                  <td>
-                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insert" OnClick="InsertButton_Click"/>
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Clear" />
+                     <asp:Button ID="InsertButton" runat="server" CommandName="Insert" Text="Insertar" OnClick="InsertButton_Click" CssClass="btn btn-success"/>
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Limpiar" CssClass="btn btn-outline-warning"/>
                  </td>
                  <td>
                      &nbsp;</td>
@@ -75,7 +75,7 @@
 
                  </td>
                  <td>
-                     <asp:DropDownList ID="ddlUserType" runat="server">
+                     <asp:DropDownList ID="ddlUserType" runat="server" >
                          <asp:ListItem Value="J">Jugador</asp:ListItem>
                          <asp:ListItem Value="A">Administrador</asp:ListItem>
                     </asp:DropDownList>
@@ -84,10 +84,10 @@
              </tr>
          </InsertItemTemplate>
          <ItemTemplate>
-             <tr style="background-color:#DCDCDC;color: #000000;">
+             <tr>
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" CssClass="delButton" OnClick="DeleteButton_Click" OnClientClick="if(!confirm('Desea borrarlo?')) return false"/>
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
+                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" CssClass="btn btn-primary"/>
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" OnClick="DeleteButton_Click" OnClientClick="if(!confirm('Desea borrarlo?')) return false" CssClass="btn btn-danger"/>
                  </td>
                  <td>
                      <asp:Label ID="INTCVEUSUARIOLabel" runat="server" Text='<%# Eval("INTCVEUSUARIO") %>' />
@@ -108,8 +108,8 @@
              <table runat="server">
                  <tr runat="server">
                      <td runat="server">
-                         <table id="itemPlaceholderContainer" runat="server" border="1" style="background-color: #FFFFFF;border-collapse: collapse;border-color: #999999;border-style:none;border-width:1px;font-family: Verdana, Arial, Helvetica, sans-serif;">
-                             <tr runat="server" style="background-color:#DCDCDC;color: #000000;">
+                         <table id="itemPlaceholderContainer" class="table table-bordered table-striped table-responsive" >
+                             <tr runat="server">
                                  <th runat="server"></th>
                                  <th runat="server">ID Usuario</th>
                                  <th runat="server">Nombre de usuario</th>
@@ -122,7 +122,7 @@
                      </td>
                  </tr>
                  <tr runat="server">
-                     <td runat="server" style="text-align: center;background-color: #CCCCCC;font-family: Verdana, Arial, Helvetica, sans-serif;color: #000000;">
+                     <td runat="server" class="bottomPager">
                          <asp:DataPager ID="DataPager1" runat="server">
                              <Fields>
                                  <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />

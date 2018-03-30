@@ -7,7 +7,7 @@ using System.Collections;
 using System.Data;
 
 /// <summary>
-/// Summary description for LoteriaDAO
+/// Where the queries and stored procedures are called
 /// </summary>
 public class LoteriaDAO : DAO<CartasDTO>
 {
@@ -21,7 +21,7 @@ public class LoteriaDAO : DAO<CartasDTO>
 
     public ArrayList getCartasByJugador(int jugadorID)
     {
-        reader = executeQuery("SELECT c.intcvecarta, c.vchnombre, c.rutaimagen, c.vchtexto, cdj.intIDpeso " +
+        reader = executeQuery("SELECT c.intcvecarta, c.vchnombre, c.rutaimagen, cdj.intIDpeso " +
             "FROM cartas c JOIN cartascategoria cc ON c.intcvecarta = cc.intcvecarta " +
             "JOIN categoria cat ON cat.intidcategoria = cc.intidcategoria " +
             "JOIN categoriasdejugador cdj ON cdj.intidcategoria = cat.intidcategoria " +
@@ -32,7 +32,7 @@ public class LoteriaDAO : DAO<CartasDTO>
             while(reader.Read())
             {
                 arrCartasByJugador.Add(new CartasDTO(reader.GetInt32(0), reader.GetString(1),
-                   "~/images/"+ reader.GetString(2), reader.GetString(3), reader.GetInt32(4)));
+                   "~/images/"+ reader.GetString(2), reader.GetInt32(3)));
             }
         }
         else
@@ -82,7 +82,7 @@ public class LoteriaDAO : DAO<CartasDTO>
         return idJuego;
     }
 
-    public void insertGameDetails(int idJuego, int idCarta, bool usedSound,bool usedImage, bool guessedCorrectly)
+    public void insertGameDetails(int idJuego, int idCarta, bool usedSound,bool usedImage, bool guessedCorrectly, int idFrase)
     {
         setProcedure("sp_detallejuego_insert_or_update");
         base.command.Parameters.AddWithValue("@IDCarta", idCarta);
@@ -90,6 +90,8 @@ public class LoteriaDAO : DAO<CartasDTO>
         base.command.Parameters.AddWithValue("@usedSound", usedSound);
         base.command.Parameters.AddWithValue("@usedImage", usedImage);
         base.command.Parameters.AddWithValue("@guessedCorrectly", guessedCorrectly);
+        if(idFrase > 0 )
+            base.command.Parameters.AddWithValue("@IDFrase", idFrase);
         //base.command.Parameters.Add("@IDDetalle", SqlDbType.Int).Value = null;
 
         executeProcedure();
@@ -125,8 +127,26 @@ public class LoteriaDAO : DAO<CartasDTO>
         return userInfo;
     }
 
+    public Dictionary<string, int> getFrasesPerCard (int cardID)
+    {
+        Dictionary<string, int> frasesPerCard = new Dictionary<string, int>();
+        reader = executeQuery("SELECT INTIDFRASE, VCHARFRASE FROM Frases " +
+            "WHERE INTCVECARTA = " + cardID);
+
+        if (reader.HasRows)
+        {
+            reader.Read();
+            frasesPerCard.Add( reader.GetString(1), reader.GetInt32(0));
+        }
+
+        reader.Close();
+        return frasesPerCard;
+
+    }
+
     int boolToInt(bool isVar)
     {
         return ((isVar) == true) ? 1 : 0;
     }
+
 }

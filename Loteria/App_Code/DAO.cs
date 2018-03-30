@@ -11,7 +11,8 @@ using System.Data.Common;
 using Loteria;
 
 /// <summary>
-/// Description of Class1.
+/// Data Access Object
+/// Used to connect the queries and procedures to the database execution.
 /// </summary>
 public abstract class DAO<T>
 {
