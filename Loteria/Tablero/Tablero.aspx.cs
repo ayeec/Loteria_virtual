@@ -145,6 +145,10 @@ public partial class Tablero : PageBaseJugadorAuthentication
             cardStatics[cardStatics.ToArray().Length - 1].GuessedCorrectly = true;
             ctrTotalCorrect++;
             ViewState["ctrTotalCorrect"] = ctrTotalCorrect;
+
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "playsound",
+                            "playSound('correct.mp3');", true);
+
             /*Random ran = new Random();
             int randomNum = ran.Next(((int)ViewState["ctrCardsRemaining"])  - 1);
             lblCardAtHand.Text = (arrTablero[randomNum] as  CartasDTO).Name;*/
@@ -159,6 +163,9 @@ public partial class Tablero : PageBaseJugadorAuthentication
             cardStatics[cardStatics.ToArray().Length - 1].GuessedCorrectly = false;
             ctrTotalIncorrect++;
             ViewState["ctrTotalIncorrect"] = ctrTotalIncorrect;
+
+            ScriptManager.RegisterStartupScript(Page, Page.GetType(), "playsound",
+                            "playSound('incorrect.mp3');", true);
         }
         /*todo: move to above else statements because they are causing issues with
          * selecting a card incorrectly counting the card not selected (the one at hand) to be saved to the 
@@ -410,5 +417,5 @@ public partial class Tablero : PageBaseJugadorAuthentication
             isGameFinished = true;
             setNewRandomCard();//finish the game
         }
-    }
+    }   
 }

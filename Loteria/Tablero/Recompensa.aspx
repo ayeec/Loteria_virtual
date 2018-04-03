@@ -9,7 +9,7 @@
         .auto-style1 {
             text-align: center;
         }
-        .auto-style2 {
+        .title {
             color: #CC0000;
         }
         html,body{
@@ -26,19 +26,22 @@
         #mainContent{
             position: absolute; 
             z-index: 1; 
-            left: 50px; 
-            top: 20px; 
-            width:300px; 
-            height:20px;
+            
+            top: 10px; 
+            left:20%;
+            right:20%;
+            width:auto; 
+            height:100px;
         }
-        .auto-style3 {
+        .subtitle {
             color: #FFFFFF;
         }
         .image {
             max-width:100%;
+            z-index:-100;
         }
     </style>
-    
+    <script type="text/javascript" src="<%= ResolveUrl ("~/Scripts/Audio.js") %>"></script>
 </head>
 <body>
     <script src="../Scripts/Confetti.js"></script>
@@ -50,12 +53,12 @@
 </div>
     <form id="form1" runat="server">
         <div class="auto-style1" id="mainContent">
-            <h1><span class="auto-style2">Felicidades</span></h1>
+            <h1><span class="title">Felicidades</span></h1>
             <h2>
-                <span class="auto-style3"><%= Request.QueryString["correct"] %> imagenes correcta(s)</span>
+                <span class="subtitle"><%= Request.QueryString["correct"] %> imagenes correcta(s)</span>
             </h2>
             <h3>
-                <span class="auto-style3">Calificación <%= String.Format("{0:0.0}", Double.Parse(Request.QueryString["correct"])/Double.Parse(Request.QueryString["total"])*10) %></span>
+                <span class="subtitle">Calificación <%= String.Format("{0:0.0}", Double.Parse(Request.QueryString["correct"])/Double.Parse(Request.QueryString["total"])*10) %></span>
             </h3>
             <asp:Image ID="imgReward" CssClass="image" runat="server" />
         </div>
@@ -139,6 +142,7 @@
             loop();
         }
 
+        playSound('yay.mp3');
 main();
 </script>
     </form>

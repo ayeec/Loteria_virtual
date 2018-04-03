@@ -19,6 +19,10 @@ textarea {
     max-width: 280px;    
 }
 
+.menuImage {
+    width:40vw;
+}
+
 /* Responsive: Portrait tablets and up */
 @media screen and (min-width: 768px) {
     .jumbotron {

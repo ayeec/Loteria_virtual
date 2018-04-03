@@ -7,11 +7,22 @@
         select,
         textarea {
  
-            width: 100%
+            width: 100%;            
         }
+
+        tc{
+            vertical-align:center;
+
+        }
+        .cardAtHand{
+            text-align:center; 
+            background-color:limegreen;
+        }
+        
+ 
     </style>
     <h2>
-        <script src="../Scripts/Audio.js"></script>
+         <script type="text/javascript" src="<%= ResolveUrl ("~/Scripts/Audio.js") %>"></script>
         <asp:ImageButton ID="imgBtnRefresh" runat="server" ImageUrl="~/images/fijo/refresh.png" OnClick="imgBtnRefresh_Click" Width="100px"/>
         
         <asp:Label ID="lblSortQuestion" runat="server" Text="¿Cambiar el tablero?"></asp:Label>
@@ -22,27 +33,29 @@
     <h2 >   
         <asp:Label ID="lblScoreboard" runat="server" Text="Puntuación: "></asp:Label><asp:Label ID="lblScore" runat="server" Text="0"></asp:Label> 
     </h2>
-    <h1 style="text-align:center; background-color:limegreen;"><strong><asp:Label ID="lblCardAtHand" runat="server" Text="CartaEnMano" ></asp:Label></strong></h1>
-    
-    <table>
-        <tr class="table table-bordered table-striped table-responsive">
+    <asp:HiddenField ID="hdnUsedSound" runat="server" Value="0" />
+    <table class="table table-bordered table-striped table-responsive" >
+        <tr>
             <td>
-                <asp:Table ID="tbTablero" runat="server" CssClass="table table-bordered table-striped table-responsive">
-                </asp:Table>    
+                <asp:Image CssClass="menuImage" ID="imgCardAtHand" runat="server" Visible="False" />
+                <asp:ImageButton CssClass="menuImage" ID="imgBtnShowImage" runat="server" ImageUrl="~/images/fijo/question.jpg" OnClick="imgBtnShowImage_Click" />
+
             </td>
-            <td style="width: 20%">
-                
-                
-                    <asp:Image ID="imgCardAtHand" runat="server" Visible="False" Width ="100%" />
-                    <asp:ImageButton ID="imgBtnShowImage" runat="server" ImageUrl="~/images/fijo/question.jpg" Width="100%" OnClick="imgBtnShowImage_Click" />
-                
-                <br />
+            <td>
                 <asp:ImageButton ID="imgBtnMakeNoise" runat="server" ImageUrl="~/images/fijo/speaker.jpg" Width="100%" OnClientClick="javascript:makeNoise(); return false;" CausesValidation="False" />
-                <asp:HiddenField ID="hdnUsedSound" runat="server" Value="0" />
                 <br />
                 <asp:Button ID="btnFinish" runat="server" Text="¿Terminar?" OnClientClick="if(!confirm('Desea terminar el juego? El juego se calificará acordemente \nAl menos dos cartas se debieron haber jugado')) return false" OnClick="btnFinish_Click" CssClass="btn btn-danger"/>
             </td>
-        </tr>
+                
+        </tr>    
     </table>
+    
+    
+    <h1 class="cardAtHand"><strong><asp:Label ID="lblCardAtHand" runat="server" Text="CartaEnMano" ></asp:Label></strong></h1>
+     
+            
+    <asp:Table ID="tbTablero" runat="server" CssClass="table table-bordered table-striped table-responsive">
+    </asp:Table>    
+
 </asp:Content>
 

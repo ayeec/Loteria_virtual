@@ -12,7 +12,8 @@
         speechSynthesis.speak(u1);
 
     });
-});*/function makeNoise() {
+});*/
+function makeNoise() {
     debugger;
     var u1 = new SpeechSynthesisUtterance(document.getElementById('MainContent_lblCardAtHand').textContent);
     //u1.lang = 'en-US';
@@ -41,3 +42,9 @@
     //Update counter
     document.getElementById("MainContent_hdnUsedSound").value = parseInt(document.getElementById("MainContent_hdnUsedSound").value) + 1;
 };
+
+var soundObject = null;
+function playSound(mp3URL) {
+    new Audio('http://localhost:52385/sounds/' + mp3URL).play()
+} 
+
