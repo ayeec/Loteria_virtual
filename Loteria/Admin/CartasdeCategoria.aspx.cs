@@ -16,7 +16,7 @@ public partial class CartasDeCategoria_Jugadores : PageBaseUsuarioAuthentication
             if (!string.IsNullOrEmpty(idCategoria))
             {
                 h1Main.InnerText = "Cartas de la Categoria " + idCategoria;
-                
+                hidIDCategoriaSelected.Value = idCategoria;
               /*  DropDownList ddlIDcategorias = (lvCartasDeCategoria.InsertItem.FindControl("ddlIDcategorias") as DropDownList);
                 //ddlIDcategorias.
                 ddlIDcategorias.SelectedValue = Request.QueryString["IDcategoria"];

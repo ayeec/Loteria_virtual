@@ -45,6 +45,6 @@ function makeNoise() {
 
 var soundObject = null;
 function playSound(mp3URL) {
-    new Audio('http://localhost:52385/sounds/' + mp3URL).play()
+    new Audio('../sounds/' + mp3URL).play()
 } 
 

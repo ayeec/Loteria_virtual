@@ -106,9 +106,9 @@
                      <td runat="server" class="bottomPager">
                          <asp:DataPager ID="DataPager1" runat="server">
                              <Fields>
-                                 <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
-                                 <asp:NumericPagerField />
-                                 <asp:NextPreviousPagerField ButtonType="Button" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" />
+                                 <asp:NextPreviousPagerField ButtonType="Button" ShowFirstPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" ButtonCssClass="btn btn-info" />
+                                 <asp:NumericPagerField  RenderNonBreakingSpacesBetweenControls="true" />
+                                 <asp:NextPreviousPagerField ButtonType="Button" ShowLastPageButton="True" ShowNextPageButton="False" ShowPreviousPageButton="False" ButtonCssClass="btn btn-info"/>
                              </Fields>
                          </asp:DataPager>
                      </td>
@@ -134,10 +134,14 @@
     
     <br />
    
-    <asp:SqlDataSource ID="dsIDCategoria" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT CONCAT ([INTIDCATEGORIA],' - ', VCHNOMBRE) AS detail, INTIDCATEGORIA FROM [categoria]">
+    <asp:SqlDataSource ID="dsIDCategoria" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+        SelectCommand="SELECT CONCAT ([INTIDCATEGORIA],' - ', VCHNOMBRE) AS detail, INTIDCATEGORIA FROM [categoria]">
     </asp:SqlDataSource>
     
-    <asp:SqlDataSource ID="dsCartas" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" SelectCommand="SELECT * FROM cartas where intcvecarta NOT IN (select intcvecarta FROM cartascategoria WHERE [INTIDCATEGORIA] = CASE WHEN  @INTIDCATEGORIA > 0 THEN @INTIDCATEGORIA  ELSE [INTIDCATEGORIA] END )">
+    <asp:SqlDataSource ID="dsCartas" runat="server" ConnectionString="<%$ ConnectionStrings:SQLServer_loteria %>" 
+        SelectCommand="SELECT * FROM cartas 
+        where intcvecarta NOT IN (select intcvecarta FROM cartascategoria 
+        WHERE [INTIDCATEGORIA] = CASE WHEN  @INTIDCATEGORIA > 0 THEN @INTIDCATEGORIA  ELSE [INTIDCATEGORIA] END )">
         <SelectParameters>
             <asp:ControlParameter ControlID="hidIDCategoriaSelected" DefaultValue="0" Name="INTIDCATEGORIA" PropertyName="Value" />
         </SelectParameters>

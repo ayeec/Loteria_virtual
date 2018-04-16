@@ -31,7 +31,7 @@
         <asp:Label ID="lblGameFinished" runat="server" ForeColor="Red" Text="Fin del juego, gracias por jugar" Visible="False"></asp:Label>
     </h1>
     <h2 >   
-        <asp:Label ID="lblScoreboard" runat="server" Text="Puntuación: "></asp:Label><asp:Label ID="lblScore" runat="server" Text="0"></asp:Label> 
+        <asp:Label ID="lblScoreboard" runat="server" Text="Aciertos: "></asp:Label><asp:Label ID="lblScore" runat="server" Text="0"></asp:Label> 
     </h2>
     <asp:HiddenField ID="hdnUsedSound" runat="server" Value="0" />
     <table class="table table-bordered table-striped table-responsive" >

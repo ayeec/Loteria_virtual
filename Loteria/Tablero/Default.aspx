@@ -14,6 +14,14 @@
     <h1>
         Bienvenido <%= JugadorName %>
     </h1>
+    <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" 
+        CancelControlID="btnClose" 
+        TargetControlID="lnkInstructions"
+        PopupControlID="divPopUp"
+        BackgroundCssClass="modalBackground"
+        >
+    </ajaxToolkit:ModalPopupExtender>
+    <asp:HyperLink ID="lnkInstructions" runat="server" CssClass="btn btn-link">Instrucciones</asp:HyperLink>
     <p>Introduzca los parametros para empezar:</p>
     <p>
         <asp:Label ID="lblSize" runat="server" Text="Tamaño del tablero:" Font-Bold="false" Font-Italic="true"></asp:Label>
@@ -26,5 +34,12 @@
         <asp:Button ID="btnStartGame" runat="server" CssClass="btn btn-success btn-block" Text="Iniciar Juego" OnClick="btnStartGame_Click" />
 
     </p>
+    <div runat="server" id="divPopUp" >
+        <h2>Parámetros de inicio</h2>
+        <asp:Image ID="Image1" runat="server" ImageUrl="~/images/fijo/instrucciones.png" />
+        <br />
+        <asp:Button ID="btnClose" runat="server" Text="Cerrar" CssClass="btn btn-default"/>
+    </div>
+    
 </asp:Content>
 
