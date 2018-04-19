@@ -417,5 +417,15 @@ public partial class Tablero : PageBaseJugadorAuthentication
             isGameFinished = true;
             setNewRandomCard();//finish the game
         }
-    }   
+    }
+
+    /// <summary>
+    /// Skips the card temporarly changing to another card to minimize frustration for the user
+    /// </summary>
+    /// <param name="sender">Button to skip</param>
+    /// <param name="e">Click parameters</param>
+    protected void btnSkip_Click(object sender, ImageClickEventArgs e)
+    {
+        setNewRandomCard();
+    }
 }

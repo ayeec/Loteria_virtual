@@ -20,7 +20,8 @@ textarea {
 }
 
 .menuImage {
-    width:40vw;
+    max-width:40vw;
+    max-height: 40vw;
 }
 
 /* Responsive: Portrait tablets and up */

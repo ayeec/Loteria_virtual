@@ -40,6 +40,11 @@
                 <asp:Image CssClass="menuImage" ID="imgCardAtHand" runat="server" Visible="False" />
                 <asp:ImageButton CssClass="menuImage" ID="imgBtnShowImage" runat="server" ImageUrl="~/images/fijo/question.jpg" OnClick="imgBtnShowImage_Click" />
 
+                
+
+            </td>
+            <td>
+                <asp:ImageButton ID="btnSkip" CssClass="menuImage" runat="server" Text="Button" ImageUrl="~/images/fijo/skip.jpg" OnClick="btnSkip_Click"/>
             </td>
             <td>
                 <asp:ImageButton ID="imgBtnMakeNoise" runat="server" ImageUrl="~/images/fijo/speaker.jpg" Width="100%" OnClientClick="javascript:makeNoise(); return false;" CausesValidation="False" />
