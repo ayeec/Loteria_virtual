@@ -14,7 +14,7 @@
         }
     </style>
     <h1>
-        test
+        Bienvenido <%= JugadorName %>
     </h1>
     <ajaxToolkit:ModalPopupExtender ID="ModalPopupExtender1" runat="server" 
         CancelControlID="btnClose" 

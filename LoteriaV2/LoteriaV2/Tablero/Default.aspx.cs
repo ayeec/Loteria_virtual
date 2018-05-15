@@ -5,11 +5,11 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Tablero_Default : Page
+public partial class Tablero_Default : PageBaseJugadorAuthentication
 {
     protected void Page_Load(object sender, EventArgs e)
     {
-        //isJugadorLoggedIn();
+        isJugadorLoggedIn();
     }
 
     protected void btnStartGame_Click(object sender, EventArgs e)
