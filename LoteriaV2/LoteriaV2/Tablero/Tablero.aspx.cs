@@ -258,7 +258,7 @@ public partial class Tablero : PageBaseJugadorAuthentication
                         ctrTotalCardsPlayer, isHard, ctrSoundTotal);
                     if(gameID >= 1)
                     {
-                        for(int i = 0; i< cardStatics.ToArray().Length; i++)
+                        for(int i = 0; i< usedFrases.ToArray().Length; i++)
                         //foreach(CartasDTO carta in cardStatics)
                         {
                             CartasDTO carta = cardStatics.ToArray().ElementAt(i);
