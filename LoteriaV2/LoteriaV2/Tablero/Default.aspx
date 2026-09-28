@@ -33,6 +33,8 @@
         <br />
         <asp:CheckBox ID="chkHard" runat="server" Text="¿Desactivar ayuda?" CssClass="ckb" Font-Bold="false" Font-Italic="true"/>
         <br/>
+        <asp:Label ID="lblValidation" runat="server" CssClass="text-danger" EnableViewState="false" />
+        <br />
         <asp:Button ID="btnStartGame" runat="server" CssClass="btn btn-success btn-block" Text="Iniciar Juego" OnClick="btnStartGame_Click" />
 
     </p>
@@ -44,4 +46,3 @@
     </div>
     
 </asp:Content>
-

@@ -24,11 +24,20 @@ public partial class Account_Login : Page
                 Usuario_Jugador userInfo = new LoteriaDAO().isValidUser(UserName.Text, Password.Text);
                 if(userInfo != null)
                 {
-                    Session["usarioID"] = userInfo.IDusuario;
+                    Session.Clear();
+                    Session["usuarioID"] = userInfo.IDusuario;
                     Session["role"] = userInfo.Role;
                     Session["usuarioName"] = userInfo.NameUsuario;
-                    Session["jugadorName"] = userInfo.NameJugador;
-                    Session["jugadorID"] = userInfo.IDJugador;
+                    if (userInfo.IDJugador > 0)
+                    {
+                        Session["jugadorName"] = userInfo.NameJugador;
+                        Session["jugadorID"] = userInfo.IDJugador;
+                    }
+                    else
+                    {
+                        Session.Remove("jugadorName");
+                        Session.Remove("jugadorID");
+                    }
                     IdentityHelper.RedirectToReturnUrl(Request.QueryString["ReturnUrl"], Response);
                 }
                 else

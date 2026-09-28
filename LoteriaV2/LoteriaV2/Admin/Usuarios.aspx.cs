@@ -31,7 +31,26 @@ public partial class Admin_Usuarios : PageBaseUsuarioAuthentication
         (lvi.FindControl("CHRTIPOUSUARIOTextBox") as TextBox).Text = ddlUserType.SelectedValue;
     }
 
-   
+    protected void SQLDSUsuarios_Inserting(object sender, SqlDataSourceCommandEventArgs e)
+    {
+        TextBox passwordTextBox = lvUsuarios.InsertItem.FindControl("VCHPASSWORDTextBox") as TextBox;
+        if (passwordTextBox == null || String.IsNullOrEmpty(passwordTextBox.Text))
+        {
+            throw new InvalidOperationException("Se requiere una clave para crear el usuario.");
+        }
+
+        e.Command.Parameters["@VCHPASSWORD"].Value = PasswordStorage.HashPassword(passwordTextBox.Text);
+    }
+
+    protected void SQLDSUsuarios_Updating(object sender, SqlDataSourceCommandEventArgs e)
+    {
+        TextBox passwordTextBox = lvUsuarios.EditItem.FindControl("VCHPASSWORDTextBox") as TextBox;
+        e.Command.Parameters["@VCHPASSWORD"].Value =
+            passwordTextBox == null || String.IsNullOrEmpty(passwordTextBox.Text)
+                ? (object)DBNull.Value
+                : PasswordStorage.HashPassword(passwordTextBox.Text);
+    }
+
     protected void DeleteButton_Click(object sender, EventArgs e)
     {
         //fill_textboxes(lvUsuarios.selec);

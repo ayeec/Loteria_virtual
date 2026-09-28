@@ -22,6 +22,12 @@ public class CartasDTO
         this.Weight = weight;
     }
 
+    public CartasDTO(int idCarta, String nombre, String imagePath, String statement, int weight)
+        : this(idCarta, nombre, imagePath, weight)
+    {
+        Statement = statement;
+    }
+
     public int ID
     {
         get
@@ -56,7 +62,12 @@ public class CartasDTO
 
     public int Weight
     {
-        get;
+        get; private set;
+    }
+
+    public string Statement
+    {
+        get; set;
     }
 
     public Dictionary<string, int> Frases

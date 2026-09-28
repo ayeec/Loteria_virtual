@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-public partial class Tablero_TableroFijo : System.Web.UI.Page
+public partial class Tablero_TableroFijo : PageBaseJugadorAuthentication
 {
     ArrayList arrCardsAvailable = new ArrayList();
     int sizeTablero=2;
@@ -29,8 +29,18 @@ public partial class Tablero_TableroFijo : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
+        isJugadorLoggedIn();
+        if (!GameInputValidator.IsValidFixedBoardSettings(
+            Request.QueryString["size"] ?? "2", Request.QueryString["hard"] ?? "False"))
+        {
+            Response.StatusCode = 400;
+            Response.TrySkipIisCustomErrors = true;
+            Response.Write("Invalid game request.");
+            Context.ApplicationInstance.CompleteRequest();
+            return;
+        }
+
         Int32.TryParse(Request.QueryString["size"], out sizeTablero);
-        //isHard = Request.QueryString["hard"].Equals("True") ? true : false;
         Boolean.TryParse(Request.QueryString["hard"], out isHard);
         if (!IsPostBack)
         {

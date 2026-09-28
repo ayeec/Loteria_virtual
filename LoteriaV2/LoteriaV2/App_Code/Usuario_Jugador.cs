@@ -26,26 +26,26 @@ public class Usuario_Jugador
 
     public int IDusuario
     {
-        get;
+        get; private set;
     }
 
     public int IDJugador
     {
-        get;
+        get; private set;
     }
 
     public string NameUsuario
     {
-        get;
+        get; private set;
     }
 
     public string NameJugador
     {
-        get;
+        get; private set;
     }
 
     public char Role
     {
-        get;
+        get; private set;
     }
 }

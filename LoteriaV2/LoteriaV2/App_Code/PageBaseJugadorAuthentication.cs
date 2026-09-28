@@ -14,23 +14,20 @@ public partial class PageBaseJugadorAuthentication : PageBaseUsuarioAuthenticati
 
     protected void isJugadorLoggedIn()
     {
-        if (Session["jugadorID"] is null)
+        isUserLoggedIn();
+        object jugadorID = Session["jugadorID"];
+        if (!SessionAuthorization.IsPlayer(Session["usuarioID"], jugadorID, Role))
         {
-            Response.Redirect("~/Account/Login.aspx");
+            RedirectToLogin();
         }
-
     }
 
-    protected void Page_Load(object sender, EventArgs e)
-    {
-        
-    }
-    
     protected int JugadorID
     {
         get
         {
-            return Int32.Parse(Session["jugadorID"].ToString());
+            object jugadorID = Session["jugadorID"];
+            return jugadorID is int ? (int)jugadorID : 0;
         }
     }
 
@@ -38,7 +35,7 @@ public partial class PageBaseJugadorAuthentication : PageBaseUsuarioAuthenticati
     {
         get
         {
-            return Session["jugadorName"].ToString();
+            return Session["jugadorName"] as string;
         }
     }
 

@@ -55,10 +55,10 @@
         <div class="auto-style1" id="mainContent">
             <h1><span class="title">Felicidades</span></h1>
             <h2>
-                <span class="subtitle"><%= Request.QueryString["correct"] %> imagenes correcta(s)</span>
+                <span class="subtitle"><%: CorrectAnswers %> imagenes correcta(s)</span>
             </h2>
             <h3>
-                <span class="subtitle">Calificación <%= String.Format("{0:0.0}", Double.Parse(Request.QueryString["correct"])/Double.Parse(Request.QueryString["total"])*10) %></span>
+                <span class="subtitle">Calificación <%: Grade %></span>
             </h3>
             <asp:Image ID="imgReward" CssClass="image" runat="server" />
         </div>

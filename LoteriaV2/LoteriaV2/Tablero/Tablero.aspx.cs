@@ -17,11 +17,10 @@ public partial class Tablero : PageBaseJugadorAuthentication
     int fraseAtHandID;
     //used by the Tablero to know what cards not use
     List<int> usedCards = new List<int>();
-    //Frase used, runs paralel to usedCards List
-    Dictionary<string, int> usedFrases = new Dictionary<string, int>();
+    List<int> usedPhraseIds = new List<int>();
 
-    //CartaId, Carta Object. To be stored into the database as game detail
     List<CartasDTO> cardStatics = new List<CartasDTO>();
+    List<CartasDTO> playedCardResults = new List<CartasDTO>();
     //holds the cards that are used in the tablero
     ArrayList arrCardsTablero = new ArrayList();
     Dictionary<string, int> arrFrasesTablero = new Dictionary<string, int>();//todo add to viewstate
@@ -51,8 +50,13 @@ public partial class Tablero : PageBaseJugadorAuthentication
     {
         isJugadorLoggedIn();
 
-        Int32.TryParse(Request.QueryString["size"], out sizeTablero);
-        Boolean.TryParse(Request.QueryString["hard"], out isHard);
+        if (!GameInputValidator.TryGetBoardSettings(
+            Request.QueryString["size"], Request.QueryString["hard"], out sizeTablero, out isHard))
+        {
+            RejectInvalidRequest();
+            return;
+        }
+
         if (!IsPostBack)
         {
             
@@ -93,9 +97,10 @@ public partial class Tablero : PageBaseJugadorAuthentication
             ViewState["arrTablero"] = arrCardsAvailable;
 
             ViewState["usedCards"] = usedCards;
-            ViewState["usedFrases"] = usedFrases;
+            ViewState["usedPhraseIds"] = usedPhraseIds;
 
             ViewState["cardStatics"] = cardStatics;
+            ViewState["playedCardResults"] = playedCardResults;
             ViewState["ctrSoundTotal"] = ctrSoundTotal;
             ViewState["arrCardsTablero"] = arrCardsTablero;
             ViewState["ctrSort"] = ctrSort;
@@ -105,16 +110,34 @@ public partial class Tablero : PageBaseJugadorAuthentication
         }
         else
         {
+            if (ViewState["arrTablero"] == null || ViewState["cardAtHand"] == null ||
+                ViewState["usedCards"] == null || ViewState["usedPhraseIds"] == null ||
+                ViewState["cardStatics"] == null || ViewState["playedCardResults"] == null ||
+                ViewState["ctrImage"] == null || ViewState["ctrSoundTotal"] == null ||
+                ViewState["arrCardsTablero"] == null || ViewState["ctrSort"] == null ||
+                ViewState["ctrTotalCorrect"] == null || ViewState["ctrTotalIncorrect"] == null ||
+                ViewState["ctrTotalCardsPlayer"] == null)
+            {
+                RejectInvalidRequest();
+                return;
+            }
+
             arrCardsAvailable = ViewState["arrTablero"] as ArrayList;
             cardAtHand = ViewState["cardAtHand"] as CartasDTO;
+            if (ViewState["fraseAtHandID"] == null)
+            {
+                RejectInvalidRequest();
+                return;
+            }
             fraseAtHandID = Int32.Parse(ViewState["fraseAtHandID"].ToString());
 
             usedCards = ViewState["usedCards"] as List<int>;
-            usedFrases = ViewState["usedFrases"] as Dictionary<string,int>;
+            usedPhraseIds = ViewState["usedPhraseIds"] as List<int>;
 
             arrFrasesTablero = ViewState["arrFrasesTablero"] as Dictionary<string, int>;
 
             cardStatics = ViewState["cardStatics"] as List<CartasDTO>;
+            playedCardResults = ViewState["playedCardResults"] as List<CartasDTO>;
             ctrImage = Int32.Parse(ViewState["ctrImage"].ToString());
             ctrSoundTotal = Int32.Parse(ViewState["ctrSoundTotal"].ToString());
             arrCardsTablero = ViewState["arrCardsTablero"] as ArrayList;
@@ -122,6 +145,17 @@ public partial class Tablero : PageBaseJugadorAuthentication
             ctrTotalCorrect = Int32.Parse(ViewState["ctrTotalCorrect"].ToString());
             ctrTotalIncorrect = Int32.Parse(ViewState["ctrTotalIncorrect"].ToString());
             ctrTotalCardsPlayer = Int32.Parse(ViewState["ctrTotalCardsPlayer"].ToString());
+            if (usedCards == null || usedPhraseIds == null || playedCardResults == null ||
+                cardStatics == null || ctrTotalCardsPlayer < 0 ||
+                usedCards.Count != ctrTotalCardsPlayer ||
+                usedPhraseIds.Count != ctrTotalCardsPlayer ||
+                playedCardResults.Count != ctrTotalCardsPlayer ||
+                ctrTotalCorrect < 0 || ctrTotalIncorrect < 0 ||
+                ctrTotalCorrect + ctrTotalIncorrect != ctrTotalCardsPlayer)
+            {
+                RejectInvalidRequest();
+                return;
+            }
 
         }
 
@@ -135,6 +169,14 @@ public partial class Tablero : PageBaseJugadorAuthentication
     /// <param name="e">Event of the click</param>
     protected void imgbtn1_Click(object sender, ImageClickEventArgs e)
     {
+        int usedSoundThisTurn;
+        if (!Int32.TryParse(hdnUsedSound.Value, out usedSoundThisTurn) ||
+            usedSoundThisTurn < 0 || usedSoundThisTurn > 100)
+        {
+            RejectInvalidRequest();
+            return;
+        }
+
         hideSortControls();
         ImageButton ib = (sender as ImageButton);
         //if( .ToString().Equals(lblCardAtHand.Text))
@@ -172,18 +214,28 @@ public partial class Tablero : PageBaseJugadorAuthentication
          * used arrays
         */
         usedCards.Add(Int32.Parse(ib.ID));
-        usedFrases.Add( ib.AlternateText, arrFrasesTablero[ib.AlternateText]);
+        usedPhraseIds.Add(arrFrasesTablero[ib.AlternateText]);
 
         ViewState["usedCards"] = usedCards;
-        ViewState["usedFrases"] = usedFrases;
+        ViewState["usedPhraseIds"] = usedPhraseIds;
         ctrTotalCardsPlayer++;
         ViewState["ctrTotalCardsPlayer"] = ctrTotalCardsPlayer;
 
         //used sound, store it
-        cardStatics[cardStatics.ToArray().Length - 1].UsedSound = Int32.Parse(hdnUsedSound.Value) >= 1 ? true : false;
+        cardStatics[cardStatics.Count - 1].UsedSound = usedSoundThisTurn > 0;
+        CartasDTO playedCard = cardStatics[cardStatics.Count - 1];
+        playedCardResults.Add(new CartasDTO(
+            playedCard.ID, playedCard.Name, playedCard.Path, playedCard.Weight)
+        {
+            GuessedCorrectly = playedCard.GuessedCorrectly,
+            UsedImage = playedCard.UsedImage,
+            UsedSound = playedCard.UsedSound
+        });
+        ViewState["playedCardResults"] = playedCardResults;
         
         //Page variable to hold the ctrSound total of times Sound was used (it is Int, not boolean)
-        ViewState["ctrSoundTotal"] = ctrSoundTotal +Int32.Parse(hdnUsedSound.Value);
+        ctrSoundTotal += usedSoundThisTurn;
+        ViewState["ctrSoundTotal"] = ctrSoundTotal;
         /*Get new random card to show*/
         setNewRandomCard();
         ib.Enabled = false;
@@ -252,20 +304,20 @@ public partial class Tablero : PageBaseJugadorAuthentication
                     imgBtnMakeNoise.Enabled = false;
                     lblGameFinished.Visible = true;
 
-                    int gameID = loteria.insertGameInfo(JugadorID,
+                    if (!GameInputValidator.IsValidGameResult(
+                        sizeTablero, ctrTotalCorrect, ctrTotalIncorrect, ctrTotalCardsPlayer, ctrSoundTotal))
+                    {
+                        RejectInvalidRequest();
+                        return;
+                    }
+
+                    int gameID = loteria.insertCompletedGame(JugadorID,
                         DateTime.Now, ctrTotalCorrect, ctrTotalIncorrect,
-                        ((double)ctrTotalCorrect) / ((double)ctrTotalCardsPlayer) * 10.0, //grade
-                        ctrTotalCardsPlayer, isHard, ctrSoundTotal);
+                        ((double)ctrTotalCorrect) / ((double)ctrTotalCardsPlayer) * 10.0,
+                        ctrTotalCardsPlayer, isHard, ctrSoundTotal,
+                        usedCards, playedCardResults, usedPhraseIds);
                     if(gameID >= 1)
                     {
-                        for(int i = 0; i< usedFrases.ToArray().Length; i++)
-                        //foreach(CartasDTO carta in cardStatics)
-                        {
-                            CartasDTO carta = cardStatics.ToArray().ElementAt(i);
-                            loteria.insertGameDetails(gameID, usedCards[i], carta.UsedSound, carta.UsedImage, 
-                                carta.GuessedCorrectly, usedFrases.ElementAt(i).Value);
-                        }
-
                         ScriptManager.RegisterStartupScript(Page, Page.GetType(), "popup",
                             "window.open('" + "Recompensa.aspx?total="+(sizeTablero*sizeTablero)+"&correct="+ ctrTotalCorrect + "','_blank', " +
                             "'width=250,height=350,toolbar=no,location = no,status = no," +
@@ -282,6 +334,14 @@ public partial class Tablero : PageBaseJugadorAuthentication
             }
         } while (true);
 
+    }
+
+    private void RejectInvalidRequest()
+    {
+        Response.StatusCode = 400;
+        Response.TrySkipIisCustomErrors = true;
+        Response.Write("Invalid game request.");
+        Context.ApplicationInstance.CompleteRequest();
     }
 
     /// <summary>

@@ -2,25 +2,23 @@
 
 
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:SqlDataSource ID="SQLDSUsuarios" runat="server" ConnectionString="<%$ ConnectionStrings:DefaultConnection %>" SelectCommand="SELECT * FROM [usuario]" ConflictDetection="CompareAllValues" DeleteCommand="DELETE FROM [usuario] WHERE [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHUSUARIO] = @original_VCHUSUARIO AND [VCHPASSWORD] = @original_VCHPASSWORD AND [CHRTIPOUSUARIO] = @original_CHRTIPOUSUARIO" InsertCommand="INSERT INTO [usuario] ([VCHUSUARIO], [VCHPASSWORD], [CHRTIPOUSUARIO]) VALUES (@VCHUSUARIO, @VCHPASSWORD, @CHRTIPOUSUARIO)" OldValuesParameterFormatString="original_{0}" UpdateCommand="UPDATE [usuario] SET [VCHUSUARIO] = @VCHUSUARIO, [VCHPASSWORD] = @VCHPASSWORD, [CHRTIPOUSUARIO] = @CHRTIPOUSUARIO WHERE [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHUSUARIO] = @original_VCHUSUARIO AND [VCHPASSWORD] = @original_VCHPASSWORD AND [CHRTIPOUSUARIO] = @original_CHRTIPOUSUARIO" OnDeleted="SQLDSUsuarios_Deleted">
+    <asp:SqlDataSource ID="SQLDSUsuarios" runat="server" ConnectionString="<%$ ConnectionStrings:DefaultConnection %>" SelectCommand="SELECT INTCVEUSUARIO, VCHUSUARIO, CHRTIPOUSUARIO FROM [usuario]" ConflictDetection="CompareAllValues" DeleteCommand="DELETE FROM [usuario] WHERE [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHUSUARIO] = @original_VCHUSUARIO AND [CHRTIPOUSUARIO] = @original_CHRTIPOUSUARIO" InsertCommand="INSERT INTO [usuario] ([VCHUSUARIO], [VCHPASSWORD], [CHRTIPOUSUARIO]) VALUES (@VCHUSUARIO, @VCHPASSWORD, @CHRTIPOUSUARIO)" OldValuesParameterFormatString="original_{0}" UpdateCommand="UPDATE [usuario] SET [VCHUSUARIO] = @VCHUSUARIO, [VCHPASSWORD] = COALESCE(@VCHPASSWORD, [VCHPASSWORD]), [CHRTIPOUSUARIO] = @CHRTIPOUSUARIO WHERE [INTCVEUSUARIO] = @original_INTCVEUSUARIO AND [VCHUSUARIO] = @original_VCHUSUARIO AND [CHRTIPOUSUARIO] = @original_CHRTIPOUSUARIO" OnDeleted="SQLDSUsuarios_Deleted" OnInserting="SQLDSUsuarios_Inserting" OnUpdating="SQLDSUsuarios_Updating">
         <DeleteParameters>
             <asp:Parameter Name="original_INTCVEUSUARIO" Type="Int32" />
             <asp:Parameter Name="original_VCHUSUARIO" Type="String" />
-            <asp:Parameter Name="original_VCHPASSWORD" Type="String" />
             <asp:Parameter Name="original_CHRTIPOUSUARIO" Type="String" />
         </DeleteParameters>
         <InsertParameters>
             <asp:Parameter Name="VCHUSUARIO" Type="String" />
-            <asp:Parameter Name="VCHPASSWORD" Type="String" />
+            <asp:Parameter Name="VCHPASSWORD" Type="String" Size="256" />
             <asp:Parameter Name="CHRTIPOUSUARIO" Type="String" />
         </InsertParameters>
         <UpdateParameters>
             <asp:Parameter Name="VCHUSUARIO" Type="String" />
-            <asp:Parameter Name="VCHPASSWORD" Type="String" />
+            <asp:Parameter Name="VCHPASSWORD" Type="String" Size="256" />
             <asp:Parameter Name="CHRTIPOUSUARIO" Type="String" />
             <asp:Parameter Name="original_INTCVEUSUARIO" Type="Int32" />
             <asp:Parameter Name="original_VCHUSUARIO" Type="String" />
-            <asp:Parameter Name="original_VCHPASSWORD" Type="String" />
             <asp:Parameter Name="original_CHRTIPOUSUARIO" Type="String" />
         </UpdateParameters>
     </asp:SqlDataSource>
@@ -41,7 +39,7 @@
                      <asp:TextBox ID="VCHUSUARIOTextBox" runat="server" Text='<%# Bind("VCHUSUARIO") %>'  MaxLength="45"/>
                  </td>
                  <td>
-                     <asp:TextBox ID="VCHPASSWORDTextBox" runat="server" Text='<%# Bind("VCHPASSWORD") %>'  MaxLength="45"/>
+                     <asp:TextBox ID="VCHPASSWORDTextBox" runat="server" TextMode="Password" MaxLength="128" placeholder="Nueva clave (opcional)" />
                  </td>
                  <td>
                         <asp:DropDownList ID="ddlUserType" runat="server">
@@ -71,7 +69,8 @@
                      <asp:TextBox ID="VCHUSUARIOTextBox" runat="server" Text='<%# Bind("VCHUSUARIO") %>'  MaxLength="45"/>
                  </td>
                  <td>
-                     <asp:TextBox ID="VCHPASSWORDTextBox" runat="server" Text='<%# Bind("VCHPASSWORD") %>' MaxLength="45"/>
+                     <asp:TextBox ID="VCHPASSWORDTextBox" runat="server" TextMode="Password" MaxLength="128"/>
+                     <asp:RequiredFieldValidator ID="PasswordRequired" runat="server" ControlToValidate="VCHPASSWORDTextBox" ErrorMessage="La clave es requerida." CssClass="text-danger" />
 
                  </td>
                  <td>
@@ -147,7 +146,7 @@
                      <asp:Label ID="VCHUSUARIOLabel" runat="server" Text='<%# Eval("VCHUSUARIO") %>' />
                  </td>
                  <td>
-                     <asp:Label ID="VCHPASSWORDLabel" runat="server" Text='<%# Eval("VCHPASSWORD") %>' />
+                     <asp:Label ID="VCHPASSWORDLabel" runat="server" Text="*****" />
                  </td>
                  <td>
                      <asp:Label ID="CHRTIPOUSUARIOLabel" runat="server" Text='<%# Eval("CHRTIPOUSUARIO") %>' />

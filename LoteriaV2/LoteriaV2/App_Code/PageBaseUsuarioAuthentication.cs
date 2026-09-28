@@ -14,32 +14,50 @@ public partial class PageBaseUsuarioAuthentication : System.Web.UI.Page
 
     protected void isUserLoggedIn()
     {
-        if (Session["usuarioID"] is null)
+        if (!IsAuthenticated)
         {
-            Response.Redirect("~/Account/Login.aspx");
+            RedirectToLogin();
         }
-
     }
 
     protected void checkAdminPrivileges()
     {
-        if (Session["role"] is null|| !Session["role"].ToString()[0].Equals('A'))
+        if (!SessionAuthorization.IsAdmin(Session["usuarioID"], Role))
         {
-            Response.Redirect("~/Account/Login.aspx");
+            RedirectToLogin();
         }
-
     }
 
-    protected void Page_Load(object sender, EventArgs e)
+    protected bool IsAuthenticated
     {
-        
+        get
+        {
+            return SessionAuthorization.IsAuthenticated(Session["usuarioID"], Role);
+        }
     }
-    
+
+    protected void RedirectToLogin()
+    {
+        Response.Redirect("~/Account/Login.aspx");
+    }
+
     public char Role
     {
         get
         {
-            return Session["role"].ToString()[0];
+            object role = Session["role"];
+            string roleValue = role as string;
+            if (roleValue != null && roleValue.Length > 0)
+            {
+                return roleValue[0];
+            }
+
+            if (role is char)
+            {
+                return (char)role;
+            }
+
+            return '\0';
         }
     }
 
@@ -47,7 +65,8 @@ public partial class PageBaseUsuarioAuthentication : System.Web.UI.Page
     {
         get
         {
-            return Int32.Parse(Session["usuarioID"].ToString());
+            object userId = Session["usuarioID"];
+            return userId is int ? (int)userId : 0;
         }
     }
 
@@ -55,7 +74,7 @@ public partial class PageBaseUsuarioAuthentication : System.Web.UI.Page
     {
         get
         {
-            return Session["usuarioName"].ToString();
+            return Session["usuarioName"] as string;
         }
     }
 }

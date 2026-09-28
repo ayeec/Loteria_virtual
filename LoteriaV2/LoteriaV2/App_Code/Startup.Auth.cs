@@ -3,6 +3,8 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
+using System;
+using System.Configuration;
 
 namespace LoteriaV2
 {
@@ -17,7 +19,13 @@ namespace LoteriaV2
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login")
+                LoginPath = new PathString("/Account/Login"),
+                CookieHttpOnly = true,
+                CookieSecure = String.Equals(
+                    ConfigurationManager.AppSettings["RequireSecureCookies"], "true",
+                    StringComparison.OrdinalIgnoreCase)
+                    ? CookieSecureOption.Always
+                    : CookieSecureOption.SameAsRequest
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 

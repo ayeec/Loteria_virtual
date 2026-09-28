@@ -6,48 +6,78 @@
  * To change this template use Tools | Options | Coding | Edit Standard Headers.
  */
 using System;
+using System.Data;
 using System.Data.SqlClient;
 
-
-/// <summary>
-/// Data Access Object
-/// Used to connect the queries and procedures to the database execution.
-/// </summary>
 public abstract class DAO<T>
 {
-
-
-	protected SqlCommand command;
-	
-	protected SqlDataReader reader;
-    private SqlConnection sqlConnection;
-
-    private string procedureName;
-
-    public DAO()
-	{
-		//this.dataConnection = sqlConnection;
-	}
-
-    //public abstract void executeSQL(T objeto, String procedimiento, int opcion);
-    public SqlDataReader executeQuery(String query){
-		command = new SqlCommand(query, SingletonDataConnection.Instance);
-
-        reader = command.ExecuteReader();
-		
-		return reader;
-	}
-	public SqlDataReader executeProcedure(){
-		
-        reader = command.ExecuteReader();
-
-        return reader;
-    }
-
-    public void setProcedure(string procName)
+    protected TResult executeQuery<TResult>(
+        string query, Func<SqlDataReader, TResult> readResult, params SqlParameter[] parameters)
     {
-        command = new SqlCommand(procName, SingletonDataConnection.Instance);
-        command.CommandType = System.Data.CommandType.StoredProcedure;
+        if (readResult == null)
+        {
+            throw new ArgumentNullException("readResult");
+        }
+
+        using (SqlConnection connection = SingletonDataConnection.CreateConnection())
+        using (SqlCommand command = new SqlCommand(query, connection))
+        {
+            AddParameters(command, parameters);
+            connection.Open();
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                return readResult(reader);
+            }
+        }
     }
-  
+
+    protected object executeScalar(
+        string query, SqlTransaction transaction, params SqlParameter[] parameters)
+    {
+        if (transaction == null)
+        {
+            throw new ArgumentNullException("transaction");
+        }
+
+        using (SqlCommand command = new SqlCommand(query, transaction.Connection, transaction))
+        {
+            AddParameters(command, parameters);
+            return command.ExecuteScalar();
+        }
+    }
+
+    protected int executeNonQuery(string query, params SqlParameter[] parameters)
+    {
+        using (SqlConnection connection = SingletonDataConnection.CreateConnection())
+        using (SqlCommand command = new SqlCommand(query, connection))
+        {
+            AddParameters(command, parameters);
+            connection.Open();
+            return command.ExecuteNonQuery();
+        }
+    }
+
+    protected int executeProcedureNonQuery(
+        string procedureName, SqlTransaction transaction, params SqlParameter[] parameters)
+    {
+        if (transaction == null)
+        {
+            throw new ArgumentNullException("transaction");
+        }
+
+        using (SqlCommand command = new SqlCommand(procedureName, transaction.Connection, transaction))
+        {
+            command.CommandType = CommandType.StoredProcedure;
+            AddParameters(command, parameters);
+            return command.ExecuteNonQuery();
+        }
+    }
+
+    private static void AddParameters(SqlCommand command, SqlParameter[] parameters)
+    {
+        if (parameters != null && parameters.Length > 0)
+        {
+            command.Parameters.AddRange(parameters);
+        }
+    }
 }
