@@ -13,7 +13,8 @@ try {
     & $compiler /nologo /target:exe "/out:$testExe" `
         (Join-Path $PSScriptRoot 'ValidationTests.cs') `
         (Join-Path $websiteRoot 'App_Code\GameInputValidator.cs') `
-        (Join-Path $websiteRoot 'App_Code\SessionAuthorization.cs')
+        (Join-Path $websiteRoot 'App_Code\SessionAuthorization.cs') `
+        (Join-Path $websiteRoot 'App_Code\IdentityErrorLocalizer.cs')
     if ($LASTEXITCODE -ne 0) {
         throw "Validation test compilation failed with exit code $LASTEXITCODE."
     }

@@ -46,8 +46,8 @@
                     </div>
                 </div>
                 <p hidden="hidden">
-                    <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled" Visible="False">Register</asp:HyperLink>
-                    if you don't have a local account.
+                    <asp:HyperLink runat="server" ID="RegisterHyperLink" ViewStateMode="Disabled" Visible="False">Regístrate</asp:HyperLink>
+                    si todavía no tienes una cuenta.
                 </p>
             </section>
         </div>
@@ -59,4 +59,3 @@
         </div>
     </div>
 </asp:Content>
-

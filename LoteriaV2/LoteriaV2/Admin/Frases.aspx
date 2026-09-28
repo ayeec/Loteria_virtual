@@ -124,8 +124,8 @@ WHERE (c.INTCVECARTA = CASE WHEN  @INTCVECARTA > 0 THEN @INTCVECARTA ELSE c.[INT
         <SelectedItemTemplate>
             <tr style="">
                 <td>
-                    <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" CssClass="btn btn-primary"/>
-                    <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete" CssClass="btn btn-danger"/>
+                    <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" CssClass="btn btn-primary"/>
+                    <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar" CssClass="btn btn-danger"/>
                 </td>
                 <td>
                     <asp:Label ID="INTIDFRASELabel" runat="server" Text='<%# Eval("INTIDFRASE") %>' />
@@ -140,4 +140,3 @@ WHERE (c.INTCVECARTA = CASE WHEN  @INTCVECARTA > 0 THEN @INTCVECARTA ELSE c.[INT
         </SelectedItemTemplate>
     </asp:ListView>
 </asp:Content>
-

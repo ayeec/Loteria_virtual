@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Linq;
 using System.Web.UI;
@@ -18,7 +18,7 @@ public partial class Account_Register : Page
         }
         else
         {
-            ErrorMessage.Text = result.Errors.FirstOrDefault();
+            ErrorMessage.Text = String.Join(" ", result.Errors.Select(IdentityErrorLocalizer.Translate));
         }
     }
 }

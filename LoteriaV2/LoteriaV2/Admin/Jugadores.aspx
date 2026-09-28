@@ -74,7 +74,7 @@
          <EditItemTemplate>
              <tr class="itemRowAlt">
                  <td>
-                     <asp:Button ID="UpdateButton" runat="server" CommandName="Actualizar" Text="Update" OnClick="UpdateButton_Click" CssClass="btn btn-success"/>
+                     <asp:Button ID="UpdateButton" runat="server" CommandName="Actualizar" Text="Actualizar" OnClick="UpdateButton_Click" CssClass="btn btn-success"/>
                      <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancelar" CssClass="btn btn-outline-danger"/>
                  </td>
                  <td>

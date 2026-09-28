@@ -340,7 +340,7 @@ public partial class Tablero : PageBaseJugadorAuthentication
     {
         Response.StatusCode = 400;
         Response.TrySkipIisCustomErrors = true;
-        Response.Write("Invalid game request.");
+        Response.Write("La solicitud del juego no es válida.");
         Context.ApplicationInstance.CompleteRequest();
     }
 

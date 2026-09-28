@@ -44,7 +44,7 @@
 
             </td>
             <td>
-                <asp:ImageButton ID="btnSkip" CssClass="menuImage" runat="server" Text="Button" ImageUrl="~/images/fijo/skip.jpg" OnClick="btnSkip_Click"/>
+                <asp:ImageButton ID="btnSkip" CssClass="menuImage" runat="server" Text="Saltar carta" ToolTip="Saltar esta carta" AlternateText="Saltar esta carta" ImageUrl="~/images/fijo/skip.jpg" OnClick="btnSkip_Click"/>
             </td>
             <td>
                 <asp:ImageButton ID="imgBtnMakeNoise" runat="server" ImageUrl="~/images/fijo/speaker.jpg" Width="100%" OnClientClick="javascript:makeNoise(); return false;" CausesValidation="False" />
@@ -63,4 +63,3 @@
     </asp:Table>    
 
 </asp:Content>
-

@@ -104,7 +104,7 @@ public partial class Account_RegisterExternalLogin : System.Web.UI.Page
     {
         foreach (var error in result.Errors)
         {
-            ModelState.AddModelError("", error);
+            ModelState.AddModelError("", IdentityErrorLocalizer.Translate(error));
         }
     }
 }

@@ -71,6 +71,18 @@ internal static class ValidationTests
         Assert(!SessionAuthorization.IsPlayer(null, 2, 'J'),
             "A player session without a user ID should be rejected.");
 
+        Assert(IdentityErrorLocalizer.Translate("Passwords must be at least 6 characters.") ==
+            "La contraseña debe tener al menos 6 caracteres.",
+            "Password policy errors should be displayed in Spanish.");
+        Assert(IdentityErrorLocalizer.Translate("Name test is already taken.") ==
+            "Ese nombre de usuario ya está en uso.",
+            "Duplicate account errors should be displayed in Spanish.");
+        Assert(IdentityErrorLocalizer.Translate("Incorrect password.") ==
+            "La contraseña actual es incorrecta.",
+            "Current-password errors should be displayed in Spanish.");
+        Assert(IdentityErrorLocalizer.Translate("Unexpected framework error").Contains("No se pudo"),
+            "Unexpected identity errors should use the Spanish fallback.");
+
         Console.WriteLine("Passed {0} validation and authorization assertions.", assertions);
     }
 }

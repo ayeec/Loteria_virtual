@@ -24,7 +24,7 @@
         >
     </ajaxToolkit:ModalPopupExtender>
     <asp:HyperLink ID="lnkInstructions" runat="server" CssClass="btn btn-link">Instrucciones</asp:HyperLink>
-    <p>Introduzca los parametros para empezar:</p>
+    <p>Introduce los parámetros para comenzar:</p>
     <p>
         <asp:Label ID="lblSize" runat="server" Text="Tamaño del tablero:" Font-Bold="false" Font-Italic="true"></asp:Label>
         <asp:TextBox ID="txtSlider" MaxLength="1" runat="server" Width="15pt" Enabled="false" Font-Bold="true"></asp:TextBox>

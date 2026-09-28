@@ -33,8 +33,8 @@
          <EditItemTemplate>
              <tr>
                  <td>
-                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Update" />
-                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancel" />
+                     <asp:Button ID="UpdateButton" runat="server" CommandName="Update" Text="Actualizar" />
+                     <asp:Button ID="CancelButton" runat="server" CommandName="Cancel" Text="Cancelar" />
                  </td>
                  <td>
                      <asp:Label ID="INTIDCATEGORIALabel1" runat="server" Text='<%# Eval("INTIDCATEGORIA") %>' />
@@ -69,7 +69,7 @@
     </asp:DropDownList>
                      
                      <asp:TextBox ID="INTCVECARTATextBox" runat="server" Text='<%# Bind("INTCVECARTA") %>' Visible="false"/>
-                     <asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="RangeValidator" ControlToValidate="INTCVECARTATextBox" MinimumValue="1" Type="Integer" MaximumValue="100000"></asp:RangeValidator>
+                     <asp:RangeValidator ID="RangeValidator1" runat="server" ErrorMessage="Selecciona una carta válida." ControlToValidate="INTCVECARTATextBox" MinimumValue="1" Type="Integer" MaximumValue="100000"></asp:RangeValidator>
                  </td>
                  
              </tr>

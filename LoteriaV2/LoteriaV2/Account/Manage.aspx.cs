@@ -49,9 +49,9 @@ public partial class Account_Manage : System.Web.UI.Page
                 Form.Action = ResolveUrl("~/Account/Manage");
 
                 SuccessMessage =
-                    message == "ChangePwdSuccess" ? "Your password has been changed."
-                    : message == "SetPwdSuccess" ? "Your password has been set."
-                    : message == "RemoveLoginSuccess" ? "The account was removed."
+                    message == "ChangePwdSuccess" ? "Tu contraseña se cambió correctamente."
+                    : message == "SetPwdSuccess" ? "Tu contraseña se creó correctamente."
+                    : message == "RemoveLoginSuccess" ? "Se quitó el inicio de sesión vinculado."
                     : String.Empty;
                 successMessage.Visible = !String.IsNullOrEmpty(SuccessMessage);
             }
@@ -121,7 +121,7 @@ public partial class Account_Manage : System.Web.UI.Page
     {
         foreach (var error in result.Errors)
         {
-            ModelState.AddModelError("", error);
+            ModelState.AddModelError("", IdentityErrorLocalizer.Translate(error));
         }
     }
 }

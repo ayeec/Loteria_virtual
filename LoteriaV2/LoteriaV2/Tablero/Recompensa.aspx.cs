@@ -22,7 +22,7 @@ public partial class Tablero_Recompensa : PageBaseJugadorAuthentication
         {
             Response.StatusCode = 400;
             Response.TrySkipIisCustomErrors = true;
-            Response.Write("Invalid game result.");
+            Response.Write("El resultado del juego no es válido.");
             Context.ApplicationInstance.CompleteRequest();
             return;
         }

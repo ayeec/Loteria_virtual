@@ -53,7 +53,7 @@
          <EmptyDataTemplate>
              <table runat="server">
                  <tr>
-                     <td>No datos fueron regresado.</td>
+                     <td>No se encontraron datos.</td>
                  </tr>
              </table>
          </EmptyDataTemplate>
@@ -136,8 +136,8 @@
          <SelectedItemTemplate>
              <tr style="background-color:#008A8C;font-weight: bold;color: #FFFFFF;">
                  <td>
-                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Delete"/>
-                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Edit" />
+                     <asp:Button ID="DeleteButton" runat="server" CommandName="Delete" Text="Borrar"/>
+                     <asp:Button ID="EditButton" runat="server" CommandName="Edit" Text="Editar" />
                  </td>
                  <td>
                      <asp:Label ID="INTCVEUSUARIOLabel" runat="server" Text='<%# Eval("INTCVEUSUARIO") %>' />
