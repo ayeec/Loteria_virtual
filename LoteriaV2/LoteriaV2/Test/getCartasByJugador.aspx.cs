@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +7,7 @@ using System.Web.UI.WebControls;
 
 public partial class Test_getCartasByJugador : System.Web.UI.Page
 {
-    ArrayList arrCartas;
+    List<CartasDTO> arrCartas;
     protected void Page_Load(object sender, EventArgs e)
     {
         LoteriaDAO loteria = new LoteriaDAO();
@@ -22,6 +21,6 @@ public partial class Test_getCartasByJugador : System.Web.UI.Page
 
         int gameID = loteria.insertGameInfo(2, DateTime.Now, 2, 2, 5, 4, false, 5);
 
-        loteria.insertGameDetails(gameID, 1, true, false, true);
+        loteria.insertGameDetails(gameID, 1, true, false, true, 0);
     }
 }

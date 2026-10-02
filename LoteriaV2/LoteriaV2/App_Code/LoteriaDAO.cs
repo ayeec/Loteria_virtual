@@ -1,37 +1,45 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using System.Collections;
 using System.Data;
+using System.Data.SqlClient;
 
 /// <summary>
 /// Where the queries and stored procedures are called
+/// Refactored: All queries now use parameterization to prevent SQL injection
 /// </summary>
 public class LoteriaDAO : DAO<CartasDTO>
 {
-    ArrayList arrCartasByJugador = new ArrayList();
+    List<CartasDTO> cardsByPlayer = new List<CartasDTO>();
 
-    static SingletonDataConnection sqlConnection;
-    public LoteriaDAO () : base ()
+    public LoteriaDAO() : base()
     {
         
     }
 
-    public ArrayList getCartasByJugador(int jugadorID)
+    public List<CartasDTO> getCartasByJugador(int jugadorID)
     {
-        reader = executeQuery("SELECT c.intcvecarta, c.vchnombre, c.rutaimagen, cdj.intIDpeso " +
+        cardsByPlayer.Clear();
+        
+        string query = "SELECT c.intcvecarta, c.vchnombre, c.rutaimagen, cdj.intIDpeso " +
             "FROM cartas c JOIN cartascategoria cc ON c.intcvecarta = cc.intcvecarta " +
             "JOIN categoria cat ON cat.intidcategoria = cc.intidcategoria " +
             "JOIN categoriasdejugador cdj ON cdj.intidcategoria = cat.intidcategoria " +
-            "WHERE cdj.intcvejugador = "+ jugadorID);
+            "WHERE cdj.intcvejugador = @jugadorID";
+        
+        SqlParameter[] parameters = new SqlParameter[] {
+            new SqlParameter("@jugadorID", SqlDbType.Int) { Value = jugadorID }
+        };
+        
+        reader = executeQuery(query, parameters);
 
         if (reader.HasRows)
         {
             while(reader.Read())
             {
-                arrCartasByJugador.Add(new CartasDTO(reader.GetInt32(0), reader.GetString(1),
-                   "~/images/"+ reader.GetString(2), reader.GetInt32(3)));
+                cardsByPlayer.Add(new CartasDTO(reader.GetInt32(0), reader.GetString(1),
+                   "~/images/" + reader.GetString(2), reader.GetInt32(3)));
             }
         }
         else
@@ -39,7 +47,7 @@ public class LoteriaDAO : DAO<CartasDTO>
             return null;
         }
         reader.Close();
-        return arrCartasByJugador;
+        return cardsByPlayer;
     }
 
     /// <summary>
@@ -53,18 +61,31 @@ public class LoteriaDAO : DAO<CartasDTO>
     /// <param name="totalCardsPlayed"></param>
     /// <param name="isHard"></param>
     /// <param name="totalSound"></param>
-    /// <returns>}ID of the HISTORIALRESULTADOS record, to be used in the insert of the DETALLEJUEGO inserts</returns>
+    /// <returns>ID of the HISTORIALRESULTADOS record, to be used in the insert of the DETALLEJUEGO inserts</returns>
     public int insertGameInfo(int idJugador, DateTime date, int totalCorrect, int totalIncorrect, double grade,
         int totalCardsPlayed /*total = X*X */, bool isHard, int totalSound)
     {
         int idJuego = -1;
 
-        //todo pass it to a SP
-        reader = executeQuery("INSERT INTO HISTORIALRESULTADOS " +
+        // Using parameterized query to prevent SQL injection
+        string query = "INSERT INTO HISTORIALRESULTADOS " +
             "(intcvejugador, datefecha, intaciertos, interrores, intcalificacion, inttotalcartas, booldificil, intsonido) " +
-            "VALUES (" + idJugador+",'"+date.ToString("yyyy/MM/dd hh:mm") +"'," + totalCorrect + "," + totalIncorrect + "," + grade + ","
-            + totalCardsPlayed + "," + boolToInt(isHard) + "," + totalSound + ");" +
-            "SELECT MAX(intIDjuego) FROM HISTORIALRESULTADOS");
+            "VALUES (@idJugador, @date, @totalCorrect, @totalIncorrect, @grade, @totalCardsPlayed, @isHard, @totalSound);" +
+            "SELECT MAX(intIDjuego) FROM HISTORIALRESULTADOS";
+        
+        SqlParameter[] parameters = new SqlParameter[]
+        {
+            new SqlParameter("@idJugador", SqlDbType.Int) { Value = idJugador },
+            new SqlParameter("@date", SqlDbType.DateTime) { Value = date },
+            new SqlParameter("@totalCorrect", SqlDbType.Int) { Value = totalCorrect },
+            new SqlParameter("@totalIncorrect", SqlDbType.Int) { Value = totalIncorrect },
+            new SqlParameter("@grade", SqlDbType.Float) { Value = grade },
+            new SqlParameter("@totalCardsPlayed", SqlDbType.Int) { Value = totalCardsPlayed },
+            new SqlParameter("@isHard", SqlDbType.Bit) { Value = isHard },
+            new SqlParameter("@totalSound", SqlDbType.Int) { Value = totalSound }
+        };
+        
+        reader = executeQuery(query, parameters);
 
         if (reader.HasRows)
         {
@@ -74,14 +95,14 @@ public class LoteriaDAO : DAO<CartasDTO>
         }
         else
         {
-            idJuego=-1;
+            idJuego = -1;
         }
         reader.Close();
 
         return idJuego;
     }
 
-    public void insertGameDetails(int idJuego, int idCarta, bool usedSound,bool usedImage, bool guessedCorrectly, int idFrase)
+    public void insertGameDetails(int idJuego, int idCarta, bool usedSound, bool usedImage, bool guessedCorrectly, int idFrase)
     {
         setProcedure("sp_detallejuego_insert_or_update");
         base.command.Parameters.AddWithValue("@IDCarta", idCarta);
@@ -101,11 +122,20 @@ public class LoteriaDAO : DAO<CartasDTO>
     public Usuario_Jugador isValidUser(string user, string password)
     {
         Usuario_Jugador userInfo = null;
-        //todo, convert it to a SP
-        reader = executeQuery("SELECT u.INTCVEUSUARIO, u.VCHUSUARIO, u.CHRTIPOUSUARIO, j.INTCVEJUGADOR, j.VCHNOMBRE " +
+        
+        // CRITICAL: Using parameterized query to prevent SQL injection
+        string query = "SELECT u.INTCVEUSUARIO, u.VCHUSUARIO, u.CHRTIPOUSUARIO, j.INTCVEJUGADOR, j.VCHNOMBRE " +
             "FROM usuario u LEFT OUTER JOIN jugador j " +
             "ON u.INTCVEUSUARIO = j.INTCVEUSUARIO " +
-            "WHERE UPPER(u.VCHUSUARIO) = '" + user.ToUpper() + "' AND u.VCHPASSWORD = '"+ password+"'");
+            "WHERE UPPER(u.VCHUSUARIO) = @user AND u.VCHPASSWORD = @password";
+        
+        SqlParameter[] parameters = new SqlParameter[]
+        {
+            new SqlParameter("@user", SqlDbType.NVarChar, 100) { Value = user.ToUpper() },
+            new SqlParameter("@password", SqlDbType.NVarChar, 100) { Value = password }
+        };
+        
+        reader = executeQuery(query, parameters);
 
         if (reader.HasRows)
         {
@@ -126,16 +156,24 @@ public class LoteriaDAO : DAO<CartasDTO>
         return userInfo;
     }
 
-    public Dictionary<string, int> getFrasesPerCard (int cardID)
+    public Dictionary<string, int> getFrasesPerCard(int cardID)
     {
         Dictionary<string, int> frasesPerCard = new Dictionary<string, int>();
-        reader = executeQuery("SELECT INTIDFRASE, VCHARFRASE FROM Frases " +
-            "WHERE INTCVECARTA = " + cardID);
+        
+        string query = "SELECT INTIDFRASE, VCHARFRASE FROM Frases " +
+            "WHERE INTCVECARTA = @cardID";
+        
+        SqlParameter[] parameters = new SqlParameter[]
+        {
+            new SqlParameter("@cardID", SqlDbType.Int) { Value = cardID }
+        };
+        
+        reader = executeQuery(query, parameters);
 
         if (reader.HasRows)
         {
             reader.Read();
-            frasesPerCard.Add( reader.GetString(1), reader.GetInt32(0));
+            frasesPerCard.Add(reader.GetString(1), reader.GetInt32(0));
         }
 
         reader.Close();

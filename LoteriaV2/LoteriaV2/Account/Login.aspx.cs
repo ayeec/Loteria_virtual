@@ -24,7 +24,7 @@ public partial class Account_Login : Page
                 Usuario_Jugador userInfo = new LoteriaDAO().isValidUser(UserName.Text, Password.Text);
                 if(userInfo != null)
                 {
-                    Session["usarioID"] = userInfo.IDusuario;
+                    Session["usuarioID"] = userInfo.IDusuario;
                     Session["role"] = userInfo.Role;
                     Session["usuarioName"] = userInfo.NameUsuario;
                     Session["jugadorName"] = userInfo.NameJugador;

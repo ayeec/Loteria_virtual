@@ -3,10 +3,10 @@
  * Date: 12/11/2017
  * Time: 5:07 PM
  * 
+ * Refactored for proper singleton pattern and connection management
  */
 using System;
 using System.Data;
-using System.Data.Odbc;
 using System.Data.Common;
 using System.Configuration;
 using System.Data.SqlClient;
@@ -15,27 +15,54 @@ using System.Data.SqlClient;
 /// La clase SingletonDataConnection, está desarrollada siguiendo el patrón de diseño Singleton 
 /// el cual define una sola instancia para la conexion de base de datos
 /// </summary>
-public sealed class SingletonDataConnection
+public sealed class SingletonDataConnection : IDisposable
 {
-    private static  DbConnection conn;
-    private static volatile SingletonDataConnection instance;
-    private static object syncRoot = new Object();
+    private static volatile SqlConnection _connection;
+    private static readonly object _syncRoot = new object();
+    
+    private SingletonDataConnection() { }
 
-    public static SqlConnection Instance {
+    public static SqlConnection Instance 
+    {
         get
         {
-            if (conn == null)
+            if (_connection == null)
             {
-                lock (syncRoot)
+                lock (_syncRoot)
                 {
-                    if (conn == null)
-                        conn = new SqlConnection(ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
-                        SingletonDataConnection.Instance.Open();
+                    if (_connection == null)
+                    {
+                        _connection = new SqlConnection(
+                            ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+                    }
                 }
             }
-
-            return conn as SqlConnection;
+            
+            // Open connection if closed
+            if (_connection.State != ConnectionState.Open)
+            {
+                _connection.Open();
+            }
+            
+            return _connection;
         }
     }
 
+    public static void CloseConnection()
+    {
+        if (_connection != null)
+        {
+            if (_connection.State == ConnectionState.Open)
+            {
+                _connection.Close();
+            }
+            _connection = null;
+        }
+    }
+
+    public void Dispose()
+    {
+        CloseConnection();
+    }
 }
+
